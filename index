@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>星樂之夢 Star Music Dream | 官方網站</title>
+  <meta name="description" content="星樂之夢，專注於台灣小學生虛擬歌手開發與營運。我們的使命是發掘純真聲音，打造閃耀國際的虛擬之星。">
+  <style>
+    /* CSS 重置與變數 */
+    :root { 
+      --bg: #0a0e17; 
+      --text: #f0f4f8; 
+      --accent: #9bc8fb; 
+      --card-bg: rgba(255,255,255,0.05); 
+    }
+    body { 
+      margin: 0; 
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; 
+      background: var(--bg); 
+      color: var(--text); 
+      overflow-x: hidden; 
+    }
+    
+    /* 星空背景 */
+    .stars { 
+      position: fixed; 
+      top: 0; left: 0; width: 100%; height: 100%; 
+      z-index: -1; 
+      background: radial-gradient(circle at center, #111a2f 0%, #05080f 100%); 
+    }
+
+    /* 頂部導覽列 */
+    header { 
+      padding: 20px 40px; 
+      display: flex; justify-content: space-between; align-items: center; 
+      background: rgba(10,14,23,0.8); 
+      backdrop-filter: blur(10px); 
+      position: sticky; top: 0; z-index: 100; 
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .logo { 
+      font-size: 22px; font-weight: bold; color: var(--text); 
+      text-decoration: none; display: flex; align-items: center; gap: 12px; 
+    }
+    .nav-links a { 
+      color: var(--text); text-decoration: none; margin-left: 25px; 
+      font-size: 15px; transition: color 0.3s; 
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* 主視覺區塊 */
+    .hero { text-align: center; padding: 120px 20px; }
+    .hero h1 { 
+      font-size: 3em; margin-bottom: 15px; 
+      text-shadow: 0 0 20px rgba(155,200,251,0.3); 
+    }
+    .hero p { 
+      font-size: 1.1em; color: #a0aec0; max-width: 650px; 
+      margin: 0 auto 35px; line-height: 1.7; 
+    }
+
+    /* 通用區塊設定 */
+    section { max-width: 1000px; margin: 0 auto 80px; padding: 0 20px; }
+    h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; }
+
+    /* 歌手網格 */
+    .singer-grid { 
+      display: grid; 
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+      gap: 30px; margin-top: 20px; 
+    }
+    .card { 
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); 
+      border-radius: 16px; padding: 20px; text-align: center; 
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; 
+      text-decoration: none; color: inherit; display: block; 
+    }
+    .card:hover { 
+      transform: translateY(-5px); 
+      box-shadow: 0 10px 30px rgba(155,200,251,0.12); 
+      border-color: rgba(155,200,251,0.4); 
+    }
+    .card img { 
+      width: 100%; height: 280px; object-fit: cover; 
+      border-radius: 12px; background: #1a2333; margin-bottom: 18px; 
+    }
+    .card h3 { margin: 0 0 6px; font-size: 20px; }
+    .card p { color: #a0aec0; font-size: 14px; margin: 0; }
+    
+    /* 敬請期待樣式 */
+    .card.coming-soon { opacity: 0.5; pointer-events: none; }
+    .card.coming-soon img { filter: grayscale(100%) brightness(0.6); }
+
+    /* 最新消息 */
+    .news-item { 
+      background: var(--card-bg); padding: 22px; 
+      border-radius: 12px; margin-bottom: 18px; 
+      border-left: 3px solid var(--accent); 
+    }
+    .news-date { color: var(--accent); font-weight: bold; font-size: 14px; margin-bottom: 8px; }
+    .news-title { font-size: 16px; margin: 0; line-height: 1.6; }
+
+    /* 招募區塊 */
+    .recruit-banner { 
+      background: linear-gradient(135deg, rgba(155,200,251,0.08), rgba(255,255,255,0.03)); 
+      padding: 45px; border-radius: 16px; text-align: center; 
+      border: 1px solid rgba(155,200,251,0.15); 
+    }
+    .recruit-banner h3 { font-size: 24px; margin-top: 0; }
+    .btn { 
+      display: inline-block; padding: 12px 35px; 
+      background: var(--accent); color: #0a0e17; 
+      font-weight: bold; text-decoration: none; border-radius: 8px; 
+      margin-top: 25px; transition: transform 0.2s, background 0.3s; 
+    }
+    .btn:hover { transform: scale(1.05); background: #b0d8fc; }
+
+    /* 頁尾 */
+    footer { 
+      text-align: center; padding: 40px; color: #a0aec0; 
+      border-top: 1px solid rgba(255,255,255,0.05); 
+      margin-top: 60px; font-size: 14px; 
+    }
+
+    @media (max-width: 768px) {
+      header { padding: 15px 20px; flex-direction: column; gap: 15px; }
+      .nav-links a { margin: 0 10px; }
+      .hero { padding: 80px 20px; }
+      .hero h1 { font-size: 2.2em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <header>
+    <a href="index.html" class="logo">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#9bc8fb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+      </svg>
+      星樂之夢
+    </a>
+    <nav class="nav-links">
+      <a href="#singers">旗下歌手</a>
+      <a href="#news">情報與消息</a>
+      <a href="#about">加入我們</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>用音樂連結夢想，讓光芒閃耀</h1>
+    <p>星樂之夢 (Star Music Dream) 專注於台灣小學生虛擬歌手的開發與營運。我們運用頂尖的 ACE Studio 引擎，完美保存孩子成長節點最純真的聲音，致力於打造閃耀國際的虛擬之星。</p>
+  </div>
+
+  <section id="singers">
+    <h2>旗下歌手陣容</h2>
+    <p style="color: #a0aec0; line-height: 1.6; margin-bottom: 25px;">
+      從最初的光芒開始，逐步擴展至宇宙。星樂之夢的宏大藍圖：未來將迎來總計 12 位獨具特色的虛擬歌手。
+    </p>
+    <div class="singer-grid">
+      <a href="HoshiKiha.html" class="card">
+        <img src="img/星希羽2.0.png" alt="星希羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>星希羽 (HoshiKiha)</h3>
+        <p>台灣首位小學生虛擬男歌手</p>
+      </a>
+      
+      <a href="HoshiHuiha.html" class="card">
+        <img src="img/星彗羽.png" alt="星彗羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>星彗羽 (HoshiHuiha)</h3>
+        <p>台灣小學生虛擬女歌手 (姊姊)</p>
+      </a>
+
+      <div class="card coming-soon">
+        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='100%' height='100%'><rect fill='%231a2333' width='100%' height='100%'/><text x='50%' y='50%' fill='%23555' font-family='sans-serif' font-size='30' text-anchor='middle' alignment-baseline='middle'>?</text></svg>" alt="敬請期待">
+        <h3>新歌手計畫</h3>
+        <p>Coming Soon</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="news">
+    <h2>情報與消息</h2>
+    
+    <div class="news-item">
+      <div class="news-date">【重大發布預告】 2026 年 6 月 11 日</div>
+      <p class="news-title">✨ 星希羽兩週年紀念 EP《羽翼》即將正式發行！敬請期待。</p>
+    </div>
+
+    <div class="news-item">
+      <div class="news-date">【徵選計畫】 現正招募中</div>
+      <p class="news-title">🎤 啟動男性兒童虛擬歌手新聲優徵選計畫。我們正在尋找 7～10 歲的純真聲音，為孩子留下人生中最美好的成長節點紀錄。</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <h2>加入核心團隊</h2>
+    <div class="recruit-banner">
+      <h3>一起打造虛擬歌手的未來</h3>
+      <p style="line-height: 1.9; color: #a0aec0; margin-top: 15px;">
+        隨著星樂之夢的企劃日益壯大，我們正在尋找 <strong>3～4 位</strong>充滿熱忱的核心夥伴加入管理團隊。<br>
+        不論你擅長的是音樂創作、社群行銷還是虛擬歌手管理，<br>
+        我們都需要你的力量，一起統籌 12 位虛擬歌手的未來發展，<br>
+        並在 3 到 4 年後，共同見證星樂之夢正式成立公司、邁向更廣闊的舞台！
+      </p>
+      <a href="mailto:starmusicdreamstudio@gmail.com" class="btn">聯絡我們</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2024-2026 星樂之夢 (Star Music Dream). 保留所有權利。</p>
+  </footer>
+</body>
+</html>
