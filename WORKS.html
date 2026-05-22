@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品企劃 WORKS | 星樂之夢 Star Music Dream</title>
+  <meta name="description" content="星樂之夢的作品延伸專區，收錄非官方歌手合作曲、官方角色二次創作與多元音樂企劃。">
+  <style>
+    /* CSS 重置與變數 */
+    :root {
+      --bg: #0a0e17;
+      --text: #f0f4f8;
+      --accent: #9bc8fb;
+      --card-bg: rgba(255,255,255,0.05);
+    }
+    body {
+      margin: 0;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* 星空背景 */
+    .stars {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      z-index: -1;
+      background: radial-gradient(circle at center, #111a2f 0%, #05080f 100%);
+    }
+
+    /* 頂部導覽列 */
+    header {
+      padding: 20px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(10,14,23,0.8);
+      backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .logo {
+      text-decoration: none; display: flex; align-items: center;
+    }
+    .logo-image {
+      max-height: 45px;
+      width: auto;
+      display: block;
+      border-radius: 4px;
+    }
+    .nav-links a {
+      color: var(--text); text-decoration: none; margin-left: 25px;
+      font-size: 15px; transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* 主視覺區塊 */
+    .hero { text-align: center; padding: 80px 20px 40px; }
+    .hero h1 {
+      font-size: 2.8em; margin-bottom: 15px;
+      text-shadow: 0 0 20px rgba(155,200,251,0.3);
+    }
+    .hero p {
+      font-size: 1.1em; color: #a0aec0; max-width: 700px;
+      margin: 0 auto; line-height: 1.8;
+    }
+
+    /* 按鈕共用樣式 */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      padding: 12px 24px; background: var(--accent); color: #0a0e17;
+      font-weight: bold; text-decoration: none; border-radius: 8px;
+      transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+      border: none; cursor: pointer; font-size: 15px;
+    }
+    .btn:hover { transform: scale(1.05); background: #b0d8fc; }
+
+    /* YouTube 專屬按鈕樣式 */
+    .yt-btn {
+      background: #D10020;
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(209, 0, 32, 0.3);
+    }
+    .yt-btn:hover {
+      background: #ff1a3c;
+      box-shadow: 0 6px 20px rgba(209, 0, 32, 0.5);
+    }
+    .btn-icon { margin-right: 8px; margin-bottom: 2px; }
+
+    /* 作品分類區塊 */
+    section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
+    h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 24px; margin-bottom: 25px; }
+
+    /* 作品網格佈局 */
+    .works-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 25px;
+    }
+    .works-card {
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      cursor: pointer;
+    }
+    .works-card:hover {
+      transform: translateY(-5px); box-shadow: 0 8px 25px rgba(155,200,251,0.15); border-color: rgba(155,200,251,0.4);
+    }
+    .works-cover {
+      width: 100%; height: 180px; object-fit: cover; background: #1a2333;
+    }
+    .works-content { padding: 20px; }
+    .works-tag {
+      display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: bold;
+      border-radius: 4px; margin-bottom: 10px; text-transform: uppercase;
+    }
+    .tag-collab { background: rgba(155,200,251,0.2); color: var(--accent); }
+    .tag-fanart { background: rgba(251,157,158,0.2); color: #FB9D9E; }
+
+    .works-content h3 { margin: 0 0 8px 0; font-size: 18px; color: #fff; }
+    .works-content .singer-name { font-size: 13px; color: var(--accent); margin-bottom: 12px; font-weight: 500; }
+    .works-content p { color: #a0aec0; font-size: 14px; line-height: 1.6; margin: 0; }
+
+    /* ============ 彈出視窗 (Modal) 樣式 ============ */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+      display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-card {
+      background: #161c27; border: 1px solid rgba(255, 255, 255, 0.1); width: 100%;
+      max-width: 850px; max-height: 90vh; border-radius: 24px; overflow-y: auto;
+      position: relative; display: flex; flex-direction: row; box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .close-modal {
+      position: absolute; right: 20px; top: 20px; width: 40px; height: 40px;
+      background: rgba(255,255,255,0.1); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; color: #fff; font-size: 20px; z-index: 10; transition: background 0.3s;
+    }
+    .close-modal:hover { background: rgba(255,255,255,0.2); }
+
+    .modal-img-side {
+      flex: 0 0 40%; background: #0d1117; display: flex; align-items: center; justify-content: center; min-height: 400px;
+    }
+    .modal-img-side img { width: 100%; height: 100%; object-fit: cover; }
+
+    .modal-info-side { flex: 1; padding: 40px; }
+    .modal-info-side h2 { margin: 0 0 5px 0; color: var(--accent); font-size: 28px; border: none; padding: 0; }
+    .modal-subtitle { color: #a0aec0; margin-bottom: 25px; font-size: 14px; font-weight: bold; }
+
+    .char-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+    .char-table td { padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
+    .char-table td:first-child { color: var(--accent); font-weight: bold; width: 100px; }
+
+    .modal-player {
+      background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
+    }
+    .modal-player p { margin: 0 0 10px 0; font-size: 13px; font-weight: bold; color: var(--accent); }
+
+    .modal-actions { margin-top: 20px; display: flex; gap: 12px; }
+
+    /* 頁尾連結 */
+    footer {
+      text-align: center; padding: 50px 20px 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 80px; font-size: 14px;
+    }
+    .social-links { display: flex; justify-content: center; gap: 16px; margin-bottom: 30px; flex-wrap: wrap; }
+    .social-links a {
+      display: flex; align-items: center; justify-content: center; width: 54px; height: 54px; background-color: #ffffff; border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    }
+    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(155, 200, 251, 0.5); }
+
+    @media (max-width: 768px) {
+      header { padding: 15px 20px; flex-direction: column; gap: 15px; }
+      .nav-links a { margin: 0 10px; }
+      .hero h1 { font-size: 2.2em; }
+      .modal-card { flex-direction: column; }
+      .modal-img-side { flex: unset; min-height: 300px; }
+      .modal-info-side { padding: 30px 20px; }
+      .modal-actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+
+  <header>
+    <a href="index.html" class="logo">
+      <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">返回首頁</a>
+      <a href="index.html#singers">旗下歌手</a>
+      <a href="index.html#news">情報與消息</a>
+      <a href="index.html#about">加入我們</a>
+    </nav>
+  </header>
+
+  <div class="hero">
+    <h1>WORKS</h1>
+    <p>這裡是星樂之夢的小分支。除了核心歌手外，我們在此自由製作非官方歌手的作品，並典藏官方角色的衍生二次創作。</p>
+
+    <div style="margin-top: 35px;">
+      <a href="https://www.youtube.com/@SMDWORKS_222" target="_blank" class="btn yt-btn">
+        <svg class="btn-icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        前往 YouTube 觀看更多作品
+      </a>
+    </div>
+  </div>
+
+  <section id="derivative">
+    <h2>時空衍生與二次創作 (Derivative Works)</h2>
+    <div class="works-grid">
+
+      <div class="works-card" onclick="openYuonModal()">
+        <img class="works-cover" src="img/祐恩封面.png" alt="祐恩 Yuon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'14\' text-anchor=\'middle\' alignment-baseline=\'middle\'>Yuon Image</text></svg>'">
+        <div class="works-content">
+          <div class="works-tag tag-fanart">平行時空衍生</div>
+          <h3>祐恩 Yuon</h3>
+          <div class="singer-name">Featuring: 星希羽 (14歲未來時空)</div>
+          <p>點擊查看角色資料卡與試聽內容。祐恩是星希羽成長至 14 歲後的衍生角色，展現了截然不同的少年感聲線。</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="modal-overlay" id="yuonModal">
+    <div class="modal-card">
+      <div class="close-modal" onclick="closeYuonModal()">✕</div>
+
+      <div class="modal-img-side">
+        <img src="img/祐恩立繪.png" alt="祐恩 Yuon" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%230d1117\' width=\'100%\' height=\'100%\'/></svg>'">
+      </div>
+
+      <div class="modal-info-side">
+        <h2>祐恩 Yuon</h2>
+        <div class="modal-subtitle">星希羽衍生二次創作角色 (Age 14 ver.)</div>
+
+        <table class="char-table">
+          <tr><td>年齡</td><td>14歲</td></tr>
+          <tr><td>性別</td><td>男</td></tr>
+          <tr><td>生日</td><td>8月14日</td></tr>
+          <tr><td>血型</td><td>AB型</td></tr>
+          <tr><td>身高</td><td>173cm</td></tr>
+          <tr><td>體重</td><td>62kg</td></tr>
+          <tr><td>備注</td><td>是星希羽一代中之人14歲後的聲音</td></tr>
+        </table>
+
+        <div class="modal-player">
+          <p>🎵 VOICE DEMO 試聽</p>
+          <audio controls style="width: 100%;">
+            <source src="wav/Yuon_demo.wav" type="audio/wav">
+            您的瀏覽器不支援 audio 播放器。
+          </audio>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="social-links">
+      <a href="https://x.com/SMDOFFICIAL_222" target="_blank" aria-label="X (Twitter)">
+        <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      </a>
+      <a href="https://www.instagram.com/smdofficial_222" target="_blank" aria-label="Instagram">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+      </a>
+      <a href="https://discord.gg/uXvpJVcwBB" target="_blank" aria-label="Discord">
+        <svg viewBox="0 0 24 24" width="26" height="26" fill="#000000"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      </a>
+    </div>
+
+    <p>© 2024-2026 星樂之夢 (Star Music Dream). 保留所有權利。</p>
+  </footer>
+
+  <script>
+    // 控制彈出視窗開關的腳本
+    function openYuonModal() {
+      document.getElementById('yuonModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeYuonModal() {
+      document.getElementById('yuonModal').classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById('yuonModal');
+      if (event.target == modal) {
+        closeYuonModal();
+      }
+    }
+  </script>
+</body>
+</html>
