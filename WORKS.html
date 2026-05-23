@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>作品企劃 WORKS | 星樂之夢 Star Music Dream</title>
   <meta name="description" content="星樂之夢的作品延伸專區，收錄非官方歌手合作曲、官方角色二次創作與多元音樂企劃。">
+  <link rel="icon" href="img/favicon.png" type="image/png">
+
   <style>
     /* CSS 重置與變數 */
     :root {
@@ -47,11 +49,70 @@
       display: block;
       border-radius: 4px;
     }
+    .nav-links { display: flex; align-items: center; }
     .nav-links a {
       color: var(--text); text-decoration: none; margin-left: 25px;
       font-size: 15px; transition: color 0.3s;
     }
     .nav-links a:hover { color: var(--accent); }
+
+    /* ================= 導覽列下拉選單樣式 ================= */
+    .dropdown {
+      position: relative;
+      display: inline-block;
+      margin-left: 25px;
+    }
+    .dropdown-btn {
+      color: var(--text);
+      font-size: 15px;
+      transition: color 0.3s;
+      padding: 10px 0; /* 加大手機點擊範圍 */
+      cursor: pointer;
+      user-select: none;
+    }
+    .dropdown:hover .dropdown-btn {
+      color: var(--accent);
+    }
+    .dropdown::after {
+      content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 15px;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 14, 23, 0.95);
+      backdrop-filter: blur(10px);
+      min-width: 160px;
+      box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      z-index: 101;
+      padding: 8px 0;
+    }
+    .dropdown-content.show {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
+    }
+    .dropdown-content a {
+      color: #a0aec0;
+      padding: 12px 20px;
+      text-decoration: none;
+      display: block;
+      margin-left: 0;
+      font-size: 14px;
+      text-align: center;
+      transition: background 0.3s, color 0.3s;
+    }
+    .dropdown-content a:hover {
+      background: rgba(155, 200, 251, 0.1);
+      color: var(--accent);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -5px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
+    }
 
     /* 主視覺區塊 */
     .hero { text-align: center; padding: 80px 20px 40px; }
@@ -63,21 +124,6 @@
       font-size: 1.1em; color: #a0aec0; max-width: 700px;
       margin: 0 auto; line-height: 1.8;
     }
-    /* 下拉選單與導覽 */
-    .nav-links { display: flex; align-items: center; }
-    .nav-links a { color: var(--text); text-decoration: none; margin-left: 25px; font-size: 15px; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--accent); }
-
-    .dropdown { position: relative; display: inline-block; margin-left: 25px; cursor: pointer; }
-    .dropdown-btn { color: var(--text); font-size: 15px; transition: color 0.3s; }
-    .dropdown:hover .dropdown-btn { color: var(--accent); }
-    .dropdown-content {
-      display: none; position: absolute; top: 100%; left: 0; background: rgba(10,14,23,0.95);
-      min-width: 150px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); border-radius: 8px; padding: 10px 0; z-index: 101;
-    }
-    .dropdown:hover .dropdown-content { display: block; }
-    .dropdown-content a { display: block; padding: 10px; margin-left: 0; text-align: center; color: var(--text); }
-    .dropdown-content a:hover { color: var(--accent); }
 
     /* 按鈕共用樣式 */
     .btn {
@@ -171,8 +217,6 @@
     }
     .modal-player p { margin: 0 0 10px 0; font-size: 13px; font-weight: bold; color: var(--accent); }
 
-    .modal-actions { margin-top: 20px; display: flex; gap: 12px; }
-
     /* 頁尾連結 */
     footer {
       text-align: center; padding: 50px 20px 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 80px; font-size: 14px;
@@ -186,19 +230,21 @@
 
     @media (max-width: 768px) {
       header { padding: 15px 20px; flex-direction: column; gap: 15px; }
+      .nav-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
       .nav-links a { margin: 0 10px; }
+      .dropdown { margin: 0 10px; }
       .hero h1 { font-size: 2.2em; }
       .modal-card { flex-direction: column; }
       .modal-img-side { flex: unset; min-height: 300px; }
       .modal-info-side { padding: 30px 20px; }
-      .modal-actions { flex-direction: column; }
     }
   </style>
 </head>
 <body>
+  <canvas id="cursor-canvas" style="position:fixed; top:0; left:0; width:100vw; height:100vh; pointer-events:none !important; z-index:99999;"></canvas>
   <div class="stars"></div>
 
-<header>
+  <header>
     <a href="index.html" class="logo">
       <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
     </a>
@@ -206,7 +252,7 @@
       <a href="index.html">返回首頁</a>
 
       <div class="dropdown">
-        <span class="dropdown-btn">旗下歌手 ▾</span>
+        <span class="dropdown-btn" onclick="toggleDropdown(event, this)">旗下歌手 ▾</span>
         <div class="dropdown-content">
           <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
@@ -273,12 +319,10 @@
         <div class="modal-player">
           <p>🎵 VOICE DEMO 試聽</p>
           <audio controls style="width: 100%;">
-            <source src="wav/夢想前行Yuon.wav" type="audio/wav">
+            <source src="wav/Yuon_demo.wav" type="audio/wav">
             您的瀏覽器不支援 audio 播放器。
           </audio>
         </div>
-
-
       </div>
     </div>
   </div>
@@ -295,28 +339,117 @@
         <svg viewBox="0 0 24 24" width="26" height="26" fill="#000000"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
       </a>
     </div>
-
-    <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
+    <p>© 2024-2026 星樂之夢 (Star Music Dream). 保留所有權利。</p>
   </footer>
 
   <script>
-    // 控制彈出視窗開關的腳本
+    // === 1. 控制下拉選單 (支援手機點擊) ===
+    function toggleDropdown(event, btnElement) {
+      event.stopPropagation(); // 阻止事件冒泡
+
+      const content = btnElement.nextElementSibling; // 找到按鈕旁邊的下拉內容
+
+      // 關閉其他已經開啟的選單
+      document.querySelectorAll('.dropdown-content').forEach(d => {
+        if (d !== content) {
+          d.classList.remove('show');
+        }
+      });
+
+      // 切換當前這個選單的顯示狀態
+      content.classList.toggle('show');
+    }
+
+    // === 2. 視窗點擊事件 (處理關閉選單與關閉視窗) ===
+    window.onclick = function(event) {
+      // 點擊非選單處，關閉所有選單
+      if (!event.target.matches('.dropdown-btn')) {
+        document.querySelectorAll('.dropdown-content').forEach(d => {
+          d.classList.remove('show');
+        });
+      }
+
+      // 點擊彈出視窗的背景處，關閉彈出視窗
+      const modal = document.getElementById('yuonModal');
+      if (event.target === modal) {
+        closeYuonModal();
+      }
+    }
+
+    // === 3. 彈出視窗 (Modal) 開關邏輯 ===
     function openYuonModal() {
       document.getElementById('yuonModal').classList.add('active');
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; // 防止背景滾動
     }
 
     function closeYuonModal() {
       document.getElementById('yuonModal').classList.remove('active');
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = 'auto'; // 恢復背景滾動
     }
 
-    window.onclick = function(event) {
-      const modal = document.getElementById('yuonModal');
-      if (event.target == modal) {
-        closeYuonModal();
+    // === 4. 星星粒子滑鼠特效 ===
+    (function(){
+      const canvas = document.getElementById('cursor-canvas');
+      if(!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+
+      function resize(){
+        width = window.innerWidth; height = window.innerHeight;
+        canvas.width = width * DPR; canvas.height = height * DPR;
+        ctx.scale(DPR, DPR);
       }
-    }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const particles = [];
+
+      function drawStar(ctx, x, y, radius, rot) {
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step;
+          ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step;
+        }
+        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
+      }
+
+      function addParticle(x, y) {
+        particles.push({
+          x: x, y: y,
+          vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5),
+          vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5,
+          size: Math.random() * 8 + 6,
+          color: palette[Math.floor(Math.random() * palette.length)],
+          alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40,
+          rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1
+        });
+      }
+
+      window.addEventListener('mousemove', (e) => {
+        for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10);
+      }, {passive: true});
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i]; p.life++;
+          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed;
+          p.alpha = 0.8 * (1 - p.life / p.maxLife);
+          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha;
+          ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+          drawStar(ctx, p.x, p.y, p.size, p.rot);
+        }
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
   </script>
 </body>
 </html>
