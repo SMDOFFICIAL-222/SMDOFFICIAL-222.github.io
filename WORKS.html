@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>作品企劃 WORKS | 星樂之夢 Star Music Dream</title>
-  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
   <meta name="description" content="星樂之夢的作品延伸專區，收錄非官方歌手合作曲、官方角色二次創作與多元音樂企劃。">
   <style>
     /* CSS 重置與變數 */
@@ -64,6 +63,21 @@
       font-size: 1.1em; color: #a0aec0; max-width: 700px;
       margin: 0 auto; line-height: 1.8;
     }
+    /* 下拉選單與導覽 */
+    .nav-links { display: flex; align-items: center; }
+    .nav-links a { color: var(--text); text-decoration: none; margin-left: 25px; font-size: 15px; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    .dropdown { position: relative; display: inline-block; margin-left: 25px; cursor: pointer; }
+    .dropdown-btn { color: var(--text); font-size: 15px; transition: color 0.3s; }
+    .dropdown:hover .dropdown-btn { color: var(--accent); }
+    .dropdown-content {
+      display: none; position: absolute; top: 100%; left: 0; background: rgba(10,14,23,0.95);
+      min-width: 150px; box-shadow: 0 8px 16px rgba(0,0,0,0.5); border-radius: 8px; padding: 10px 0; z-index: 101;
+    }
+    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown-content a { display: block; padding: 10px; margin-left: 0; text-align: center; color: var(--text); }
+    .dropdown-content a:hover { color: var(--accent); }
 
     /* 按鈕共用樣式 */
     .btn {
@@ -184,13 +198,22 @@
 <body>
   <div class="stars"></div>
 
-  <header>
+<header>
     <a href="index.html" class="logo">
       <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
     </a>
     <nav class="nav-links">
       <a href="index.html">返回首頁</a>
-      <a href="index.html#singers">旗下歌手</a>
+
+      <div class="dropdown">
+        <span class="dropdown-btn">旗下歌手 ▾</span>
+        <div class="dropdown-content">
+          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
+          <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
+          <a href="index.html#singers">查看全陣容</a>
+        </div>
+      </div>
+
       <a href="index.html#news">情報與消息</a>
       <a href="index.html#about">加入我們</a>
     </nav>
@@ -250,7 +273,7 @@
         <div class="modal-player">
           <p>🎵 VOICE DEMO 試聽</p>
           <audio controls style="width: 100%;">
-            <source src="wav/夢想前行Yuon.wav" type="audio/wav">
+            <source src="wav/Yuon_demo.wav" type="audio/wav">
             您的瀏覽器不支援 audio 播放器。
           </audio>
         </div>
