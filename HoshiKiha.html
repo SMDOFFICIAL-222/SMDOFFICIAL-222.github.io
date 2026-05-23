@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>星希羽 HoshiKiha | 官方網站</title>
-  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
   <meta name="description" content="星希羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手。">
 
   <link rel="icon" href="img/favicon.png" type="image/png">
@@ -49,18 +48,19 @@
     .nav-links a { color: var(--text); text-decoration: none; margin-left: 25px; font-size: 15px; transition: color 0.3s; }
     .nav-links a:hover { color: var(--accent); }
 
-    /* ================= 新增：導覽列下拉選單樣式 ================= */
+    /* ================= 導覽列下拉選單樣式 ================= */
     .dropdown {
       position: relative;
       display: inline-block;
       margin-left: 25px;
+      cursor: pointer; /* 讓滑鼠移過去變成手指 */
     }
     .dropdown-btn {
       color: var(--text);
       font-size: 15px;
-      cursor: pointer;
       transition: color 0.3s;
       padding: 5px 0;
+      user-select: none; /* 防止手機點擊時選取文字 */
     }
     .dropdown:hover .dropdown-btn {
       color: var(--accent);
@@ -97,10 +97,13 @@
       background: rgba(155, 200, 251, 0.1);
       color: var(--accent);
     }
-    .dropdown:hover .dropdown-content {
+
+    /* 這裡改為用 .show 類別來控制顯示，而不是 hover */
+    .dropdown-content.show {
       display: block;
       animation: fadeIn 0.2s ease-in-out;
     }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translate(-50%, -5px); }
       to { opacity: 1; transform: translate(-50%, 0); }
@@ -157,14 +160,13 @@
       padding: 40px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,0.05);
-      position: relative; /* Base positioning parent */
+      position: relative;
     }
-    /* Style for Yoyo (悠悠) star in history section */
     .yoyo-star {
       position: absolute;
       bottom: 20px;
       right: 20px;
-      max-height: 100px; /* Adjust size constraints as needed */
+      max-height: 100px;
       opacity: 0.9;
       pointer-events: none;
     }
@@ -173,24 +175,22 @@
 
     /* ================= 4. 形象3視圖展示 ================= */
     .reference-sheet-wrapper {
-        position: relative; /* Base positioning parent */
+        position: relative;
         width: 100%;
-        border-radius: 16px; /* Moved here from the generic section styles */
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3); /* Moved here from the generic section styles */
-        overflow: hidden; /* Recommended for rounded images */
+        border-radius: 16px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        overflow: hidden;
     }
     .reference-sheet {
         width: 100%;
         display: block;
         background: #1a2333;
-        /* border-radius and box-shadow removed as they are now on the wrapper */
     }
-    /* Style for Tinka (霆卡) star in reference sheet */
     .tinka-star {
         position: absolute;
         bottom: 20px;
         left: 20px;
-        max-height: 100px; /* Adjust size constraints as needed */
+        max-height: 100px;
         opacity: 0.9;
         pointer-events: none;
     }
@@ -205,7 +205,6 @@
     .works-info h3 { margin: 0 0 12px 0; font-size: 22px; color: #fff; }
     .works-info p { color: #a0aec0; font-size: 15px; line-height: 1.8; margin: 0 0 15px 0; }
 
-    /* Spotify 播放器多排版網格容器 */
     .spotify-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -249,9 +248,10 @@
     <nav class="nav-links">
       <a href="index.html">返回首頁</a>
 
-      <div class="dropdown">
+      <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn">其他歌手 ▾</span>
         <div class="dropdown-content">
+          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="index.html#singers">查看全陣容</a>
         </div>
@@ -278,7 +278,6 @@
         <tr><td>年齡</td><td>7歲</td></tr>
         <tr><td>身高</td><td>122cm</td></tr>
         <tr><td>體重</td><td>25kg</td></tr>
-        <tr><td>生日</td><td>8月14日</td></tr>
         <tr><td>星座</td><td>獅子座</td></tr>
         <tr><td>血型</td><td>AB型</td></tr>
         <tr><td>代表色</td>
@@ -384,6 +383,29 @@
   </footer>
 
   <script>
+    function toggleDropdown(event, element) {
+      event.stopPropagation(); // 阻止事件冒泡
+
+      // 先把其他已經打開的選單關掉 (如果有多的話)
+      document.querySelectorAll('.dropdown-content').forEach(d => {
+        if (d !== element.querySelector('.dropdown-content')) {
+          d.classList.remove('show');
+        }
+      });
+
+      // 切換當前這個選單的顯示狀態
+      element.querySelector('.dropdown-content').classList.toggle('show');
+    }
+
+    // 點擊畫面其他地方時，關閉選單
+    window.onclick = function(event) {
+      if (!event.target.matches('.dropdown-btn')) {
+        document.querySelectorAll('.dropdown-content').forEach(d => {
+          d.classList.remove('show');
+        });
+      }
+    }
+
     function switchImage(version) {
       const img = document.getElementById('profile-portrait');
       const btns = document.querySelectorAll('.toggle-btn');
