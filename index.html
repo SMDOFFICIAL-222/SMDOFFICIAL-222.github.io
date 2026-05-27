@@ -168,7 +168,7 @@
 
     /* 通用區塊設定 */
     section {
-      max-width: 1200px; /* 加寬以容納4格 */
+      max-width: 1200px;
       margin: 0 auto 80px;
       padding: 0 20px;
     }
@@ -176,8 +176,18 @@
       border-left: 4px solid var(--accent);
       padding-left: 15px;
       font-size: 26px;
-      margin-bottom: 30px;
+      margin-bottom: 40px; /* 加大下方間距 */
     }
+    /* 歌手系列副標題 */
+    .series-title {
+      font-size: 24px;
+      color: #f0f4f8;
+      margin-bottom: 20px;
+      margin-top: 40px; /* 加大上方間距 */
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
 
     /* 按鈕樣式 */
     .btn {
@@ -212,9 +222,10 @@
     /* ================= 歌手網格 (4格並排) ================= */
     .singer-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr); /* 強制 4 格並排 */
+      grid-template-columns: repeat(4, 1fr);
       gap: 25px;
       margin-top: 20px;
+      margin-bottom: 50px; /* 增加各系列之間的間距 */
     }
     .card {
       background: var(--card-bg);
@@ -236,7 +247,7 @@
     .card img {
       width: 100%;
       height: auto;
-      aspect-ratio: 1/1; /* 保持正方形 */
+      aspect-ratio: 1/1;
       object-fit: cover;
       border-radius: 12px;
       background: #1a2333;
@@ -244,11 +255,11 @@
     }
     .card h3 {
       margin: 0 0 6px;
-      font-size: 18px; /* 稍微縮小字體以適應4格 */
+      font-size: 18px;
     }
     .card p {
       color: #a0aec0;
-      font-size: 13px; /* 稍微縮小字體以適應4格 */
+      font-size: 13px;
       margin: 0;
       flex-grow: 1;
     }
@@ -403,7 +414,7 @@
 
     /* 響應式設定 */
     @media (max-width: 1024px) {
-        .singer-grid { grid-template-columns: repeat(2, 1fr); } /* 平板改為 2 格並排 */
+        .singer-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
     @media (max-width: 768px) {
@@ -428,7 +439,7 @@
       .modal-card {
         padding: 30px 20px;
       }
-      .singer-grid { grid-template-columns: 1fr; } /* 手機改為單欄 */
+      .singer-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -454,36 +465,87 @@
   </div>
 
   <section id="singers">
-    <h2>星幻之城 × StarLeo</h2>
-    <p style="color: #a0aec0; line-height: 1.6; margin-bottom: 25px;">
-      旗下歌手陣容如下，未來將迎來總計 12 位獨具特色的虛擬歌手。
-    </p>
+    <h2>旗下歌手陣容</h2>
 
+    <div class="series-title">STREETECHOES 系列</div>
+    <div class="singer-grid">
+      <a href="#" class="card coming-soon">
+        <img src="img/希恩頭像ACE2.png" alt="希恩" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>希恩</h3>
+        <p>台灣虛擬男聲歌手</p>
+      </a>
+
+      <a href="#" class="card coming-soon">
+        <img src="img/宇熙頭像ACE2.png" alt="宇熙" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>宇熙</h3>
+        <p>台灣虛擬女聲歌手</p>
+      </a>
+
+      <a href="#" class="card coming-soon">
+        <img src="img/程都頭像ACE2.png" alt="程都" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>程都</h3>
+        <p>台灣虛擬男聲歌手</p>
+      </a>
+
+      <a href="#" class="card coming-soon">
+        <img src="img/悠珊頭像ACE2.png" alt="悠珊" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>悠珊</h3>
+        <p>台灣虛擬女聲歌手</p>
+      </a>
+    </div>
+
+    <div class="series-title">森嶼之聲 系列</div>
+    <div class="singer-grid">
+      <a href="#" class="card coming-soon">
+        <img src="img/岳嵐頭像ACE2.png" alt="岳嵐" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>岳嵐</h3>
+        <p>台灣虛擬男聲歌手</p>
+      </a>
+
+      <a href="#" class="card coming-soon">
+        <img src="img/穗蓉頭像ACE2.png" alt="穗蓉" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>穗蓉</h3>
+        <p>台灣虛擬女聲歌手</p>
+      </a>
+
+      <a href="#" class="card coming-soon">
+        <img src="img/湛嶠頭像ACE2.png" alt="湛嶠" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>湛嶠</h3>
+        <p>台灣虛擬男聲歌手</p>
+      </a>
+
+      <a href="#" class="card coming-soon">
+        <img src="img/雉瑜頭像ACE2.png" alt="雉瑜" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>雉瑜</h3>
+        <p>台灣虛擬女聲歌手</p>
+      </a>
+    </div>
+
+    <div class="series-title">星幻之城 × STARLEO 系列</div>
     <div class="singer-grid">
       <a href="HoshiKiha.html" class="card">
         <img src="img/星希羽頭像ACE2.png" alt="星希羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>星希羽 (HoshiKiha)</h3>
+        <h3>星希羽</h3>
         <p>台灣虛擬男童聲歌手</p>
       </a>
 
       <a href="HoshiHuiha.html" class="card">
         <img src="img/星彗羽頭像ACE2.png" alt="星彗羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>星彗羽 (HoshiHuiha)</h3>
+        <h3>星彗羽</h3>
         <p>台灣虛擬女童聲歌手</p>
       </a>
 
-      <a href="HoshiKiha.html" class="card">
-        <img src="img/.png" alt="星丞軒" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>星丞軒 (HoshiJoken)</h3>
+      <a href="#" class="card coming-soon">
+        <img src="img/星丞軒.png" alt="星丞軒" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>星丞軒</h3>
         <p>台灣虛擬男童聲歌手</p>
       </a>
 
-      <a href="HoshiHuiha.html" class="card">
-        <img src="img/.png" alt="星卉芯" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>星卉芯 (HoshiHuishin)</h3>
+      <a href="#" class="card coming-soon">
+        <img src="img/星卉芯.png" alt="星卉芯" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
+        <h3>星卉芯</h3>
         <p>台灣虛擬女童聲歌手</p>
       </a>
-      </div>
     </div>
 
     <div style="text-align: center; margin-top: 40px;">
@@ -564,7 +626,7 @@
         <svg viewBox="0 0 24 24" width="26" height="26" fill="#000000"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
       </a>
     </div>
-    <p>© 2024-2026 星樂之夢 (Star Music Dream). 保留所有權利。</p>
+    <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
   </footer>
 
   <script>
