@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
@@ -24,22 +24,21 @@
       overflow-x: hidden;
     }
 
-    /* 星空背景 */
+    /* 星空背景與滑鼠粒子畫布 */
     .stars {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: -1;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
       background: radial-gradient(circle at center, #111a2f 0%, #05080f 100%);
+    }
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90; /* 確保不阻擋點擊 */
     }
 
     /* 頂部導覽列 */
     header {
-      padding: 20px 40px;
-      display: flex; justify-content: space-between; align-items: center;
-      background: rgba(10,14,23,0.8);
-      backdrop-filter: blur(10px);
-      position: sticky; top: 0; z-index: 100;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
+      background: rgba(10,14,23,0.8); backdrop-filter: blur(10px);
+      position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05);
     }
     .logo { text-decoration: none; display: flex; align-items: center; }
     .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
@@ -49,60 +48,19 @@
     .nav-links a:hover { color: var(--accent); }
 
     /* ================= 導覽列下拉選單樣式 ================= */
-    .dropdown {
-      position: relative;
-      display: inline-block;
-      margin-left: 25px;
-      cursor: pointer; /* 讓滑鼠移過去變成手指 */
-    }
-    .dropdown-btn {
-      color: var(--text);
-      font-size: 15px;
-      transition: color 0.3s;
-      padding: 5px 0;
-      user-select: none; /* 防止手機點擊時選取文字 */
-    }
-    .dropdown:hover .dropdown-btn {
-      color: var(--accent);
-    }
-    .dropdown::after {
-      content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 15px;
-    }
+    .dropdown { position: relative; display: inline-block; margin-left: 25px; cursor: pointer; }
+    .dropdown-btn { color: var(--text); font-size: 15px; transition: color 0.3s; padding: 5px 0; user-select: none; }
+    .dropdown:hover .dropdown-btn { color: var(--accent); }
     .dropdown-content {
-      display: none;
-      position: absolute;
-      top: calc(100% + 10px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(10, 14, 23, 0.95);
-      backdrop-filter: blur(10px);
-      min-width: 160px;
-      box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      z-index: 101;
-      padding: 8px 0;
+      display: none; position: absolute; top: calc(100% + 10px); left: 50%;
+      transform: translateX(-50%); background: rgba(10, 14, 23, 0.95);
+      backdrop-filter: blur(10px); min-width: 160px;
+      box-shadow: 0px 10px 30px rgba(0,0,0,0.5); border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.08); z-index: 101; padding: 8px 0;
     }
-    .dropdown-content a {
-      color: #a0aec0;
-      padding: 12px 20px;
-      text-decoration: none;
-      display: block;
-      margin-left: 0;
-      font-size: 14px;
-      text-align: center;
-      transition: background 0.3s, color 0.3s;
-    }
-    .dropdown-content a:hover {
-      background: rgba(155, 200, 251, 0.1);
-      color: var(--accent);
-    }
-
-    /* 這裡改為用 .show 類別來控制顯示，而不是 hover */
-    .dropdown-content.show {
-      display: block;
-      animation: fadeIn 0.2s ease-in-out;
-    }
+    .dropdown-content a { color: #a0aec0; padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; }
+    .dropdown-content a:hover { background: rgba(155, 200, 251, 0.1); color: var(--accent); }
+    .dropdown-content.show { display: block; animation: fadeIn 0.2s ease-in-out; }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translate(-50%, -5px); }
@@ -113,31 +71,15 @@
     section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
     h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); }
 
-    /* ================= 1. 頂部人物檔案區 ================= */
-    .profile-section {
-      display: flex; gap: 40px; align-items: flex-start; margin-top: 40px; margin-bottom: 60px;
-    }
+    /* 1. 頂部人物檔案區 */
+    .profile-section { display: flex; gap: 40px; align-items: flex-start; margin-top: 40px; margin-bottom: 60px; }
+    .profile-img-container { flex: 0 0 400px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
+    .img-toggle-wrapper { display: flex; background: rgba(255,255,255,0.05); border-radius: 30px; padding: 5px; border: 1px solid rgba(255,255,255,0.1); }
+    .toggle-btn { background: transparent; border: none; color: #a0aec0; padding: 8px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; font-family: inherit; font-size: 14px; transition: all 0.3s; }
+    .toggle-btn.active { background: var(--accent); color: #0a0e17; box-shadow: 0 2px 10px rgba(155,200,251,0.3); }
+    #profile-portrait { width: 100%; max-width: 400px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: #1a2333; object-fit: cover; transition: opacity 0.3s ease; }
 
-    /* 立繪切換區塊新樣式 */
-    .profile-img-container {
-      flex: 0 0 400px; display: flex; flex-direction: column; gap: 15px; align-items: center;
-    }
-    .img-toggle-wrapper {
-      display: flex; background: rgba(255,255,255,0.05); border-radius: 30px; padding: 5px; border: 1px solid rgba(255,255,255,0.1);
-    }
-    .toggle-btn {
-      background: transparent; border: none; color: #a0aec0; padding: 8px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; font-family: inherit; font-size: 14px; transition: all 0.3s;
-    }
-    .toggle-btn.active {
-      background: var(--accent); color: #0a0e17; box-shadow: 0 2px 10px rgba(155,200,251,0.3);
-    }
-    #profile-portrait {
-      width: 100%; max-width: 400px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: #1a2333; object-fit: cover; transition: opacity 0.3s ease;
-    }
-
-    .profile-card {
-      flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
+    .profile-card { flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
     .profile-logo { max-width: 250px; height: auto; display: block; margin-bottom: 8px; }
     .profile-card h3 { margin: 0 0 20px 0; font-size: 16px; color: #a0aec0; font-weight: normal; }
 
@@ -149,71 +91,28 @@
     .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--text); }
     .audio-player audio { width: 100%; height: 40px; outline: none; }
 
-    /* ================= 2. 概要區塊 ================= */
-    .intro-section {
-      text-align: center; background: linear-gradient(135deg, rgba(155,200,251,0.08), rgba(255,255,255,0.02)); padding: 40px; border-radius: 16px; border: 1px solid rgba(155,200,251,0.15); font-size: 1.1em; line-height: 1.8; color: #e2e8f0; margin-bottom: 60px;
-    }
+    /* 2. 概要區塊 */
+    .intro-section { text-align: center; background: linear-gradient(135deg, rgba(155,200,251,0.08), rgba(255,255,255,0.02)); padding: 40px; border-radius: 16px; border: 1px solid rgba(155,200,251,0.15); font-size: 1.1em; line-height: 1.8; color: #e2e8f0; margin-bottom: 60px; }
 
-    /* ================= 3. 歷史概要區塊 ================= */
-    .history-section {
-      background: var(--card-bg);
-      padding: 40px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.05);
-      position: relative;
-    }
-    .yoyo-star {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      max-height: 100px;
-      opacity: 0.9;
-      pointer-events: none;
-    }
+    /* 3. 歷史概要區塊 */
+    .history-section { background: var(--card-bg); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+    .yoyo-star { position: absolute; bottom: 20px; right: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
     .history-text { font-size: 15px; line-height: 1.9; color: #a0aec0; }
     .history-text p { margin-bottom: 20px; }
 
-    /* ================= 4. 形象3視圖展示 ================= */
-    .reference-sheet-wrapper {
-        position: relative;
-        width: 100%;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        overflow: hidden;
-    }
-    .reference-sheet {
-        width: 100%;
-        display: block;
-        background: #1a2333;
-    }
-    .tinka-star {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        max-height: 100px;
-        opacity: 0.9;
-        pointer-events: none;
-    }
+    /* 4. 形象3視圖展示 */
+    .reference-sheet-wrapper { position: relative; width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; }
+    .reference-sheet { width: 100%; display: block; background: #1a2333; }
+    .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
 
-    /* ================= 5. EP 作品展示區 ================= */
-    .works-preview {
-      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; display: flex; gap: 30px; align-items: center;
-    }
-    .works-img {
-      flex: 0 0 200px; width: 200px; height: 200px; object-fit: cover; border-radius: 12px; background: #1a2333;
-    }
-    .works-info h3 { margin: 0 0 12px 0; font-size: 22px; color: #fff; }
-    .works-info p { color: #a0aec0; font-size: 15px; line-height: 1.8; margin: 0 0 15px 0; }
+    /* 5. EP 作品展示區 */
+    .empty-works { background: rgba(10, 14, 23, 0.5); border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 16px; padding: 60px 20px; text-align: center; color: #a0aec0; margin-top: 25px; transition: border-color 0.3s; }
+    .empty-works:hover { border-color: rgba(155, 200, 251, 0.4); }
+    .empty-works svg { margin-bottom: 15px; opacity: 0.6; color: var(--accent); }
+    .empty-works h3 { color: #f0f4f8; margin: 0 0 10px 0; font-size: 20px; }
+    .empty-works p { margin: 0; font-size: 15px; }
 
-    .spotify-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-      margin-top: 25px;
-      width: 100%;
-    }
-
-    /* ================= 6. 最下方按鈕與連結 ================= */
+    /* 6. 最下方按鈕與連結 */
     .bottom-actions { text-align: center; margin-top: 80px; margin-bottom: 60px; }
     .action-buttons { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
     .btn { display: inline-block; padding: 14px 35px; background: var(--accent); color: #0a0e17; font-weight: bold; text-decoration: none; border-radius: 8px; transition: transform 0.2s, background 0.3s; }
@@ -232,13 +131,12 @@
       .dropdown { margin: 0 10px; }
       .profile-section { flex-direction: column; align-items: center; }
       .profile-img-container { flex: unset; width: 100%; max-width: 300px; }
-      .works-preview { flex-direction: column; text-align: center; padding: 22px; }
-      .works-img { flex: unset; width: 100%; max-width: 200px; height: 200px; }
     }
   </style>
 </head>
 <body>
-  <canvas id="cursor-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999;"></canvas>
+  <canvas id="cursor-canvas"></canvas>
+
   <div class="stars"></div>
 
   <header>
@@ -258,7 +156,7 @@
         </div>
       </div>
 
-      <a href="WORKS.html">WORKS</a>
+      <a href="WORKS.html">作品企劃</a>
     </nav>
   </header>
 
@@ -266,13 +164,13 @@
     <div class="profile-img-container">
       <div class="img-toggle-wrapper">
         <button class="toggle-btn active" onclick="switchImage('v1')">星幻之城形象</button>
-        <button class="toggle-btn" onclick="switchImage('v2')">StarLeo形象</button>
+        <button class="toggle-btn" onclick="switchImage('v2')">StarLeo團服形象</button>
       </div>
-      <img id="profile-portrait" src="img/星丞軒立繪.png" alt="星丞軒全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'></text></svg>'">
+      <img id="profile-portrait" src="img/星丞軒立繪.png" alt="星丞軒全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星丞軒立繪</text></svg>'">
     </div>
 
     <div class="profile-card">
-      <img class="profile-logo" src="img/星丞軒Logo.png" alt="星丞軒 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%239bc8fb\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星希羽Logo</text></svg>'">
+      <img class="profile-logo" src="img/星丞軒Logo.png" alt="星丞軒 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%239bc8fb\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星丞軒Logo</text></svg>'">
 
       <table class="char-table">
         <tr><td>性別</td><td>男生</td></tr>
@@ -289,7 +187,7 @@
         </tr>
         <tr><td>所屬團體</td><td>星幻之城 × StarLeo</td></tr>
         <tr><td>相關人或親屬</td><td>星卉芯(妹妹)</td></tr>
-        <tr><td>當前版本</td><td>星丞軒ACE 2 Ai Voice System</td></tr>
+        <tr><td>當前版本</td><td>封測中</td></tr>
       </table>
 
       <div class="audio-player">
@@ -304,7 +202,7 @@
 
   <section>
     <div class="intro-section">
-      星丞羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手，<br>
+      星丞軒，是由星樂之夢開發並營運的男性兒童聲虛擬歌手，<br>
       基於使用 ACE Studio 歌聲合成引擎製作，台灣男性小學生錄製.
     </div>
   </section>
@@ -328,16 +226,14 @@
 
   <section>
     <h2>EP 作品展示區</h2>
-    <div class="spotify-container">
-      <div class="spotify-embed">
-        <iframe
-          style="border-radius:12px"
-          src="暫無"
-          width="100%" height="352" frameborder="0"
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          loading="lazy">
-        </iframe>
-      </div>
+    <div class="empty-works">
+      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 18V5l12-2v13"></path>
+        <circle cx="6" cy="18" r="3"></circle>
+        <circle cx="18" cy="16" r="3"></circle>
+      </svg>
+      <h3>尚無發佈作品</h3>
+      <p>星丞軒的專屬音樂作品正在努力籌備中，敬請期待！</p>
     </div>
   </section>
 
@@ -363,15 +259,11 @@
   <script>
     function toggleDropdown(event, element) {
       event.stopPropagation(); // 阻止事件冒泡
-
-      // 先把其他已經打開的選單關掉 (如果有多的話)
       document.querySelectorAll('.dropdown-content').forEach(d => {
         if (d !== element.querySelector('.dropdown-content')) {
           d.classList.remove('show');
         }
       });
-
-      // 切換當前這個選單的顯示狀態
       element.querySelector('.dropdown-content').classList.toggle('show');
     }
 
@@ -403,7 +295,7 @@
         }
 
         img.onerror = function() {
-          this.src = `data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>${version.toUpperCase()} 立繪預留位置</text></svg>`;
+          this.src = `data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星丞軒 ${version.toUpperCase()} 預留位置</text></svg>`;
         };
 
         img.style.opacity = 1;
@@ -414,41 +306,107 @@
   <script>
     (function(){
       const canvas = document.getElementById('cursor-canvas');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
       let width, height;
       const DPR = window.devicePixelRatio || 1;
 
-      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
-      window.addEventListener('resize', resize); resize();
+      function resize(){
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * DPR;
+        canvas.height = height * DPR;
+        ctx.scale(DPR, DPR);
+      }
+      window.addEventListener('resize', resize);
+      resize();
 
       const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
       const particles = [];
 
       function drawStar(ctx, x, y, radius, rot) {
-        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
-        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
-        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rot);
+        ctx.beginPath();
+        const spikes = 5;
+        const outerRadius = radius;
+        const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3;
+        let step = Math.PI / spikes;
+
         ctx.moveTo(0, -outerRadius);
-        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
-        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius);
+          angle += step;
+          ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius);
+          angle += step;
+        }
+        ctx.lineTo(0, -outerRadius);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
       }
 
       function addParticle(x, y) {
-        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5),
+          vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5,
+          size: Math.random() * 8 + 6,
+          color: palette[Math.floor(Math.random() * palette.length)],
+          alpha: 0.8,
+          life: 0,
+          maxLife: Math.random() * 40 + 40,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.1
+        });
       }
 
-      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
+      // 電腦滑鼠移動
+      window.addEventListener('mousemove', (e) => {
+        for(let i=0; i<2; i++) {
+            addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10);
+        }
+      }, {passive: true});
+
+      // 手機觸控移動
+      window.addEventListener('touchmove', (e) => {
+        if(e.touches.length > 0) {
+            for(let i=0; i<2; i++) {
+                addParticle(e.touches[0].clientX + (Math.random()-0.5)*10, e.touches[0].clientY + (Math.random()-0.5)*10);
+            }
+        }
+      }, {passive: true});
 
       function animate() {
         ctx.clearRect(0, 0, width, height);
         for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i]; p.life++;
-          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
-          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
-          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+          const p = particles[i];
+          p.life++;
+
+          if (p.life >= p.maxLife) {
+              particles.splice(i, 1);
+              continue;
+          }
+
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.05;
+          p.rot += p.rotSpeed;
+          p.alpha = 0.8 * (1 - p.life / p.maxLife);
+
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = p.color;
+
           drawStar(ctx, p.x, p.y, p.size, p.rot);
         }
-        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(animate);
       }
       animate();
     })();
