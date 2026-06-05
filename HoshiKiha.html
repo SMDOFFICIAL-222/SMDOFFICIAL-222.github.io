@@ -24,12 +24,14 @@
       overflow-x: hidden;
     }
 
-    /* 星空背景 */
+    /* 星空背景與滑鼠粒子畫布 */
     .stars {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      z-index: -1;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
       background: radial-gradient(circle at center, #111a2f 0%, #05080f 100%);
+    }
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 9999;
     }
 
     /* 頂部導覽列 */
@@ -53,14 +55,14 @@
       position: relative;
       display: inline-block;
       margin-left: 25px;
-      cursor: pointer; /* 讓滑鼠移過去變成手指 */
+      cursor: pointer;
     }
     .dropdown-btn {
       color: var(--text);
       font-size: 15px;
       transition: color 0.3s;
       padding: 5px 0;
-      user-select: none; /* 防止手機點擊時選取文字 */
+      user-select: none;
     }
     .dropdown:hover .dropdown-btn {
       color: var(--accent);
@@ -97,16 +99,8 @@
       background: rgba(155, 200, 251, 0.1);
       color: var(--accent);
     }
-
-    /* 這裡改為用 .show 類別來控制顯示，而不是 hover */
     .dropdown-content.show {
       display: block;
-      animation: fadeIn 0.2s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, -5px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
     }
 
     /* 通用區塊設定 */
@@ -118,7 +112,6 @@
       display: flex; gap: 40px; align-items: flex-start; margin-top: 40px; margin-bottom: 60px;
     }
 
-    /* 立繪切換區塊新樣式 */
     .profile-img-container {
       flex: 0 0 400px; display: flex; flex-direction: column; gap: 15px; align-items: center;
     }
@@ -196,15 +189,6 @@
     }
 
     /* ================= 5. EP 作品展示區 ================= */
-    .works-preview {
-      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; display: flex; gap: 30px; align-items: center;
-    }
-    .works-img {
-      flex: 0 0 200px; width: 200px; height: 200px; object-fit: cover; border-radius: 12px; background: #1a2333;
-    }
-    .works-info h3 { margin: 0 0 12px 0; font-size: 22px; color: #fff; }
-    .works-info p { color: #a0aec0; font-size: 15px; line-height: 1.8; margin: 0 0 15px 0; }
-
     .spotify-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -232,13 +216,11 @@
       .dropdown { margin: 0 10px; }
       .profile-section { flex-direction: column; align-items: center; }
       .profile-img-container { flex: unset; width: 100%; max-width: 300px; }
-      .works-preview { flex-direction: column; text-align: center; padding: 22px; }
-      .works-img { flex: unset; width: 100%; max-width: 200px; height: 200px; }
     }
   </style>
 </head>
 <body>
-  <canvas id="cursor-canvas" style="position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:9999;"></canvas>
+  <canvas id="cursor-canvas"></canvas>
   <div class="stars"></div>
 
   <header>
@@ -258,7 +240,7 @@
         </div>
       </div>
 
-      <a href="WORKS.html">WORKS</a>
+      <a href="WORKS.html">作品企劃</a>
     </nav>
   </header>
 
@@ -268,7 +250,7 @@
         <button class="toggle-btn active" onclick="switchImage('v1')">星幻之城形象</button>
         <button class="toggle-btn" onclick="switchImage('v2')">StarLeo形象</button>
       </div>
-      <img id="profile-portrait" src="img/星希羽(羽翼).png" alt="星希羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'></text></svg>'">
+      <img id="profile-portrait" src="img/星希羽(羽翼).png" alt="星希羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽立繪預留位置</text></svg>'">
     </div>
 
     <div class="profile-card">
@@ -279,6 +261,7 @@
         <tr><td>年齡</td><td>7歲</td></tr>
         <tr><td>身高</td><td>122cm</td></tr>
         <tr><td>體重</td><td>25kg</td></tr>
+        <tr><td>生日</td><td>8月14日</td></tr>
         <tr><td>星座</td><td>獅子座</td></tr>
         <tr><td>血型</td><td>AB型</td></tr>
         <tr><td>代表色</td>
@@ -385,20 +368,15 @@
 
   <script>
     function toggleDropdown(event, element) {
-      event.stopPropagation(); // 阻止事件冒泡
-
-      // 先把其他已經打開的選單關掉 (如果有多的話)
+      event.stopPropagation();
       document.querySelectorAll('.dropdown-content').forEach(d => {
         if (d !== element.querySelector('.dropdown-content')) {
           d.classList.remove('show');
         }
       });
-
-      // 切換當前這個選單的顯示狀態
       element.querySelector('.dropdown-content').classList.toggle('show');
     }
 
-    // 點擊畫面其他地方時，關閉選單
     window.onclick = function(event) {
       if (!event.target.matches('.dropdown-btn')) {
         document.querySelectorAll('.dropdown-content').forEach(d => {
@@ -416,17 +394,15 @@
 
       setTimeout(() => {
         if(version === 'v1') {
-          // 羽翼(白鶺鴒)形象的圖片檔名
           img.src = "img/星希羽(羽翼).png";
           btns[0].classList.add('active');
         } else {
-          // 團服形象的圖片檔名
           img.src = "img/星希羽2.0.png";
           btns[1].classList.add('active');
         }
 
         img.onerror = function() {
-          this.src = `data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>${version.toUpperCase()} 立繪預留位置</text></svg>`;
+          this.src = `data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽立繪預留位置</text></svg>`;
         };
 
         img.style.opacity = 1;
