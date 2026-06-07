@@ -19,7 +19,7 @@
   <meta property="og:image" content="https://SMDOFFICIAL-222.github.io/img/星彗羽2.0.png" />
 
   <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
-  
+
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -121,16 +121,52 @@
     section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
     h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); }
 
-    /* 頂部人物檔案區 */
-    .profile-section { display: flex; gap: 40px; align-items: flex-start; margin-top: 40px; margin-bottom: 60px; }
-    .profile-img-container { flex: 0 0 400px; display: flex; flex-direction: column; gap: 15px; align-items: center; }
-    .img-toggle-wrapper { display: flex; background: rgba(255,255,255,0.05); border-radius: 30px; padding: 5px; border: 1px solid rgba(255,255,255,0.1); }
-    .toggle-btn { background: transparent; border: none; color: #a0aec0; padding: 8px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; font-family: inherit; font-size: 14px; transition: all 0.3s; }
-    .toggle-btn.active { background: var(--accent); color: #0a0e17; box-shadow: 0 2px 10px rgba(251,157,158,0.3); }
-    #profile-portrait { width: 100%; max-width: 400px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: #1a2333; object-fit: cover; transition: opacity 0.3s ease; }
+    /* ================= 1. 頂部人物檔案區 (新版雙卡片架構) ================= */
+    .profile-section { display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px; }
 
+    /* 左側欄：包含上下兩塊獨立卡片 */
+    .left-column {
+      flex: 0 0 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* 獨立卡片共用樣式 */
+    .img-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Logo 卡片 */
+    .logo-card {
+      padding: 30px;
+    }
+
+    .profile-logo-top {
+      max-width: 200px;
+      height: auto;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+    }
+
+    /* 立繪卡片 */
+    .portrait-card {
+      padding: 30px 20px 0px 20px; /* 底部 0 讓人物貼底 */
+      overflow: hidden;
+      flex: 1;
+      justify-content: flex-end; /* 讓圖片靠下對齊 */
+    }
+
+    #profile-portrait { width: 100%; max-width: 360px; height: auto; object-fit: contain; transition: opacity 0.3s ease; }
+
+    /* 右側個人資料卡片 */
     .profile-card { flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
-    .profile-logo { max-width: 250px; height: auto; display: block; margin-bottom: 8px; }
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
     .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
@@ -175,7 +211,7 @@
       .nav-links a { margin: 0 10px; }
       .dropdown { margin: 0 10px; }
       .profile-section { flex-direction: column; align-items: center; }
-      .profile-img-container { flex: unset; width: 100%; max-width: 300px; }
+      .left-column { flex: unset; width: 100%; max-width: 350px; }
     }
   </style>
 </head>
@@ -195,29 +231,31 @@
         <div class="dropdown-content">
           <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
-          <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a> 
+          <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
           <a href="index.html#singers">查看全陣容</a>
         </div>
       </div>
 
-      <a href="WORKS.html">WORKS</a>
+      <a href="WORKS.html">作品企劃</a>
     </nav>
   </header>
 
   <section class="profile-section">
-    <div class="profile-img-container">
-      <div class="img-toggle-wrapper">
-        <button class="toggle-btn active" onclick="switchImage('v1')">StarLeo形象</button>
-        <button class="toggle-btn" onclick="switchImage('v2')">星幻之城形象</button>
+    <div class="left-column">
+
+      <div class="img-card logo-card">
+        <img class="profile-logo-top" src="img/星彗羽2.0Logo.png" alt="星彗羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%23FB9D9E\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星彗羽Logo</text></svg>'">
       </div>
-      <img id="profile-portrait" src="img/星彗羽2.0.png" alt="星彗羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星彗羽立繪</text></svg>'">
+
+      <div class="img-card portrait-card">
+        <img id="profile-portrait" src="img/星彗羽2.0.png" alt="星彗羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星彗羽立繪</text></svg>'">
+      </div>
+
     </div>
 
     <div class="profile-card">
-      <img class="profile-logo" src="img/星彗羽2.0Logo.png" alt="星彗羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%23FB9D9E\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星彗羽Logo</text></svg>'">
-
       <table class="char-table">
-        <tr><td>世界觀本名</td><td>陳彗羽</td></tr>    
+        <tr><td>世界觀本名</td><td>陳彗羽</td></tr>
         <tr><td>性別</td><td>女生</td></tr>
         <tr><td>年齡</td><td>9歲</td></tr>
         <tr><td>身高</td><td>135cm</td></tr>
@@ -314,26 +352,6 @@
       if (!event.target.matches('.dropdown-btn')) {
         document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
       }
-    }
-
-    function switchImage(version) {
-      const img = document.getElementById('profile-portrait');
-      const btns = document.querySelectorAll('.toggle-btn');
-      btns.forEach(btn => btn.classList.remove('active'));
-      img.style.opacity = 0;
-      setTimeout(() => {
-        if(version === 'v1') {
-          img.src = "img/星彗羽2.0.png";
-          btns[0].classList.add('active');
-        } else {
-          img.src = "img/星彗羽櫻花形象.png";
-          btns[1].classList.add('active');
-        }
-        img.onerror = function() {
-          this.src = `data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>${version.toUpperCase()} 立繪預留位置</text></svg>`;
-        };
-        img.style.opacity = 1;
-      }, 300);
     }
   </script>
 
