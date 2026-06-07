@@ -6,7 +6,7 @@
   <title>星希羽 HoshiKiha | 官方網站</title>
   <meta name="description" content="星希羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手。">
 
-  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <link rel="icon" href="img/favicon.png" type="image/png">
 
   <style>
     /* CSS 重置與變數 */
@@ -109,34 +109,86 @@
 
     /* ================= 1. 頂部人物檔案區 ================= */
     .profile-section {
-      display: flex; gap: 40px; align-items: flex-start; margin-top: 40px; margin-bottom: 60px;
+      display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px;
     }
 
-    .profile-img-container {
-      flex: 0 0 400px; display: flex; flex-direction: column; gap: 15px; align-items: center;
+    /* 左側欄：包含上下兩塊獨立卡片 */
+    .left-column {
+      flex: 0 0 400px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px; /* Logo卡與立繪卡之間的間距 */
     }
-    .img-toggle-wrapper {
-      display: flex; background: rgba(255,255,255,0.05); border-radius: 30px; padding: 5px; border: 1px solid rgba(255,255,255,0.1);
+
+    /* 獨立卡片共用樣式 */
+    .img-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .toggle-btn {
-      background: transparent; border: none; color: #a0aec0; padding: 8px 24px; border-radius: 25px; cursor: pointer; font-weight: bold; font-family: inherit; font-size: 14px; transition: all 0.3s;
+
+    /* Logo 卡片 */
+    .logo-card {
+      padding: 30px;
     }
-    .toggle-btn.active {
-      background: var(--accent); color: #0a0e17; box-shadow: 0 2px 10px rgba(155,200,251,0.3);
+
+    .profile-logo-top {
+      max-width: 200px;
+      height: auto;
+      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
     }
+
+    /* 立繪卡片 */
+    .portrait-card {
+      padding: 30px 20px 0px 20px; /* 底部減少 padding 讓人物可以更貼底 */
+      overflow: hidden;
+      flex: 1; /* 讓卡片填滿剩餘高度 */
+      align-items: flex-end; /* 讓立繪靠下對齊 */
+    }
+
+    /* 立繪本體 */
     #profile-portrait {
-      width: 100%; max-width: 400px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); background: #1a2333; object-fit: cover; transition: opacity 0.3s ease;
+      width: 100%;
+      max-width: 360px;
+      height: auto;
+      object-fit: contain;
+      transition: opacity 0.3s ease;
     }
 
+    /* 右側個人資料卡片 */
     .profile-card {
       flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
-    .profile-logo { max-width: 250px; height: auto; display: block; margin-bottom: 8px; }
-    .profile-card h3 { margin: 0 0 20px 0; font-size: 16px; color: #a0aec0; font-weight: normal; }
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
     .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
     .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
+
+    /* 封測按鈕小標籤樣式 */
+    .beta-btn-small {
+      display: inline-block;
+      margin-left: 12px;
+      padding: 4px 12px;
+      background-color: rgba(199, 238, 251, 0.15);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: bold;
+      border: 1px solid var(--accent);
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      vertical-align: middle;
+    }
+    .beta-btn-small:hover {
+      background-color: var(--accent);
+      color: #0a0e17;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(199, 238, 251, 0.3);
+    }
 
     .audio-player { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; }
     .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--text); }
@@ -215,7 +267,7 @@
       .nav-links a { margin: 0 10px; }
       .dropdown { margin: 0 10px; }
       .profile-section { flex-direction: column; align-items: center; }
-      .profile-img-container { flex: unset; width: 100%; max-width: 300px; }
+      .left-column { flex: unset; width: 100%; max-width: 350px; }
     }
   </style>
 </head>
@@ -245,17 +297,19 @@
   </header>
 
   <section class="profile-section">
-    <div class="profile-img-container">
-      <div class="img-toggle-wrapper">
-        <button class="toggle-btn active" onclick="switchImage('v1')">星幻之城形象</button>
-        <button class="toggle-btn" onclick="switchImage('v2')">StarLeo形象</button>
+    <div class="left-column">
+
+      <div class="img-card logo-card">
+        <img class="profile-logo-top" src="img/星希羽Logo.png" alt="星希羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%239bc8fb\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星希羽Logo</text></svg>'">
       </div>
-      <img id="profile-portrait" src="img/星希羽(羽翼).png" alt="星希羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽立繪預留位置</text></svg>'">
+
+      <div class="img-card portrait-card">
+        <img id="profile-portrait" src="img/星希羽(羽翼).png" alt="星希羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽立繪預留位置</text></svg>'">
+      </div>
+
     </div>
 
     <div class="profile-card">
-      <img class="profile-logo" src="img/星希羽Logo.png" alt="星希羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%239bc8fb\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星希羽Logo</text></svg>'">
-
       <table class="char-table">
         <tr><td>世界觀本名</td><td>武田祐恩(金祐恩)</td></tr>
         <tr><td>性別</td><td>男生</td></tr>
@@ -273,6 +327,13 @@
         <tr><td>所屬團體</td><td>星幻之城 × StarLeo</td></tr>
         <tr><td>相關人或親屬</td><td>星彗羽(姊姊)</td></tr>
         <tr><td>當前版本</td><td>星希羽ACE Ai V1.5.1</td></tr>
+        <tr>
+          <td>測試版本</td>
+          <td>
+            星希羽V2 ACE Ai Voice System
+            <a href="BetaTest.html" class="beta-btn-small">前往申請</a>
+          </td>
+        </tr>
       </table>
 
       <div class="audio-player">
@@ -384,30 +445,6 @@
           d.classList.remove('show');
         });
       }
-    }
-
-    function switchImage(version) {
-      const img = document.getElementById('profile-portrait');
-      const btns = document.querySelectorAll('.toggle-btn');
-
-      btns.forEach(btn => btn.classList.remove('active'));
-      img.style.opacity = 0;
-
-      setTimeout(() => {
-        if(version === 'v1') {
-          img.src = "img/星希羽(羽翼).png";
-          btns[0].classList.add('active');
-        } else {
-          img.src = "img/星希羽2.0.png";
-          btns[1].classList.add('active');
-        }
-
-        img.onerror = function() {
-          this.src = `data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽立繪預留位置</text></svg>`;
-        };
-
-        img.style.opacity = 1;
-      }, 300);
     }
   </script>
 
