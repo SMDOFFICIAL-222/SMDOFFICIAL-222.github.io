@@ -9,7 +9,7 @@
   <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
 
   <style>
-    /* CSS 重置與變數 (星樂之夢預設藍色主題) */
+    /* CSS 重置與變數 (星光金主題) */
     :root {
       --bg: #0a0e17;
       --text: #f0f4f8;
@@ -59,7 +59,7 @@
     }
     .dropdown-content.show { display: block; animation: fadeIn 0.2s ease-in-out; }
     .dropdown-content a { color: #a0aec0; padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; }
-    .dropdown-content a:hover { background: rgba(155, 200, 251, 0.1); color: var(--accent); }
+    .dropdown-content a:hover { background: rgba(252, 214, 118, 0.1); color: var(--accent); }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translate(-50%, -5px); }
@@ -68,7 +68,7 @@
 
     /* 主視覺區塊 */
     .hero { text-align: center; padding: 80px 20px 40px; }
-    .hero h1 { font-size: 2.8em; margin-bottom: 15px; text-shadow: 0 0 20px rgba(155,200,251,0.3); }
+    .hero h1 { font-size: 2.8em; margin-bottom: 15px; text-shadow: 0 0 20px rgba(252, 214, 118, 0.3); }
     .hero p { font-size: 1.1em; color: #a0aec0; max-width: 700px; margin: 0 auto; line-height: 1.8; }
 
     /* ================= 表單專屬設計 ================= */
@@ -83,6 +83,7 @@
       max-width: 600px;
       margin: 0 auto;
       backdrop-filter: blur(5px);
+      position: relative;
     }
     .form-group { margin-bottom: 25px; text-align: left; }
     .form-group label {
@@ -95,9 +96,9 @@
       transition: all 0.3s ease;
     }
     .form-control:focus {
-      outline: none; border-color: var(--accent); box-shadow: 0 0 15px rgba(155, 200, 251, 0.2); background: rgba(10, 14, 23, 0.8);
+      outline: none; border-color: var(--accent); box-shadow: 0 0 15px rgba(252, 214, 118, 0.2); background: rgba(10, 14, 23, 0.8);
     }
-    /* 讓下拉選單的選項背景色正常顯示 */
+    /* 下拉選單樣式 */
     select.form-control option { background: #0a0e17; color: #f0f4f8; }
     textarea.form-control { resize: vertical; min-height: 150px; line-height: 1.6; }
 
@@ -108,13 +109,18 @@
       transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
       border: none; cursor: pointer; font-size: 16px; width: 100%; margin-top: 15px;
     }
-    .btn:hover { transform: scale(1.02); background: #b0d8fc; box-shadow: 0 5px 20px rgba(155, 200, 251, 0.3); }
+    .btn:hover { transform: scale(1.02); background: #fce4ce; box-shadow: 0 5px 20px rgba(252, 214, 118, 0.3); }
+
+    /* 成功送出訊息 */
+    .success-msg {
+      display: none; text-align: center; color: var(--accent); font-size: 18px; font-weight: bold; padding: 40px 0;
+    }
 
     /* 頁尾連結 */
     footer { text-align: center; padding: 50px 20px 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 80px; font-size: 14px; }
     .social-links { display: flex; justify-content: center; gap: 16px; margin-bottom: 30px; flex-wrap: wrap; }
     .social-links a { display: flex; align-items: center; justify-content: center; width: 54px; height: 54px; background-color: #ffffff; border-radius: 14px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; }
-    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(155, 200, 251, 0.5); }
+    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(252, 214, 118, 0.5); }
 
     @media (max-width: 768px) {
       header { padding: 15px 20px; flex-direction: column; gap: 15px; }
@@ -135,7 +141,6 @@
     </a>
     <nav class="nav-links">
       <a href="index.html">返回首頁</a>
-
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn">旗下歌手 ▾</span>
         <div class="dropdown-content">
@@ -146,42 +151,46 @@
           <a href="index.html#singers">查看全陣容</a>
         </div>
       </div>
-
       <a href="WORKS.html">作品企劃</a>
     </nav>
   </header>
 
   <div class="hero">
     <h1>BETA TEST</h1>
-    <p>歌手封測計畫正式啟動。請填寫下方表單申請封測資格，或提供您的寶貴回饋建議，與我們一起打造更完美的虛擬歌聲。</p>
+    <p>歌手封測計畫正式啟動。請填寫下方表單申請封測資格，與我們一起打造更完美的虛擬歌聲。</p>
   </div>
 
   <section>
     <div class="beta-form-container">
 
-      <form action="https://formspree.io/f/你的專屬ID" method="POST">
+      <div id="success-msg" class="success-msg">
+        🎉 感謝您的提交！我們已收到您的申請或回饋。
+      </div>
+
+      <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted) { showSuccess(); }"></iframe>
+
+      <form id="beta-form" action="請替換為_GOOGLE_FORM_POST_URL" method="POST" target="hidden_iframe" onsubmit="submitted=true;">
 
         <div class="form-group">
-          <label for="name">您的暱稱 / 稱呼 <span style="color:#ff6b6b;">*</span></label>
-          <input type="text" id="name" name="name" class="form-control" required placeholder="請輸入您的暱稱">
+          <label>您的暱稱 / 稱呼 <span style="color:#ff6b6b;">*</span></label>
+          <input type="text" name="entry.111111111" class="form-control" required placeholder="請輸入您的暱稱">
         </div>
 
         <div class="form-group">
-          <label for="email">聯絡 Email <span style="color:#ff6b6b;">*</span></label>
-          <input type="email" id="email" name="email" class="form-control" required placeholder="請輸入可收取通知的信箱">
+          <label>聯絡 Email <span style="color:#ff6b6b;">*</span></label>
+          <input type="email" name="entry.222222222" class="form-control" required placeholder="請輸入可收取通知的信箱">
         </div>
 
         <div class="form-group">
-          <label for="singer">欲參與封測或回饋的歌手 <span style="color:#ff6b6b;">*</span></label>
-          <select id="singer" name="singer" class="form-control" required>
+          <label>欲參與封測或回饋的歌手 <span style="color:#ff6b6b;">*</span></label>
+          <select name="entry.333333333" class="form-control" required>
             <option value="" disabled selected>請選擇對應的歌手計畫</option>
             <option value="星丞軒">星丞軒 (目前封測中)</option>
             <option value="星卉芯">星卉芯 (目前封測中)</option>
             <option value="星希羽V2">星希羽 V2 (6/11 開放封測)</option>
-            <option value="其他綜合建議">其他綜合建議</option>
           </select>
         </div>
-        
+
         <button type="submit" class="btn">確認送出</button>
       </form>
 
@@ -190,6 +199,9 @@
 
   <footer>
     <div class="social-links">
+      <a href="https://www.youtube.com/@SMDOFFICIAL_222/videos" target="_blank" aria-label="YouTube">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="#D10020"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      </a>
       <a href="https://x.com/SMDOFFICIAL_222" target="_blank" aria-label="X (Twitter)">
         <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
@@ -204,6 +216,7 @@
   </footer>
 
   <script>
+    /* 處理下拉選單 */
     function toggleDropdown(event, element) {
       event.stopPropagation();
       document.querySelectorAll('.dropdown-content').forEach(d => {
@@ -211,11 +224,18 @@
       });
       element.querySelector('.dropdown-content').classList.toggle('show');
     }
-
     window.onclick = function(event) {
       if (!event.target.matches('.dropdown-btn')) {
         document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
       }
+    }
+
+    /* 處理表單送出不跳轉 */
+    var submitted = false;
+    function showSuccess() {
+      // 隱藏表單，顯示成功訊息
+      document.getElementById('beta-form').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
     }
   </script>
 
@@ -226,13 +246,10 @@
       const ctx = canvas.getContext('2d');
       let width, height;
       const DPR = window.devicePixelRatio || 1;
-
       function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
       window.addEventListener('resize', resize); resize();
-
       const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
       const particles = [];
-
       function drawStar(ctx, x, y, radius, rot) {
         ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
         const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
@@ -241,14 +258,10 @@
         for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
         ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
       }
-
       function addParticle(x, y) {
         particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
       }
-
       window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
-      window.addEventListener('touchmove', (e) => { if(e.touches.length > 0) { for(let i=0; i<2; i++) addParticle(e.touches[0].clientX + (Math.random()-0.5)*10, e.touches[0].clientY + (Math.random()-0.5)*10); } }, {passive: true});
-
       function animate() {
         ctx.clearRect(0, 0, width, height);
         for (let i = particles.length - 1; i >= 0; i--) {
