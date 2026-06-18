@@ -6,7 +6,7 @@
   <title>星希羽 HoshiKiha | 官方網站</title>
   <meta name="description" content="星希羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手。">
 
-  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <link rel="icon" href="img/favicon.png" type="image/png">
 
   <style>
     /* CSS 重置與變數 */
@@ -385,15 +385,15 @@
       fill: currentColor;
     }
 
-    /* YouTube MV 卡片區塊 */
+    /* YouTube 偽裝播放器卡片區塊 */
     .mv-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
       gap: 25px;
       width: 100%;
-      margin-bottom: 45px; /* 與下一個標籤的間距 */
+      margin-bottom: 45px;
     }
-    .mv-card {
+    .mv-card-link {
       background: var(--card-bg);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 20px;
@@ -402,11 +402,17 @@
       transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
       display: flex;
       flex-direction: column;
+      text-decoration: none;
+      cursor: pointer;
     }
-    .mv-card:hover {
+    .mv-card-link:hover {
       transform: translateY(-5px);
       border-color: rgba(199, 238, 251, 0.4);
       box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15);
+    }
+    .mv-card-link:hover .play-btn {
+      background: #ff0000;
+      transform: translate(-50%, -50%) scale(1.1);
     }
     .mv-title {
       color: #ffffff;
@@ -426,12 +432,46 @@
       letter-spacing: 0.5px;
       font-weight: 800;
     }
-    .mv-card iframe {
+    .mv-thumbnail {
       width: 100%;
       aspect-ratio: 16 / 9;
       border-radius: 12px;
-      border: none;
+      overflow: hidden;
+      position: relative;
+      background: #000;
+    }
+    .mv-thumbnail img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
+      transition: transform 0.5s ease;
+      opacity: 0.85;
+    }
+    .mv-card-link:hover .mv-thumbnail img {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+    .play-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 40px;
+      background: rgba(0, 0, 0, 0.7);
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .play-btn::before {
+      content: '';
+      border-style: solid;
+      border-width: 10px 0 10px 16px;
+      border-color: transparent transparent transparent #fff;
+      margin-left: 4px;
     }
 
     /* Spotify 播放器網格 */
@@ -508,7 +548,7 @@
         </div>
       </div>
 
-      <a href="WORKS.html">作品企劃</a>
+      <a href="WORKS.html">WORKS</a>
     </nav>
   </header>
 
@@ -637,14 +677,20 @@
     </div>
 
     <div class="mv-container">
-      <div class="mv-card">
+      <a href="https://youtu.be/524F0af40hs" target="_blank" class="mv-card-link">
         <div class="mv-title"><span>V1 代表作</span> 《星の夜》</div>
-        <iframe src="https://youtu.be/524F0af40hs" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
-      <div class="mv-card">
+        <div class="mv-thumbnail">
+          <img src="https://img.youtube.com/vi/524F0af40hs/maxresdefault.jpg" alt="星の夜 MV" onerror="this.src='https://img.youtube.com/vi/524F0af40hs/hqdefault.jpg'">
+          <div class="play-btn"></div>
+        </div>
+      </a>
+      <a href="https://youtu.be/rZhvML-sdSE" target="_blank" class="mv-card-link">
         <div class="mv-title"><span>V2 代表作</span> 《飛鳥》</div>
-        <iframe src="https://youtu.be/rZhvML-sdSE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-      </div>
+        <div class="mv-thumbnail">
+          <img src="https://img.youtube.com/vi/rZhvML-sdSE/maxresdefault.jpg" alt="飛鳥 MV" onerror="this.src='https://img.youtube.com/vi/rZhvML-sdSE/hqdefault.jpg'">
+          <div class="play-btn"></div>
+        </div>
+      </a>
     </div>
 
     <div class="platform-label">
