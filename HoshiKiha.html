@@ -245,7 +245,7 @@
       padding: 40px;
       display: flex;
       gap: 40px;
-      align-items: center; /* 讓左右兩欄垂直置中 */
+      align-items: center;
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
     .vp-info {
@@ -280,24 +280,22 @@
       border-left: 4px solid var(--accent);
       border-radius: 0 8px 8px 0;
     }
-
-    /* 修正被裁切的問題：取消 overflow 與 aspectRatio，讓圖片完整顯示 */
     .vp-img-placeholder {
-      flex: 0 0 250px; /* 控制右側圖片容器的寬度 */
+      flex: 0 0 250px;
       display: flex;
       justify-content: center;
-      align-items: flex-end; /* 讓立繪靠底部對齊 */
+      align-items: flex-end;
       background: #1a2333;
       border-radius: 12px;
-      padding-top: 20px; /* 上方預留空間 */
+      padding-top: 20px;
       box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-      min-height: 350px; /* 給定一個最小高度確保版面不會塌陷 */
+      min-height: 350px;
     }
     .vp-img-placeholder img {
       width: 100%;
       height: 100%;
-      max-height: 350px; /* 限制最大高度 */
-      object-fit: contain; /* 確保圖片等比縮放不裁切 */
+      max-height: 350px;
+      object-fit: contain;
       display: block;
     }
 
@@ -323,14 +321,14 @@
         pointer-events: none;
     }
 
-    /* ================= 7. EP 作品展示區 ================= */
+    /* ================= 7. 音樂作品展示區 ================= */
     .new-release-banner {
       background: linear-gradient(135deg, rgba(199, 238, 251, 0.15), rgba(255,255,255,0.03));
       border: 1px solid rgba(199, 238, 251, 0.4);
       border-radius: 16px;
       padding: 35px 20px;
       text-align: center;
-      margin-bottom: 35px;
+      margin-bottom: 40px;
       box-shadow: 0 10px 30px rgba(199, 238, 251, 0.1);
       position: relative;
       overflow: hidden;
@@ -365,13 +363,84 @@
       line-height: 1.6;
     }
 
+    /* 平台分類小標籤 */
+    .platform-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(199, 238, 251, 0.1);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      padding: 8px 18px;
+      border-radius: 30px;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      letter-spacing: 1px;
+      box-shadow: 0 4px 15px rgba(199, 238, 251, 0.15);
+    }
+    .platform-label svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
+
+    /* YouTube MV 卡片區塊 */
+    .mv-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 25px;
+      width: 100%;
+      margin-bottom: 45px; /* 與下一個標籤的間距 */
+    }
+    .mv-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 15px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .mv-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(199, 238, 251, 0.4);
+      box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15);
+    }
+    .mv-title {
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: bold;
+      margin: 5px 0 12px 5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .mv-title span {
+      background: var(--accent);
+      color: #0a0e17;
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      font-weight: 800;
+    }
+    .mv-card iframe {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      border: none;
+      display: block;
+    }
+
+    /* Spotify 播放器網格 */
     .spotify-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
       gap: 25px;
       width: 100%;
     }
-
     .spotify-embed {
       background: var(--card-bg);
       border: 1px solid rgba(255,255,255,0.08);
@@ -410,7 +479,7 @@
       .dropdown { margin: 0 10px; }
       .profile-section { flex-direction: column; align-items: center; }
       .left-column { flex: unset; width: 100%; max-width: 350px; }
-      .spotify-container { grid-template-columns: 1fr; }
+      .mv-container, .spotify-container { grid-template-columns: 1fr; }
       .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
       .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vp-list li strong { width: auto; margin-right: 15px; }
@@ -431,6 +500,7 @@
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn">其他歌手 ▾</span>
         <div class="dropdown-content">
+          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
@@ -561,10 +631,25 @@
   <section>
     <h2>音樂作品展示區</h2>
 
-    <div class="new-release-banner">
-      <span class="new-badge">NEW RELEASE</span>
-      <h3>二週年紀念 EP《羽翼》</h3>
-      <p>星希羽全新 EP 現已於各大串流平台正式發行，感謝大家的支持與陪伴！</p>
+    <div class="platform-label">
+      <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+      YouTube MV
+    </div>
+
+    <div class="mv-container">
+      <div class="mv-card">
+        <div class="mv-title"><span>V1 代表作</span> 《星の夜》</div>
+        <iframe src="https://youtu.be/524F0af40hs" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+      <div class="mv-card">
+        <div class="mv-title"><span>V2 代表作</span> 《飛鳥》</div>
+        <iframe src="https://youtu.be/rZhvML-sdSE" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      </div>
+    </div>
+
+    <div class="platform-label">
+      <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.84.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.781s.18-1.2.78-1.381c4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.56.3z"/></svg>
+      Spotify EP專區
     </div>
 
     <div class="spotify-container">
