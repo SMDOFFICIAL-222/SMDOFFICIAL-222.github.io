@@ -9,7 +9,7 @@
   <link rel="icon" href="img/favicon.png" type="image/png">
 
   <style>
-    /* CSS 重置與變數 */
+    /* CSS 重置與變數 (星丞軒專屬馬卡龍深藍) */
     :root {
       --bg: #0a0e17;
       --text: #f0f4f8;
@@ -31,7 +31,7 @@
     }
     #cursor-canvas {
       position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-      pointer-events: none !important; z-index: 90; /* 確保不阻擋點擊 */
+      pointer-events: none !important; z-index: 90;
     }
 
     /* 頂部導覽列 */
@@ -71,56 +71,22 @@
     section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
     h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); }
 
-    /* 1. 頂部人物檔案區 */
+    /* ================= 1. 頂部人物檔案區 ================= */
     .profile-section { display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px; }
 
-    /* 左側欄：包含上下兩塊獨立卡片 */
-    .left-column {
-      flex: 0 0 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px; /* Logo卡與立繪卡之間的間距 */
-    }
+    .left-column { flex: 0 0 400px; display: flex; flex-direction: column; gap: 20px; }
 
-    /* 獨立卡片共用樣式 */
     .img-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
     }
 
-    /* Logo 卡片 */
-    .logo-card {
-      padding: 30px;
-    }
+    .logo-card { padding: 30px; }
+    .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
 
-    .profile-logo-top {
-      max-width: 200px;
-      height: auto;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
-    }
-
-    /* 立繪卡片 */
-    .portrait-card {
-      padding: 30px 20px 0px 20px; /* 底部 0 讓人物貼底 */
-      overflow: hidden;
-      flex: 1; /* 讓卡片填滿剩餘高度 */
-      align-items: flex-end; /* 讓立繪靠下對齊 */
-    }
-
-    /* 立繪本體 */
-    #profile-portrait {
-      width: 100%;
-      max-width: 360px;
-      height: auto;
-      object-fit: contain;
-      transition: opacity 0.3s ease;
-    }
+    .portrait-card { padding: 30px 20px 0px 20px; overflow: hidden; flex: 1; align-items: flex-end; }
+    #profile-portrait { width: 100%; max-width: 360px; height: auto; object-fit: contain; transition: opacity 0.3s ease; }
 
     /* 右側個人資料卡片 */
     .profile-card { flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
@@ -129,54 +95,60 @@
     .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
     .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
 
-    /* 封測按鈕小標籤樣式 */
     .beta-btn-small {
-      display: inline-block;
-      margin-left: 12px;
-      padding: 4px 12px;
-      background-color: rgba(155, 200, 251, 0.15);
-      color: var(--accent);
-      font-size: 12px;
-      font-weight: bold;
-      border: 1px solid var(--accent);
-      border-radius: 20px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      vertical-align: middle;
+      display: inline-block; margin-left: 12px; padding: 4px 12px;
+      background-color: rgba(155, 200, 251, 0.15); color: var(--accent);
+      font-size: 12px; font-weight: bold; border: 1px solid var(--accent);
+      border-radius: 20px; text-decoration: none; transition: all 0.3s ease; vertical-align: middle;
     }
-    .beta-btn-small:hover {
-      background-color: var(--accent);
-      color: #0a0e17;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(155, 200, 251, 0.3);
-    }
+    .beta-btn-small:hover { background-color: var(--accent); color: #0a0e17; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(155, 200, 251, 0.3); }
 
     .audio-player { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; }
     .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--text); }
     .audio-player audio { width: 100%; height: 40px; outline: none; }
 
-    /* 2. 概要區塊 */
+    /* ================= 2. 概要區塊 ================= */
     .intro-section { text-align: center; background: linear-gradient(135deg, rgba(155,200,251,0.08), rgba(255,255,255,0.02)); padding: 40px; border-radius: 16px; border: 1px solid rgba(155,200,251,0.15); font-size: 1.1em; line-height: 1.8; color: #e2e8f0; margin-bottom: 60px; }
 
-    /* 3. 歷史概要區塊 */
+    /* ================= 3. 歷史概要區塊 ================= */
     .history-section { background: var(--card-bg); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
     .yoyo-star { position: absolute; bottom: 20px; right: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
     .history-text { font-size: 15px; line-height: 1.9; color: #a0aec0; }
     .history-text p { margin-bottom: 20px; }
 
-    /* 4. 形象3視圖展示 */
+    /* ================= 4. 世界觀區塊 (補回這段遺失的CSS) ================= */
+    .worldview-content {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      color: #a0aec0;
+      line-height: 1.9;
+      font-size: 15px;
+    }
+    .worldview-content strong { color: var(--text); }
+    .lore-poem {
+      text-align: center; margin: 30px 0; padding: 35px 20px;
+      background: linear-gradient(135deg, rgba(155, 200, 251, 0.08), rgba(255,255,255,0.02));
+      border-radius: 12px; border: 1px solid rgba(155, 200, 251, 0.15);
+      color: #e2e8f0; font-size: 16px; letter-spacing: 1.5px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    }
+    .lore-poem p { margin: 10px 0; }
+
+    /* ================= 5. 形象3視圖展示 ================= */
     .reference-sheet-wrapper { position: relative; width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; }
     .reference-sheet { width: 100%; display: block; background: #1a2333; }
     .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
 
-    /* 5. EP 作品展示區 */
+    /* ================= 6. EP 作品展示區 ================= */
     .empty-works { background: rgba(10, 14, 23, 0.5); border: 1px dashed rgba(255, 255, 255, 0.2); border-radius: 16px; padding: 60px 20px; text-align: center; color: #a0aec0; margin-top: 25px; transition: border-color 0.3s; }
     .empty-works:hover { border-color: rgba(155, 200, 251, 0.4); }
     .empty-works svg { margin-bottom: 15px; opacity: 0.6; color: var(--accent); }
     .empty-works h3 { color: #f0f4f8; margin: 0 0 10px 0; font-size: 20px; }
     .empty-works p { margin: 0; font-size: 15px; }
 
-    /* 6. 最下方按鈕與連結 */
+    /* ================= 7. 最下方按鈕與連結 ================= */
     .bottom-actions { text-align: center; margin-top: 80px; margin-bottom: 60px; }
     .action-buttons { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
     .btn { display: inline-block; padding: 14px 35px; background: var(--accent); color: #0a0e17; font-weight: bold; text-decoration: none; border-radius: 8px; transition: transform 0.2s, background 0.3s; }
@@ -212,8 +184,8 @@
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn">其他歌手 ▾</span>
         <div class="dropdown-content">
+          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
-          <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
           <a href="index.html#singers">查看全陣容</a>
         </div>
@@ -285,6 +257,26 @@
       <p>2026年1月17日於X社群平台宣布「星丞軒」「星卉芯」,5月27日專案啟動,6月1日「星丞軒」「星卉芯」進行封測</p>
     </div>
     <img class="yoyo-star" src="img/凱薩提示.png" alt="凱薩星" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>凱薩預留</text></svg>'">
+  </section>
+
+  <section>
+    <h2>團體世界觀：星幻之城 × StarLeo</h2>
+    <div class="worldview-content">
+      <p><strong>星幻之城 × StarLeo</strong> 是星樂之夢旗下的小學生虛擬歌手團體系列，由 <strong>星希羽、星彗羽、星丞軒、星卉芯</strong> 組成。</p>
+
+      <div class="lore-poem">
+        <p>每個成員都各有自己專屬的音域</p>
+        <p>在這浩瀚星河中，誕生著被稱為「星之子」的孩子。</p>
+        <p>星幻之城，是他們相遇的地方。</p>
+        <p>而星幻樂園，能將心中的情感化為星光，</p>
+        <p>讓尚未說出口的故事，被世界聽見。</p>
+      </div>
+
+      <p>
+        <strong>StarLeo</strong> 是誕生於世界觀舞台「星幻之城」的音樂團體。成員們在同一座城市相遇，站上核心舞台「星幻樂園」，用各自不同的聲音，一起唱出屬於他們的故事。<br><br>
+        團體不設固定主唱，每一首作品，都由最適合那首歌的成員擔任核心演唱。
+      </p>
+    </div>
   </section>
 
   <section>
