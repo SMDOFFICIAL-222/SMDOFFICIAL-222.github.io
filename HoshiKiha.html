@@ -112,7 +112,6 @@
       display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px;
     }
 
-    /* 左側欄：包含上下兩塊獨立卡片 */
     .left-column {
       flex: 0 0 400px;
       display: flex;
@@ -209,7 +208,94 @@
     .history-text { font-size: 15px; line-height: 1.9; color: #a0aec0; }
     .history-text p { margin-bottom: 20px; }
 
-    /* ================= 4. 形象3視圖展示 ================= */
+    /* ================= 4. 世界觀區塊 ================= */
+    .worldview-content {
+      background: var(--card-bg);
+      padding: 40px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      color: #a0aec0;
+      line-height: 1.9;
+      font-size: 15px;
+    }
+    .worldview-content strong {
+      color: var(--text);
+    }
+    .lore-poem {
+      text-align: center;
+      margin: 30px 0;
+      padding: 35px 20px;
+      background: linear-gradient(135deg, rgba(199, 238, 251, 0.08), rgba(255,255,255,0.02));
+      border-radius: 12px;
+      border: 1px solid rgba(199, 238, 251, 0.15);
+      color: #e2e8f0;
+      font-size: 16px;
+      letter-spacing: 1.5px;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+    }
+    .lore-poem p {
+      margin: 10px 0;
+    }
+
+    /* ================= 5. V1 聲音提供者 (新增區塊) ================= */
+    .vp-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 40px;
+      display: flex;
+      gap: 40px;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+    .vp-info {
+      flex: 1;
+    }
+    .vp-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 25px 0;
+      color: #a0aec0;
+      font-size: 15px;
+      line-height: 2.2;
+    }
+    .vp-list li {
+      border-bottom: 1px dashed rgba(255,255,255,0.05);
+    }
+    .vp-list li:last-child {
+      border-bottom: none;
+    }
+    .vp-list li strong {
+      color: var(--accent);
+      display: inline-block;
+      width: 140px;
+    }
+    .vp-desc {
+      color: #e2e8f0;
+      line-height: 1.8;
+      font-size: 15px;
+      margin: 0;
+      background: rgba(199, 238, 251, 0.05);
+      padding: 20px 25px;
+      border-left: 4px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+    }
+    .vp-img-placeholder {
+      flex: 0 0 280px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      background: #1a2333;
+    }
+    .vp-img-placeholder img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+      aspect-ratio: 3/4;
+    }
+
+    /* ================= 6. 形象3視圖展示 ================= */
     .reference-sheet-wrapper {
         position: relative;
         width: 100%;
@@ -231,7 +317,7 @@
         pointer-events: none;
     }
 
-    /* ================= 5. EP 作品展示區 ================= */
+    /* ================= 7. EP 作品展示區 ================= */
     .new-release-banner {
       background: linear-gradient(135deg, rgba(199, 238, 251, 0.15), rgba(255,255,255,0.03));
       border: 1px solid rgba(199, 238, 251, 0.4);
@@ -273,15 +359,13 @@
       line-height: 1.6;
     }
 
-    /* 串流播放器網格排版優化 */
     .spotify-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* 加寬單格基礎寬度以適應大螢幕 */
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
       gap: 25px;
       width: 100%;
     }
 
-    /* 播放器實體專輯卡片包裝 */
     .spotify-embed {
       background: var(--card-bg);
       border: 1px solid rgba(255,255,255,0.08);
@@ -301,7 +385,7 @@
       width: 100%;
     }
 
-    /* ================= 6. 最下方按鈕與連結 ================= */
+    /* ================= 8. 最下方按鈕與連結 ================= */
     .bottom-actions { text-align: center; margin-top: 80px; margin-bottom: 60px; }
     .action-buttons { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
     .btn { display: inline-block; padding: 14px 35px; background: var(--accent); color: #0a0e17; font-weight: bold; text-decoration: none; border-radius: 8px; transition: transform 0.2s, background 0.3s; }
@@ -320,7 +404,10 @@
       .dropdown { margin: 0 10px; }
       .profile-section { flex-direction: column; align-items: center; }
       .left-column { flex: unset; width: 100%; max-width: 350px; }
-      .spotify-container { grid-template-columns: 1fr; } /* 手機板採單欄直列 */
+      .spotify-container { grid-template-columns: 1fr; }
+      .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
+      .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; }
+      .vp-list li strong { width: auto; margin-right: 15px; }
     }
   </style>
 </head>
@@ -416,6 +503,47 @@
   </section>
 
   <section>
+    <h2>團體世界觀：星幻之城 × StarLeo</h2>
+    <div class="worldview-content">
+      <p><strong>星幻之城 × StarLeo</strong> 是星樂之夢旗下的小學生虛擬歌手團體系列，由 <strong>星希羽、星彗羽、星丞軒、星卉芯</strong> 組成。</p>
+
+      <div class="lore-poem">
+        <p>每個成員都各有自己專屬的音域</p>
+        <p>在這浩瀚星河中，誕生著被稱為「星之子」的孩子。</p>
+        <p>星幻之城，是他們相遇的地方。</p>
+        <p>而星幻樂園，能將心中的情感化為星光，</p>
+        <p>讓尚未說出口的故事，被世界聽見。</p>
+      </div>
+
+      <p>
+        <strong>StarLeo</strong> 是誕生於世界觀舞台「星幻之城」的音樂團體。成員們在同一座城市相遇，站上核心舞台「星幻樂園」，用各自不同的聲音，一起唱出屬於他們的故事。<br><br>
+        團體不設固定主唱，每一首作品，都由最適合那首歌的成員擔任核心演唱。
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <h2>形象設計來源與 V1 聲源</h2>
+    <div class="vp-card">
+      <div class="vp-info">
+        <ul class="vp-list">
+          <li><strong>生日：</strong>2011 年 4 月 9 日</li>
+          <li><strong>聲音錄製日期：</strong>2023 年 1 月 21 日</li>
+          <li><strong>錄製年齡：</strong>11 歲</li>
+        </ul>
+        <p class="vp-desc">
+          💫 星希羽的角色形象設計靈感源自於 V1 聲音提供者。<br>
+          在角色塑造初期，參考了其活潑、開朗、調皮的個性特質作為創作靈感。
+        </p>
+      </div>
+
+      <div class="vp-img-placeholder">
+        <img src="img/V1中之人.png" alt="V1 聲音提供者形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>中之人形象預留區塊</text></svg>'">
+      </div>
+    </div>
+  </section>
+
+  <section>
     <h2>形象3視圖展示</h2>
     <div class="reference-sheet-wrapper">
         <img class="reference-sheet" src="img/星希羽三視圖.png" alt="星希羽三視圖" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>三視圖預留位置</text></svg>'">
@@ -426,12 +554,6 @@
 
   <section>
     <h2>音樂作品展示區</h2>
-
-    <div class="new-release-banner">
-      <span class="new-badge">NEW RELEASE</span>
-      <h3>二週年紀念 EP《羽翼》</h3>
-      <p>星希羽全新 EP 現已於各大串流平台正式發行，感謝大家的支持與陪伴！</p>
-    </div>
 
     <div class="spotify-container">
       <div class="spotify-embed">
