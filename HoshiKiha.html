@@ -6,7 +6,7 @@
   <title>星希羽 HoshiKiha | 官方網站</title>
   <meta name="description" content="星希羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手。">
 
-  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <link rel="icon" href="img/favicon.png" type="image/png">
 
   <style>
     /* CSS 重置與變數 */
@@ -237,7 +237,7 @@
       margin: 10px 0;
     }
 
-    /* ================= 5. V1 聲音提供者 (新增區塊) ================= */
+    /* ================= 5. V1 聲音提供者 ================= */
     .vp-card {
       background: var(--card-bg);
       border: 1px solid rgba(255,255,255,0.08);
@@ -245,7 +245,7 @@
       padding: 40px;
       display: flex;
       gap: 40px;
-      align-items: center;
+      align-items: center; /* 讓左右兩欄垂直置中 */
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
     .vp-info {
@@ -280,19 +280,25 @@
       border-left: 4px solid var(--accent);
       border-radius: 0 8px 8px 0;
     }
+
+    /* 修正被裁切的問題：取消 overflow 與 aspectRatio，讓圖片完整顯示 */
     .vp-img-placeholder {
-      flex: 0 0 280px;
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      flex: 0 0 250px; /* 控制右側圖片容器的寬度 */
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* 讓立繪靠底部對齊 */
       background: #1a2333;
+      border-radius: 12px;
+      padding-top: 20px; /* 上方預留空間 */
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      min-height: 350px; /* 給定一個最小高度確保版面不會塌陷 */
     }
     .vp-img-placeholder img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      max-height: 350px; /* 限制最大高度 */
+      object-fit: contain; /* 確保圖片等比縮放不裁切 */
       display: block;
-      object-fit: cover;
-      aspect-ratio: 3/4;
     }
 
     /* ================= 6. 形象3視圖展示 ================= */
@@ -406,7 +412,7 @@
       .left-column { flex: unset; width: 100%; max-width: 350px; }
       .spotify-container { grid-template-columns: 1fr; }
       .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
-      .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; }
+      .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vp-list li strong { width: auto; margin-right: 15px; }
     }
   </style>
@@ -554,6 +560,12 @@
 
   <section>
     <h2>音樂作品展示區</h2>
+
+    <div class="new-release-banner">
+      <span class="new-badge">NEW RELEASE</span>
+      <h3>二週年紀念 EP《羽翼》</h3>
+      <p>星希羽全新 EP 現已於各大串流平台正式發行，感謝大家的支持與陪伴！</p>
+    </div>
 
     <div class="spotify-container">
       <div class="spotify-embed">
