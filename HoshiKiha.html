@@ -321,6 +321,72 @@
         pointer-events: none;
     }
 
+    /* ================= 歷代圖繪展示區 ================= */
+    .gallery-container {
+      display: grid;
+      /* 調整為 minmax(220px)，讓 4 張圖可以完美並排在電腦版上 */
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+    .gallery-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .gallery-card:hover {
+      transform: translateY(-5px);
+      border-color: rgba(199, 238, 251, 0.4);
+      box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15);
+    }
+    .gallery-img {
+      width: 100%;
+      height: 260px;
+      background: #151c28;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end; /* 讓人物立繪靠底部 */
+      overflow: hidden;
+      padding-top: 15px;
+    }
+    .gallery-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.5s ease;
+    }
+    .gallery-card:hover .gallery-img img {
+      transform: scale(1.05);
+    }
+    .gallery-info {
+      padding: 15px;
+      text-align: center;
+      background: rgba(10, 14, 23, 0.8);
+      border-top: 1px solid rgba(255,255,255,0.05);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .gallery-info h4 {
+      margin: 0;
+      color: #ffffff;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      line-height: 1.4;
+    }
+    .gallery-info p {
+      margin: 5px 0 0 0;
+      color: #a0aec0;
+      font-size: 12px;
+    }
+
     /* ================= 7. 音樂作品展示區 ================= */
     .new-release-banner {
       background: linear-gradient(135deg, rgba(199, 238, 251, 0.15), rgba(255,255,255,0.03));
@@ -520,6 +586,7 @@
       .profile-section { flex-direction: column; align-items: center; }
       .left-column { flex: unset; width: 100%; max-width: 350px; }
       .mv-container, .spotify-container { grid-template-columns: 1fr; }
+      .gallery-container { grid-template-columns: 1fr; }
       .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
       .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vp-list li strong { width: auto; margin-right: 15px; }
@@ -540,6 +607,7 @@
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn">其他歌手 ▾</span>
         <div class="dropdown-content">
+          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
@@ -547,7 +615,7 @@
         </div>
       </div>
 
-      <a href="WORKS.html">WORKS</a>
+      <a href="WORKS.html">作品企劃</a>
     </nav>
   </header>
 
@@ -664,6 +732,53 @@
         <img class="reference-sheet" src="img/星希羽三視圖.png" alt="星希羽三視圖" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>三視圖預留位置</text></svg>'">
 
         <img class="tinka-star" src="img/霆卡提示.png" alt="霆卡" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>霆卡預留</text></svg>'">
+    </div>
+  </section>
+
+  <section>
+    <h2>歷代圖繪</h2>
+    <div class="gallery-container">
+
+      <div class="gallery-card">
+        <div class="gallery-img">
+          <img src="img/星希羽V1.0.png" alt="星希羽V1.0~V1.4.2形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V1 初始形象預留</text></svg>'">
+        </div>
+        <div class="gallery-info">
+          <h4>星希羽V1.0~V1.4.2形象</h4>
+          <p>2024年設計</p>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <div class="gallery-img">
+          <img src="img/星希羽V1.4.2.2.png" alt="星希羽V1.4.2.2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>日常服裝預留</text></svg>'">
+        </div>
+        <div class="gallery-info">
+          <h4>星希羽V1.4.2.1~V1.4.2.2形象</h4>
+          <p>2025設計</p>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <div class="gallery-img">
+          <img src="img/星希羽2.0.png" alt="星希羽 V2 羽翼形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V2 羽翼形象預留</text></svg>'">
+        </div>
+        <div class="gallery-info">
+          <h4>V1.5形象</h4>
+          <p>2025年設計</p>
+        </div>
+      </div>
+
+      <div class="gallery-card">
+        <div class="gallery-img">
+          <img src="img/出道紀念桌布.jpg" alt="出道紀念桌布" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V2 羽翼形象預留</text></svg>'">
+        </div>
+        <div class="gallery-info">
+          <h4>V1桌布</h4>
+          <p>2024年設計</p>
+        </div>
+      </div>
+
     </div>
   </section>
 
