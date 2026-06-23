@@ -20,7 +20,7 @@
   </script>
 
   <style>
-    /* CSS 重置與變數 (更新為星光金 #FCD676) */
+    /* CSS 重置與變數 (星光金 #FCD676) */
     :root {
       --bg: #0a0e17;
       --text: #f0f4f8;
@@ -85,7 +85,7 @@
       color: var(--accent);
     }
 
-    /* 導覽列下拉選單樣式 (手機點擊友善版) */
+    /* 導覽列下拉選單樣式 */
     .dropdown {
       position: relative;
       display: inline-block;
@@ -280,24 +280,159 @@
     .history-text { font-size: 15px; line-height: 1.9; color: #a0aec0; }
     .history-text p { margin-bottom: 20px; }
 
-    /* 最新消息 */
-    .news-item {
-      background: var(--card-bg);
-      padding: 22px;
-      border-radius: 12px;
-      margin-bottom: 18px;
-      border-left: 3px solid var(--accent);
+    /* ================= 情報與消息區塊樣式 ================= */
+    .news-system-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+      gap: 30px;
+      width: 100%;
     }
-    .news-date {
-      color: var(--accent);
+    .system-update-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 35px 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .kiha-update:hover {
+      transform: translateY(-5px);
+      border-color: rgba(199, 238, 251, 0.4);
+      box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15);
+    }
+
+    .huiha-update:hover {
+      transform: translateY(-5px);
+      border-color: rgba(251, 157, 158, 0.4);
+      box-shadow: 0 15px 35px rgba(251, 157, 158, 0.15);
+    }
+
+    .update-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: rgba(255, 255, 255, 0.1);
+      color: #a0aec0;
+      font-size: 11px;
       font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 8px;
+      padding: 6px 15px;
+      border-radius: 0 0 0 12px;
+      letter-spacing: 1px;
     }
-    .news-title {
-      font-size: 16px;
+    .system-header {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 15px;
+    }
+    .sys-logo {
+      max-height: 40px;
+      width: auto;
+      object-fit: contain;
+    }
+    .sys-title-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .system-header h3 {
       margin: 0;
+      font-size: 20px;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+    .version-tag {
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+    .kiha-update .system-header h3 { text-shadow: 0 0 10px rgba(199, 238, 251, 0.3); }
+    .kiha-update .version-tag { color: #C7EEFB; }
+    .huiha-update .system-header h3 { text-shadow: 0 0 10px rgba(251, 157, 158, 0.3); }
+    .huiha-update .version-tag { color: #FB9D9E; }
+
+    .update-content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .update-desc {
+      margin: 0 0 20px 0;
+      font-size: 15px;
+      color: #e2e8f0;
       line-height: 1.6;
+      font-weight: bold;
+    }
+    .update-features {
+      padding-left: 0;
+      margin: 0 0 35px 0;
+      color: #a0aec0;
+      font-size: 14px;
+      line-height: 1.8;
+      list-style: none;
+    }
+    .update-features li {
+      margin-bottom: 14px;
+      position: relative;
+      padding-left: 20px;
+    }
+    .update-features li::before {
+      content: '▶';
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 10px;
+    }
+    .kiha-update .update-features li::before { color: #C7EEFB; }
+    .huiha-update .update-features li::before { color: #FB9D9E; }
+
+    .update-features strong {
+      color: #ffffff;
+      font-size: 15px;
+    }
+    .kiha-update .update-features strong { color: #C7EEFB; }
+    .huiha-update .update-features strong { color: #FB9D9E; }
+
+    .update-action {
+      margin-top: auto;
+    }
+    .news-btn {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 14px 0;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 15px;
+      transition: all 0.3s;
+      box-sizing: border-box;
+    }
+    .btn-kiha {
+      background: #C7EEFB;
+      color: #0a0e17;
+    }
+    .btn-kiha:hover {
+      background: #b0d8fc;
+      transform: scale(1.02);
+      box-shadow: 0 5px 15px rgba(199, 238, 251, 0.4);
+    }
+    .btn-huiha {
+      background: transparent;
+      border: 1px solid #FB9D9E;
+      color: #FB9D9E;
+    }
+    .btn-huiha:hover {
+      background: rgba(251, 157, 158, 0.1);
+      transform: scale(1.02);
+      box-shadow: 0 5px 15px rgba(251, 157, 158, 0.2);
     }
 
     /* 彈出視窗 (Modal) 樣式 */
@@ -445,6 +580,7 @@
         padding: 30px 20px;
       }
       .singer-grid { grid-template-columns: 1fr; }
+      .news-system-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -600,16 +736,62 @@
   </section>
 
   <section id="news">
-    <h2>情報與消息</h2>
-    <div class="news-item">
-      <div class="news-date">【重大發布預告】 2026 年 6 月 11 日</div>
-      <div style="display: flex; gap: 20px; align-items: center; margin-top: 10px;">
-        <img src="img/EP羽翼封面.png" alt="羽翼 EP 封面" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; flex-shrink: 0;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'120\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>封面預覽</text></svg>'">
-        <p class="news-title" style="margin: 0;">
-          ✨ 星希羽兩週年紀念 EP《羽翼》即將正式發行！<br>
-          <span style="font-size: 14px; color: #a0aec0; margin-top: 5px; display: block;">這是一張充滿成長與情感的作品，完美展現了星希羽的歌聲魅力，敬請期待。</span>
-        </p>
+    <h2>情報與消息 | LATEST NEWS</h2>
+    <div class="news-system-grid">
+
+      <!-- 星希羽 ACE 2 更新卡片 -->
+      <div class="system-update-card kiha-update">
+        <div class="update-badge">SYSTEM UPDATE</div>
+        <div class="system-header">
+          <img src="img/星希羽Logo.png" alt="星希羽 Logo" class="sys-logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'40\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'25\' fill=\'%23C7EEFB\' font-family=\'sans-serif\' font-size=\'18\' font-weight=\'bold\'>星希羽</text></svg>'">
+          <div class="sys-title-wrapper">
+            <h3>ACE 2 Ai Voice System</h3>
+            <span class="version-tag">V1.5.1 ➜ ACE 2</span>
+          </div>
+        </div>
+        <div class="update-content">
+          <p class="update-desc">星希羽全新 Ai 歌聲合成系統正式啟動，帶來史詩級技術革新：</p>
+          <ul class="update-features">
+            <li><strong>更換全新聲優：</strong> 至此版本起，正式更換聲優。</li>
+            <li><strong>Auto Pitch：</strong> 真正學習聲音提供者的演唱習慣，為單調平直的譜面注入生機，自動添加轉音、抖動、顫音，完美展現歌手唱歌技法。</li>
+            <li><strong>Cross Phoneme：</strong> 在全新架構中特別加強元音與口型之間的變換，使演唱更能呈現真實自然的發聲細節。</li>
+            <li><strong>Vocal Mode：</strong> 除特殊錄製效果外，自帶 5 種 Vocal Mode（Normal、Power、Soft、Breathy、Chest）呈現四個象限中的表現，徹底改變以往的調教方法。</li>
+            <li><strong>Re-Take：</strong> 突破架構限制，將合成最小範圍從片段縮小至音符，搭配新 DPO 技術，輕鬆讓歌手以不同方式演繹每個音符與樂段。</li>
+            <li><strong>歌曲情景理解：</strong> 自動解析譜面並適當調整演繹風格以符合需求，並加以推理情感的鋪敘與強弱變化。</li>
+            <li><strong>新增歌唱語言：</strong> 歌聲資料庫全面解鎖「韓語、法語、義大利語、葡萄牙語」演唱能力。</li>
+          </ul>
+          <div class="update-action">
+            <a href="BetaTest.html" class="news-btn btn-kiha">前往申請封測資格</a>
+          </div>
+        </div>
       </div>
+
+      <!-- 星彗羽 ACE 2 更新卡片 -->
+      <div class="system-update-card huiha-update">
+        <div class="update-badge">SYSTEM UPDATE</div>
+        <div class="system-header">
+          <img src="img/星彗羽2.0Logo.png" alt="星彗羽 Logo" class="sys-logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'40\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'25\' fill=\'%23FB9D9E\' font-family=\'sans-serif\' font-size=\'18\' font-weight=\'bold\'>星彗羽</text></svg>'">
+          <div class="sys-title-wrapper">
+            <h3>ACE 2 Ai Voice System</h3>
+            <span class="version-tag">V1.1 ➜ ACE 2</span>
+          </div>
+        </div>
+        <div class="update-content">
+          <p class="update-desc">星彗羽同步迎來全新世代 Ai 引擎升級，全方位提升演唱表現：</p>
+          <ul class="update-features">
+            <li><strong>Auto Pitch：</strong> 真正學習聲音提供者的演唱習慣，為單調平直的譜面注入生機，自動添加轉音、抖動、顫音，完美展現歌手唱歌技法。</li>
+            <li><strong>Cross Phoneme：</strong> 在全新架構中特別加強元音與口型之間的變換，使演唱更能呈現真實自然的發聲細節。</li>
+            <li><strong>Vocal Mode：</strong> 除特殊錄製效果外，自帶 5 種 Vocal Mode（Normal、Power、Soft、Breathy、Chest）呈現四個象限中的表現，徹底改變以往的調教方法。</li>
+            <li><strong>Re-Take：</strong> 突破架構限制，將合成最小範圍從片段縮小至音符，搭配新 DPO 技術，輕鬆讓歌手以不同方式演繹每個音符與樂段。</li>
+            <li><strong>歌曲情景理解：</strong> 自動解析譜面並適當調整演繹風格以符合需求，並加以推理情感的鋪敘與強弱變化。</li>
+            <li><strong>新增歌唱語言：</strong> 歌聲資料庫全面解鎖「韓語、法語、義大利語、葡萄牙語」演唱能力。</li>
+          </ul>
+          <div class="update-action">
+            <a href="HoshiHuiha.html" class="news-btn btn-huiha">查看歌手檔案</a>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -674,6 +856,51 @@
         closeTermsModal();
       }
     }
+  </script>
+
+  <script>
+    // 背景星空腳本
+    (function(){
+      const canvas = document.getElementById('cursor-canvas');
+      if (!canvas) return; // 避免找不到報錯
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+
+      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
+      window.addEventListener('resize', resize); resize();
+
+      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const particles = [];
+
+      function drawStar(ctx, x, y, radius, rot) {
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
+        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
+      }
+
+      function addParticle(x, y) {
+        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
+      }
+
+      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i]; p.life++;
+          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
+          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+          drawStar(ctx, p.x, p.y, p.size, p.rot);
+        }
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
+      }
+      animate();
+    })();
   </script>
 </body>
 </html>
