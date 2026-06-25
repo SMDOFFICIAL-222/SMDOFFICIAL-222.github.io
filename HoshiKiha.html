@@ -324,7 +324,6 @@
     /* ================= 歷代圖繪展示區 ================= */
     .gallery-container {
       display: grid;
-      /* 調整為 minmax(220px)，讓 4 張圖可以完美並排在電腦版上 */
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 20px;
       width: 100%;
@@ -351,7 +350,7 @@
       background: #151c28;
       display: flex;
       justify-content: center;
-      align-items: flex-end; /* 讓人物立繪靠底部 */
+      align-items: flex-end;
       overflow: hidden;
       padding-top: 15px;
     }
@@ -645,12 +644,11 @@
         </tr>
         <tr><td>所屬團體</td><td>星幻之城 × StarLeo</td></tr>
         <tr><td>相關人或親屬</td><td>星彗羽(姊姊)</td></tr>
-        <tr><td>當前版本</td><td>星希羽ACE Ai V1.5.1</td></tr>
         <tr>
-          <td>測試版本</td>
+          <td>當前版本</td>
           <td>
-            星希羽V2 ACE Ai Voice System
-            <a href="BetaTest.html" class="beta-btn-small">前往申請</a>
+            星希羽ACE Ai V1.5.1
+            <a href="https://acestudio.ai/app/zh/creative-library/voices" class="beta-btn-small">前往ACE社群</a> <a href="BetaTest.html" class="beta-btn-small">測試版申請</a>
           </td>
         </tr>
       </table>
@@ -750,7 +748,7 @@
 
       <div class="gallery-card">
         <div class="gallery-img">
-          <img src="img/星希羽1.4.2.2.png" alt="星希羽V1.4.2.2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>日常服裝預留</text></svg>'">
+          <img src="img/星希羽V1.4.2.2.png" alt="星希羽V1.4.2.2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>日常服裝預留</text></svg>'">
         </div>
         <div class="gallery-info">
           <h4>星希羽V1.4.2.1~V1.4.2.2形象</h4>
@@ -774,7 +772,7 @@
         </div>
         <div class="gallery-info">
           <h4>V1桌布</h4>
-          <p>出道紀念桌布</p>
+          <p>2024年設計</p>
         </div>
       </div>
 
@@ -852,17 +850,19 @@
   </section>
 
   <section class="bottom-actions">
-    <div class="action-buttons">
-      <a href="https://acestudio.ai/" target="_blank" class="btn">前往 ACE Studio</a>
-      <a href="https://acestudio.ai/app/creative-library/voices" target="_blank" class="btn">前往 ACE 社群</a>
-    </div>
     <div class="social-links">
+      <a href="https://acestudio.ai/" target="_blank" aria-label="ACE Studio">
+        <img src="img/ACE.png" alt="ACE Studio" style="width: 30px; height: 30px; object-fit: contain;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'30\' height=\'30\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'10\' text-anchor=\'middle\' alignment-baseline=\'middle\'>ACE</text></svg>'">
+      </a>
+
       <a href="https://music.youtube.com/@SMD_Kiha" target="_blank" aria-label="YouTube Music">
         <svg viewBox="0 0 24 24" width="30" height="30"><circle cx="12" cy="12" r="11.5" fill="#FF0000"/><circle cx="12" cy="12" r="6" fill="#FFFFFF"/><polygon points="10,9 15.5,12 10,15" fill="#FF0000"/></svg>
       </a>
+
       <a href="https://open.spotify.com/artist/79GjJBcPcD7dFuWA3GWo50" target="_blank" aria-label="Spotify">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="#1ED760"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.84.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.781s.18-1.2.78-1.381c4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.56.3z"/></svg>
       </a>
+
       <a href="https://x.com/SMD_Kiha" target="_blank" aria-label="X (Twitter)">
         <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
