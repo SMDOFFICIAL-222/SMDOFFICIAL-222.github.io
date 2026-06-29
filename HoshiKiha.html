@@ -6,7 +6,7 @@
   <title>星希羽 HoshiKiha | 官方網站</title>
   <meta name="description" content="星希羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手。">
 
-  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <link rel="icon" href="img/favicon.png" type="image/png">
 
   <style>
     /* CSS 重置與變數 */
@@ -156,22 +156,22 @@
     }
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
+    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; vertical-align: top; }
     .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
 
+    /* 封測按鈕小標籤樣式 (優化版) */
     .beta-btn-small {
       display: inline-block;
-      margin-left: 12px;
-      padding: 4px 12px;
+      padding: 6px 14px;
       background-color: rgba(199, 238, 251, 0.15);
       color: var(--accent);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: bold;
       border: 1px solid var(--accent);
       border-radius: 20px;
       text-decoration: none;
       transition: all 0.3s ease;
-      vertical-align: middle;
+      text-align: center;
     }
     .beta-btn-small:hover {
       background-color: var(--accent);
@@ -350,7 +350,7 @@
       background: #151c28;
       display: flex;
       justify-content: center;
-      align-items: flex-end;
+      align-items: flex-end; /* 讓人物立繪靠底部 */
       overflow: hidden;
       padding-top: 15px;
     }
@@ -567,16 +567,38 @@
 
     /* ================= 8. 最下方按鈕與連結 ================= */
     .bottom-actions { text-align: center; margin-top: 80px; margin-bottom: 60px; }
-    .action-buttons { display: flex; justify-content: center; gap: 20px; margin-bottom: 40px; flex-wrap: wrap; }
-    .btn { display: inline-block; padding: 14px 35px; background: var(--accent); color: #0a0e17; font-weight: bold; text-decoration: none; border-radius: 8px; transition: transform 0.2s, background 0.3s; }
-    .btn:hover { transform: scale(1.05); background: #b0d8fc; }
+    
+    /* 優化後的社群按鈕區域 */
+    .social-links {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap; /* 重要：允許按鈕在螢幕過窄時換行 */
+      padding: 20px 10px;
+    }
 
-    .social-links { display: flex; justify-content: center; gap: 16px; flex-wrap: wrap; }
-    .social-links a { display: flex; align-items: center; justify-content: center; width: 54px; height: 54px; background-color: #ffffff; border-radius: 14px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; }
-    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(155, 200, 251, 0.5); }
+    .social-links a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background-color: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      flex-shrink: 0; /* 防止按鈕被壓縮 */
+    }
+
+    .social-links a:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(199, 238, 251, 0.5);
+    }
 
     footer { text-align: center; padding: 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
 
+    /* 手機版細節調整 */
     @media (max-width: 768px) {
       header { padding: 15px 20px; flex-direction: column; gap: 15px; }
       .nav-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
@@ -589,6 +611,9 @@
       .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
       .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vp-list li strong { width: auto; margin-right: 15px; }
+      
+      .social-links { gap: 15px; }
+      .social-links a { width: 45px; height: 45px; }
     }
   </style>
 </head>
@@ -606,6 +631,7 @@
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn">其他歌手 ▾</span>
         <div class="dropdown-content">
+          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
@@ -647,8 +673,12 @@
         <tr>
           <td>當前版本</td>
           <td>
-            星希羽ACE Ai V1.5.1
-            <a href="https://acestudio.ai/app/zh/creative-library/voices" class="beta-btn-small">前往ACE社群</a> <a href="BetaTest.html" class="beta-btn-small">測試版申請</a>
+            <!-- 改成上下排列，解決手機版擠在一起的問題 -->
+            <div style="margin-bottom: 8px; font-size: 15px;">星希羽ACE Ai V1.5.1</div>
+            <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;">
+              <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-left: 0;">前往ACE社群</a>
+              <a href="BetaTest.html" class="beta-btn-small" style="margin-left: 0;">測試版申請</a>
+            </div>
           </td>
         </tr>
       </table>
