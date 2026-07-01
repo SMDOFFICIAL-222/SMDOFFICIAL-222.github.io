@@ -156,7 +156,7 @@
     }
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; vertical-align: top; }
+    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
     .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
 
     /* 封測按鈕小標籤樣式 (優化版) */
@@ -178,6 +178,22 @@
       color: #0a0e17;
       transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(199, 238, 251, 0.3);
+    }
+
+    /* 版本資訊區塊優化：使用 Flex 排列文字與按鈕 */
+    .version-info-container {
+      display: flex;
+      flex-direction: column; /* 整體維持垂直，讓版本號在上方 */
+      gap: 12px;
+    }
+    .version-text {
+      font-size: 15px;
+    }
+    .version-buttons {
+      display: flex;
+      flex-wrap: wrap; /* 允許按鈕在螢幕過窄時換行 */
+      gap: 10px; /* 按鈕之間的水平間距 */
+      align-items: center;
     }
 
     .audio-player { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; }
@@ -567,7 +583,7 @@
 
     /* ================= 8. 最下方按鈕與連結 ================= */
     .bottom-actions { text-align: center; margin-top: 80px; margin-bottom: 60px; }
-    
+
     /* 優化後的社群按鈕區域 */
     .social-links {
       display: flex;
@@ -611,7 +627,7 @@
       .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
       .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vp-list li strong { width: auto; margin-right: 15px; }
-      
+
       .social-links { gap: 15px; }
       .social-links a { width: 45px; height: 45px; }
     }
@@ -631,7 +647,6 @@
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn">其他歌手 ▾</span>
         <div class="dropdown-content">
-          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
@@ -673,11 +688,12 @@
         <tr>
           <td>當前版本</td>
           <td>
-            <!-- 改成上下排列，解決手機版擠在一起的問題 -->
-            <div style="margin-bottom: 8px; font-size: 15px;">星希羽ACE Ai V1.5.1</div>
-            <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start;">
-              <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-left: 0;">前往ACE社群</a>
-              <a href="BetaTest.html" class="beta-btn-small" style="margin-left: 0;">測試版申請</a>
+            <div class="version-info-container">
+              <div class="version-text">星希羽ACE Ai Voice System V1.5.1</div>
+              <div class="version-buttons">
+                <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-left: 0;">前往ACE社群</a>
+                <a href="BetaTest.html" class="beta-btn-small" style="margin-left: 0;">測試版申請</a>
+              </div>
             </div>
           </td>
         </tr>
@@ -778,7 +794,7 @@
 
       <div class="gallery-card">
         <div class="gallery-img">
-          <img src="img/星希羽V1.4.2.2.png" alt="星希羽V1.4.2.2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>日常服裝預留</text></svg>'">
+          <img src="img/星希羽1.4.2.2.png" alt="星希羽V1.4.2.2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>日常服裝預留</text></svg>'">
         </div>
         <div class="gallery-info">
           <h4>星希羽V1.4.2.1~V1.4.2.2形象</h4>
@@ -811,6 +827,12 @@
 
   <section>
     <h2>音樂作品展示區</h2>
+
+    <div class="new-release-banner">
+      <span class="new-badge">NEW RELEASE</span>
+      <h3>二週年紀念 EP《羽翼》</h3>
+      <p>星希羽全新 EP 現已於各大串流平台正式發行，感謝大家的支持與陪伴！</p>
+    </div>
 
     <div class="platform-label">
       <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
