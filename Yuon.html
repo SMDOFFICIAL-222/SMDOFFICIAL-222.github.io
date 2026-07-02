@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
@@ -15,7 +15,7 @@
       --text: #f0f4f8;
       --accent: #4DA8DA; /* 科技藍 */
       --accent-hover: #75c4eb;
-      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-bg: rgba(10, 16, 28, 0.6);
       --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
       --glass-bg-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08));
       --glass-border: rgba(255, 255, 255, 0.22);
@@ -32,7 +32,7 @@
       min-height: 100vh;
     }
 
-    /* 星空圖片背景與滑鼠粒子畫布 (與 NovaWorks 相同) */
+    /* 星空圖片背景與滑鼠粒子畫布 */
     .stars {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
@@ -87,6 +87,13 @@
     section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
     h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); }
 
+    /* ================= 霧面玻璃 (Glassmorphism) 共用特效 ================= */
+    .img-card, .profile-card, .gallery-card {
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
     /* ================= 1. 頂部人物檔案區 ================= */
     .profile-section { display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px; }
 
@@ -118,6 +125,29 @@
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
     .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 15px; vertical-align: top; }
     .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
+
+    /* 封測按鈕小標籤樣式 (玻璃特化版) */
+    .beta-btn-small {
+      display: inline-block;
+      padding: 6px 16px;
+      background-color: rgba(77, 168, 218, 0.15); /* 科技藍微透 */
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: bold;
+      border: 1px solid rgba(77, 168, 218, 0.5);
+      border-radius: 20px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    .beta-btn-small:hover {
+      background-color: var(--accent);
+      color: #0a0e17;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(77, 168, 218, 0.4);
+    }
 
     .audio-player {
       background: rgba(255,255,255,0.09); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.16);
@@ -191,9 +221,9 @@
 
     footer {
       text-align: center; padding: 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.12); font-size: 14px;
-      background: rgba(10, 14, 23, 0.28);
-      -webkit-backdrop-filter: blur(18px) saturate(145%);
-      backdrop-filter: blur(18px) saturate(145%);
+      background: transparent;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
     }
 
     @media (max-width: 768px) {
@@ -217,8 +247,8 @@
       <img src="img/NovaWorks_Logo(2).png" alt="Nova Works Logo" class="logo-image" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'45\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%23FCD676\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' alignment-baseline=\'middle\'>NOVA WORKS</text></svg>'">
     </a>
     <nav class="nav-links">
+      <a href="NovaWorks.html">返回首頁</a>
       <a href="index.html">返回星樂之夢</a>
-      <a href="NovaWorks.html">返回 Nova Works</a>
 
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn">SMD旗下歌手 ▾</span>
@@ -264,11 +294,10 @@
         <tr>
           <td>當前版本</td>
           <td>
-            <div class="version-info-container">
-              <div class="version-text">祐恩ACE Ai Voice System</div>
-              <div class="version-buttons">
-                <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-left: 0;">前往ACE社群</a>
-              </div>
+            <div style="margin-bottom: 10px; font-size: 15px;">祐恩ACE Ai Voice System</div>
+            <!-- 優化版並排按鈕區塊 -->
+            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+              <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small">前往 ACE 社群</a>
             </div>
           </td>
         </tr>
