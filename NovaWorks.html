@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Nova Works | 官方網站</title>
+  <title>Nova Works | 星樂之夢 Star Music Dream</title>
   <meta name="description" content="Nova Works 是 STAR MUSIC DREAM 旗下的音樂創作品牌，專注於音樂製作與作品發佈，作為星樂之夢團隊共同的音樂發表小基地。">
   <link rel="icon" href="img/NovaWorks_Logo(1).png" type="image/png">
 
@@ -30,18 +30,13 @@
       min-height: 100vh;
     }
 
-    /* 星空圖片背景與滑鼠粒子畫布 */
+    /* 星空圖片背景 */
     .stars {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: -1;
-      /* 將原本的漸層替換為使用者指定的圖片背景 */
       background: url('img/Nova背景.PNG') no-repeat center center;
       background-size: cover;
-    }
-    #cursor-canvas {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 9999;
     }
 
     /* 頂部導覽列 */
@@ -244,15 +239,11 @@
       .dropdown { margin: 0 10px; }
       .hero { margin: 30px 20px 50px; padding: 48px 24px 34px; }
       .hero h1 { font-size: 2.2em; }
-      .modal-card { flex-direction: column; }
-      .modal-img-side { flex: unset; min-height: 300px; }
-      .modal-info-side { padding: 30px 20px; }
     }
   </style>
 </head>
 <body>
   <div class="stars"></div>
-  <canvas id="cursor-canvas"></canvas>
 
   <header>
     <a href="NovaWorks.html" class="logo">
@@ -335,51 +326,6 @@
         document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
       }
     }
-  </script>
-
-  <script>
-    // 背景星空腳本
-    (function(){
-      const canvas = document.getElementById('cursor-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let width, height;
-      const DPR = window.devicePixelRatio || 1;
-
-      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
-      window.addEventListener('resize', resize); resize();
-
-      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
-      const particles = [];
-
-      function drawStar(ctx, x, y, radius, rot) {
-        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
-        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
-        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
-        ctx.moveTo(0, -outerRadius);
-        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
-        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
-      }
-
-      function addParticle(x, y) {
-        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
-      }
-
-      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
-
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i]; p.life++;
-          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
-          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
-          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
-          drawStar(ctx, p.x, p.y, p.size, p.rot);
-        }
-        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
-      }
-      animate();
-    })();
   </script>
 </body>
 </html>
