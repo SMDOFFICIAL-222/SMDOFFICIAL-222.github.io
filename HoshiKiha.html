@@ -9,12 +9,19 @@
   <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
 
   <style>
-    /* CSS 重置與變數 */
+    /* CSS 重置與變數 (星希羽專屬：馬卡龍藍) */
     :root {
       --bg: #0a0e17;
       --text: #f0f4f8;
       --accent: #C7EEFB;
-      --card-bg: rgba(255,255,255,0.05);
+      --card-bg: rgba(10, 16, 28, 0.6);
+      /* 玻璃特效變數 */
+      --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
+      --glass-bg-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.05));
+      --glass-border: rgba(255, 255, 255, 0.15);
+      --glass-border-soft: rgba(255, 255, 255, 0.08);
+      --glass-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
     body {
       margin: 0;
@@ -22,6 +29,7 @@
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
     /* 星空背景與滑鼠粒子畫布 */
@@ -38,10 +46,12 @@
     header {
       padding: 20px 40px;
       display: flex; justify-content: space-between; align-items: center;
-      background: rgba(10,14,23,0.8);
-      backdrop-filter: blur(10px);
+      background: rgba(10,14,23,0.38);
+      -webkit-backdrop-filter: blur(22px) saturate(150%);
+      backdrop-filter: blur(22px) saturate(150%);
       position: sticky; top: 0; z-index: 100;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      border-bottom: 1px solid var(--glass-border-soft);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.18);
     }
     .logo { text-decoration: none; display: flex; align-items: center; }
     .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
@@ -51,56 +61,25 @@
     .nav-links a:hover { color: var(--accent); }
 
     /* ================= 導覽列下拉選單樣式 ================= */
-    .dropdown {
-      position: relative;
-      display: inline-block;
-      margin-left: 25px;
-      cursor: pointer;
-    }
-    .dropdown-btn {
-      color: var(--text);
-      font-size: 15px;
-      transition: color 0.3s;
-      padding: 5px 0;
-      user-select: none;
-    }
-    .dropdown:hover .dropdown-btn {
-      color: var(--accent);
-    }
-    .dropdown::after {
-      content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 15px;
-    }
+    .dropdown { position: relative; display: inline-block; margin-left: 25px; cursor: pointer; }
+    .dropdown-btn { color: var(--text); font-size: 15px; transition: color 0.3s; padding: 10px 0; user-select: none; }
+    .dropdown:hover .dropdown-btn { color: var(--accent); }
     .dropdown-content {
-      display: none;
-      position: absolute;
-      top: calc(100% + 10px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(10, 14, 23, 0.95);
-      backdrop-filter: blur(10px);
+      display: none; position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
+      background: rgba(10, 20, 38, 0.62);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      backdrop-filter: blur(24px) saturate(150%);
       min-width: 160px;
-      box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      z-index: 101;
-      padding: 8px 0;
+      box-shadow: var(--glass-shadow), var(--glass-inner); border-radius: 12px; border: 1px solid var(--glass-border);
+      z-index: 101; padding: 8px 0;
     }
-    .dropdown-content a {
-      color: #a0aec0;
-      padding: 12px 20px;
-      text-decoration: none;
-      display: block;
-      margin-left: 0;
-      font-size: 14px;
-      text-align: center;
-      transition: background 0.3s, color 0.3s;
-    }
-    .dropdown-content a:hover {
-      background: rgba(155, 200, 251, 0.1);
-      color: var(--accent);
-    }
-    .dropdown-content.show {
-      display: block;
+    .dropdown-content.show { display: block; animation: fadeIn 0.2s ease-in-out; }
+    .dropdown-content a { color: #a0aec0; padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; }
+    .dropdown-content a:hover { background: rgba(199, 238, 251, 0.15); color: var(--accent); }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -5px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
     }
 
     /* 通用區塊設定 */
@@ -108,513 +87,184 @@
     h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); }
 
     /* ================= 1. 頂部人物檔案區 ================= */
-    .profile-section {
-      display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px;
-    }
+    .profile-section { display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px; }
 
-    .left-column {
-      flex: 0 0 400px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+    /* 左側欄 */
+    .left-column { flex: 0 0 400px; display: flex; flex-direction: column; gap: 20px; }
 
     .img-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px;
+      -webkit-backdrop-filter: blur(24px) saturate(145%);
+      backdrop-filter: blur(24px) saturate(145%);
+      box-shadow: var(--glass-shadow), var(--glass-inner); display: flex; flex-direction: column; justify-content: center; align-items: center;
     }
 
     .logo-card { padding: 30px; }
-    .profile-logo-top {
-      max-width: 200px;
-      height: auto;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
-    }
+    .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
 
-    .portrait-card {
-      padding: 30px 20px 0px 20px;
-      overflow: hidden;
-      flex: 1;
-      align-items: flex-end;
-    }
-    #profile-portrait {
-      width: 100%;
-      max-width: 360px;
-      height: auto;
-      object-fit: contain;
-      transition: opacity 0.3s ease;
-    }
+    /* 立繪卡片 */
+    .portrait-card { padding: 30px 20px 0px 20px; overflow: hidden; flex: 1; justify-content: flex-end; }
+    #profile-portrait { width: 100%; max-width: 360px; height: auto; object-fit: contain; transition: opacity 0.3s ease; }
 
     /* 右側個人資料卡片 */
     .profile-card {
-      flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 30px;
+      -webkit-backdrop-filter: blur(24px) saturate(145%);
+      backdrop-filter: blur(24px) saturate(145%);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
     }
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
+    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 15px; vertical-align: top; }
     .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
 
-    /* 封測按鈕小標籤樣式 (優化版) */
+    /* 版本資訊區塊優化 */
+    .version-info-container { display: flex; flex-direction: column; gap: 12px; }
+    .version-text { font-size: 15px; }
+    .version-buttons { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* 封測按鈕小標籤樣式 (玻璃特化版) */
     .beta-btn-small {
-      display: inline-block;
-      padding: 6px 14px;
-      background-color: rgba(199, 238, 251, 0.15);
-      color: var(--accent);
-      font-size: 13px;
-      font-weight: bold;
-      border: 1px solid var(--accent);
-      border-radius: 20px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      text-align: center;
+      display: inline-block; padding: 6px 16px;
+      background-color: rgba(199, 238, 251, 0.15); /* 馬卡龍藍微透 */
+      color: var(--accent); font-size: 13px; font-weight: bold;
+      border: 1px solid rgba(199, 238, 251, 0.5); border-radius: 20px; text-decoration: none;
+      transition: all 0.3s ease; text-align: center;
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
     }
     .beta-btn-small:hover {
-      background-color: var(--accent);
-      color: #0a0e17;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(199, 238, 251, 0.3);
+      background-color: var(--accent); color: #0a0e17; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(199, 238, 251, 0.4);
     }
 
-    /* 版本資訊區塊優化：使用 Flex 排列文字與按鈕 */
-    .version-info-container {
-      display: flex;
-      flex-direction: column; /* 整體維持垂直，讓版本號在上方 */
-      gap: 12px;
+    .audio-player {
+      background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);
+      -webkit-backdrop-filter: blur(18px) saturate(145%); backdrop-filter: blur(18px) saturate(145%);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 28px rgba(0,0,0,0.18);
+      margin-bottom: 15px; /* 給多個播放器間距 */
     }
-    .version-text {
-      font-size: 15px;
-    }
-    .version-buttons {
-      display: flex;
-      flex-wrap: wrap; /* 允許按鈕在螢幕過窄時換行 */
-      gap: 10px; /* 按鈕之間的水平間距 */
-      align-items: center;
-    }
-
-    .audio-player { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; }
-    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--text); }
+    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--accent); }
     .audio-player audio { width: 100%; height: 40px; outline: none; }
 
     /* ================= 2. 概要區塊 ================= */
     .intro-section {
-      text-align: center; background: linear-gradient(135deg, rgba(155,200,251,0.08), rgba(255,255,255,0.02)); padding: 40px; border-radius: 16px; border: 1px solid rgba(155,200,251,0.15); font-size: 1.1em; line-height: 1.8; color: #e2e8f0; margin-bottom: 60px;
+      text-align: center; background: var(--glass-bg-strong);
+      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
+      padding: 40px; border-radius: 18px; border: 1px solid var(--glass-border); font-size: 1.1em; line-height: 1.8; color: #e2e8f0; margin-bottom: 60px;
+      box-shadow: var(--glass-shadow), var(--glass-inner);
     }
 
-    /* ================= 3. 歷史概要區塊 ================= */
-    .history-section {
-      background: var(--card-bg);
-      padding: 40px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.05);
-      position: relative;
+    /* ================= 3. 歷史概要 & 世界觀區塊 ================= */
+    .history-section, .worldview-content {
+      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 40px; position: relative;
+      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
     }
-    .yoyo-star {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      max-height: 100px;
-      opacity: 0.9;
-      pointer-events: none;
-    }
+    .yoyo-star { position: absolute; bottom: 20px; right: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
     .history-text { font-size: 15px; line-height: 1.9; color: #a0aec0; }
     .history-text p { margin-bottom: 20px; }
+    .history-text p:last-child { margin-bottom: 0; }
 
-    /* ================= 4. 世界觀區塊 ================= */
-    .worldview-content {
-      background: var(--card-bg);
-      padding: 40px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.05);
-      color: #a0aec0;
-      line-height: 1.9;
-      font-size: 15px;
-    }
-    .worldview-content strong {
-      color: var(--text);
-    }
+    .worldview-content { color: #a0aec0; line-height: 1.9; font-size: 15px; }
+    .worldview-content strong { color: var(--text); }
+
     .lore-poem {
-      text-align: center;
-      margin: 30px 0;
-      padding: 35px 20px;
-      background: linear-gradient(135deg, rgba(199, 238, 251, 0.08), rgba(255,255,255,0.02));
-      border-radius: 12px;
-      border: 1px solid rgba(199, 238, 251, 0.15);
-      color: #e2e8f0;
-      font-size: 16px;
-      letter-spacing: 1.5px;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+      text-align: center; margin: 30px 0; padding: 35px 20px;
+      background: rgba(199, 238, 251, 0.05); border-radius: 12px; border: 1px solid rgba(199, 238, 251, 0.15);
+      color: #e2e8f0; font-size: 16px; letter-spacing: 1.5px; box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
     }
-    .lore-poem p {
-      margin: 10px 0;
-    }
+    .lore-poem p { margin: 10px 0; }
 
-    /* ================= 5. V1 聲音提供者 ================= */
+    /* ================= 5. 中之人與形象 ================= */
     .vp-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      padding: 40px;
-      display: flex;
-      gap: 40px;
-      align-items: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 40px; display: flex; gap: 40px; align-items: center;
+      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
     }
-    .vp-info {
-      flex: 1;
-    }
-    .vp-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 25px 0;
-      color: #a0aec0;
-      font-size: 15px;
-      line-height: 2.2;
-    }
-    .vp-list li {
-      border-bottom: 1px dashed rgba(255,255,255,0.05);
-    }
-    .vp-list li:last-child {
-      border-bottom: none;
-    }
-    .vp-list li strong {
-      color: var(--accent);
-      display: inline-block;
-      width: 140px;
-    }
+    .vp-info { flex: 1; }
+    .vp-list { list-style: none; padding: 0; margin: 0 0 25px 0; color: #a0aec0; font-size: 15px; line-height: 2.2; }
+    .vp-list li { border-bottom: 1px dashed rgba(255,255,255,0.1); }
+    .vp-list li:last-child { border-bottom: none; }
+    .vp-list li strong { color: var(--accent); display: inline-block; width: 140px; }
+
     .vp-desc {
-      color: #e2e8f0;
-      line-height: 1.8;
-      font-size: 15px;
-      margin: 0;
-      background: rgba(199, 238, 251, 0.05);
-      padding: 20px 25px;
-      border-left: 4px solid var(--accent);
-      border-radius: 0 8px 8px 0;
+      color: #e2e8f0; line-height: 1.8; font-size: 15px; margin: 0;
+      background: rgba(199, 238, 251, 0.05); padding: 20px 25px; border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0;
     }
     .vp-img-placeholder {
-      flex: 0 0 250px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      background: #1a2333;
-      border-radius: 12px;
-      padding-top: 20px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
-      min-height: 350px;
+      flex: 0 0 250px; display: flex; justify-content: center; align-items: flex-end;
+      background: rgba(10, 16, 28, 0.4); border-radius: 12px; padding-top: 20px; min-height: 350px;
     }
-    .vp-img-placeholder img {
-      width: 100%;
-      height: 100%;
-      max-height: 350px;
-      object-fit: contain;
-      display: block;
-    }
+    .vp-img-placeholder img { width: 100%; height: 100%; max-height: 350px; object-fit: contain; display: block; }
 
     /* ================= 6. 形象3視圖展示 ================= */
-    .reference-sheet-wrapper {
-        position: relative;
-        width: 100%;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-        overflow: hidden;
-    }
-    .reference-sheet {
-        width: 100%;
-        display: block;
-        background: #1a2333;
-    }
-    .tinka-star {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        max-height: 100px;
-        opacity: 0.9;
-        pointer-events: none;
-    }
+    .reference-sheet-wrapper { position: relative; width: 100%; border-radius: 16px; box-shadow: var(--glass-shadow); overflow: hidden; }
+    .reference-sheet { width: 100%; display: block; background: rgba(10, 16, 28, 0.6); }
+    .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
 
     /* ================= 歷代圖繪展示區 ================= */
-    .gallery-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
-      width: 100%;
-      margin-bottom: 40px;
-    }
+    .gallery-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; margin-bottom: 40px; }
     .gallery-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
+      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; overflow: hidden;
+      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
+      box-shadow: var(--glass-shadow), var(--glass-inner); transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;
     }
-    .gallery-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(199, 238, 251, 0.4);
-      box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15);
-    }
-    .gallery-img {
-      width: 100%;
-      height: 260px;
-      background: #151c28;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end; /* 讓人物立繪靠底部 */
-      overflow: hidden;
-      padding-top: 15px;
-    }
-    .gallery-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-      transition: transform 0.5s ease;
-    }
-    .gallery-card:hover .gallery-img img {
-      transform: scale(1.05);
-    }
+    .gallery-card:hover { transform: translateY(-5px); border-color: rgba(199, 238, 251, 0.52); box-shadow: 0 22px 55px rgba(199, 238, 251, 0.22), var(--glass-inner); }
+    .gallery-img { width: 100%; height: 260px; background: rgba(5, 12, 24, 0.28); display: flex; justify-content: center; align-items: flex-end; overflow: hidden; padding-top: 15px; }
+    .gallery-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.5s ease; }
+    .gallery-card:hover .gallery-img img { transform: scale(1.05); }
     .gallery-info {
-      padding: 15px;
-      text-align: center;
-      background: rgba(10, 14, 23, 0.8);
-      border-top: 1px solid rgba(255,255,255,0.05);
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      padding: 15px; text-align: center; background: rgba(255,255,255,0.05); border-top: 1px solid rgba(255,255,255,0.1); flex: 1; display: flex; flex-direction: column; justify-content: center;
     }
-    .gallery-info h4 {
-      margin: 0;
-      color: #ffffff;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      line-height: 1.4;
-    }
-    .gallery-info p {
-      margin: 5px 0 0 0;
-      color: #a0aec0;
-      font-size: 12px;
-    }
+    .gallery-info h4 { margin: 0; color: #ffffff; font-size: 14px; letter-spacing: 0.5px; line-height: 1.4; }
+    .gallery-info p { margin: 5px 0 0 0; color: #a0aec0; font-size: 12px; }
 
     /* ================= 7. 音樂作品展示區 ================= */
-    .new-release-banner {
-      background: linear-gradient(135deg, rgba(199, 238, 251, 0.15), rgba(255,255,255,0.03));
-      border: 1px solid rgba(199, 238, 251, 0.4);
-      border-radius: 16px;
-      padding: 35px 20px;
-      text-align: center;
-      margin-bottom: 40px;
-      box-shadow: 0 10px 30px rgba(199, 238, 251, 0.1);
-      position: relative;
-      overflow: hidden;
-      transition: box-shadow 0.3s ease, border-color 0.3s ease;
-    }
-    .new-release-banner:hover {
-      box-shadow: 0 15px 40px rgba(199, 238, 251, 0.2);
-      border-color: var(--accent);
-    }
-    .new-badge {
-      display: inline-block;
-      background: var(--accent);
-      color: #0a0e17;
-      font-weight: bold;
-      font-size: 13px;
-      padding: 5px 15px;
-      border-radius: 20px;
-      margin-bottom: 15px;
-      letter-spacing: 1.5px;
-      box-shadow: 0 0 15px rgba(199, 238, 251, 0.5);
-    }
-    .new-release-banner h3 {
-      color: #ffffff;
-      font-size: 26px;
-      margin: 0 0 12px 0;
-      text-shadow: 0 0 15px rgba(199, 238, 251, 0.4);
-    }
-    .new-release-banner p {
-      color: #a0aec0;
-      margin: 0;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    /* 平台分類小標籤 */
     .platform-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(199, 238, 251, 0.1);
-      border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 15px rgba(199, 238, 251, 0.15);
+      display: inline-flex; align-items: center; gap: 8px; background: rgba(199, 238, 251, 0.1); border: 1px solid var(--accent); color: var(--accent);
+      padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(199, 238, 251, 0.15);
     }
-    .platform-label svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
+    .platform-label svg { width: 18px; height: 18px; fill: currentColor; }
 
-    /* YouTube 偽裝播放器卡片區塊 */
-    .mv-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 25px;
-      width: 100%;
-      margin-bottom: 45px;
-    }
+    .mv-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; width: 100%; margin-bottom: 45px; }
     .mv-card-link {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      text-decoration: none;
-      cursor: pointer;
+      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 15px;
+      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
+      box-shadow: var(--glass-shadow), var(--glass-inner); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; text-decoration: none; cursor: pointer;
     }
-    .mv-card-link:hover {
-      transform: translateY(-5px);
-      border-color: rgba(199, 238, 251, 0.4);
-      box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15);
-    }
-    .mv-card-link:hover .play-btn {
-      background: #ff0000;
-      transform: translate(-50%, -50%) scale(1.1);
-    }
-    .mv-title {
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: bold;
-      margin: 5px 0 12px 5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .mv-title span {
-      background: var(--accent);
-      color: #0a0e17;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      font-weight: 800;
-    }
-    .mv-thumbnail {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      border-radius: 12px;
-      overflow: hidden;
-      position: relative;
-      background: #000;
-    }
-    .mv-thumbnail img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.5s ease;
-      opacity: 0.85;
-    }
-    .mv-card-link:hover .mv-thumbnail img {
-      transform: scale(1.05);
-      opacity: 1;
-    }
-    .play-btn {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 60px;
-      height: 40px;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      transition: all 0.3s ease;
-    }
-    .play-btn::before {
-      content: '';
-      border-style: solid;
-      border-width: 10px 0 10px 16px;
-      border-color: transparent transparent transparent #fff;
-      margin-left: 4px;
-    }
+    .mv-card-link:hover { transform: translateY(-5px); border-color: rgba(199, 238, 251, 0.4); box-shadow: 0 22px 55px rgba(199, 238, 251, 0.2); }
+    .mv-card-link:hover .play-btn { background: #ff0000; transform: translate(-50%, -50%) scale(1.1); }
 
-    /* Spotify 播放器網格 */
-    .spotify-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-      gap: 25px;
-      width: 100%;
+    .mv-title { color: #ffffff; font-size: 16px; font-weight: bold; margin: 5px 0 12px 5px; display: flex; align-items: center; gap: 10px; }
+    .mv-title span { background: var(--accent); color: #0a0e17; padding: 3px 10px; border-radius: 6px; font-size: 12px; letter-spacing: 0.5px; font-weight: 800; }
+    .mv-thumbnail { width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; position: relative; background: #000; }
+    .mv-thumbnail img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; opacity: 0.85; }
+    .mv-card-link:hover .mv-thumbnail img { transform: scale(1.05); opacity: 1; }
+    .play-btn {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.7); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease;
     }
+    .play-btn::before { content: ''; border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent #fff; margin-left: 4px; }
+
+    .spotify-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; width: 100%; }
     .spotify-embed {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 12px;
+      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
+      box-shadow: var(--glass-shadow), var(--glass-inner); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    .spotify-embed:hover {
-      transform: translateY(-5px);
-      border-color: rgba(199, 238, 251, 0.4);
-      box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15);
-    }
-    .spotify-embed iframe {
-      display: block;
-      border: none;
-      width: 100%;
-    }
+    .spotify-embed:hover { transform: translateY(-5px); border-color: rgba(199, 238, 251, 0.4); box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15); }
+    .spotify-embed iframe { display: block; border: none; width: 100%; }
 
     /* ================= 8. 最下方按鈕與連結 ================= */
     .bottom-actions { text-align: center; margin-top: 80px; margin-bottom: 60px; }
-
-    /* 優化後的社群按鈕區域 */
-    .social-links {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      flex-wrap: wrap; /* 重要：允許按鈕在螢幕過窄時換行 */
-      padding: 20px 10px;
-    }
-
+    .social-links { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 20px 10px; }
     .social-links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 50px;
-      background-color: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      flex-shrink: 0; /* 防止按鈕被壓縮 */
+      display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: rgba(255,255,255,0.82);
+      -webkit-backdrop-filter: blur(16px) saturate(150%); backdrop-filter: blur(16px) saturate(150%);
+      border: 1px solid rgba(255,255,255,0.55); border-radius: 14px; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.75); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0;
     }
-
-    .social-links a:hover {
-      transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 8px 25px rgba(199, 238, 251, 0.5);
-    }
+    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(199, 238, 251, 0.5); }
 
     footer { text-align: center; padding: 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
 
-    /* 手機版細節調整 */
     @media (max-width: 768px) {
       header { padding: 15px 20px; flex-direction: column; gap: 15px; }
       .nav-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
@@ -627,7 +277,6 @@
       .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
       .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vp-list li strong { width: auto; margin-right: 15px; }
-
       .social-links { gap: 15px; }
       .social-links a { width: 45px; height: 45px; }
     }
@@ -691,7 +340,7 @@
             <div class="version-info-container">
               <div class="version-text">星希羽ACE Ai Voice System V2.0</div>
               <div class="version-buttons">
-                <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-left: 0;">前往ACE社群</a>
+                <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small">前往ACE社群</a>
               </div>
             </div>
           </td>
@@ -699,9 +348,16 @@
       </table>
 
       <div class="audio-player">
-        <p>🎵 VOICE DEMO 試聽</p>
+        <p>🎵 VOICE Cute DEMO試聽</p>
         <audio controls>
-          <source src="wav/夢想前行Kiha.wav" type="audio/wav">
+          <source src="wav/夢想前行Kiha_Cute.wav" type="audio/wav">
+          您的瀏覽器不支援 audio 播放器。
+        </audio>
+      </div>
+      <div class="audio-player">
+        <p>🎵 VOICE Lively DEMO試聽</p>
+        <audio controls>
+          <source src="wav/夢想前行Kiha_Lively.wav" type="audio/wav">
           您的瀏覽器不支援 audio 播放器。
         </audio>
       </div>
@@ -722,7 +378,7 @@
       <p>2023 年 12 月，自由之光重新啟動計劃，推出男女雙小學生角色虛擬歌手，男性為「星希羽」，繼承部分「耀光」設定，女性為「星彗羽」。</p>
       <p>2024 年 2 月 22 日開設「星樂之夢工作室」，並於 4 月轉用 ACE Studio 進行開發。2024 年 8 月 14 日，星希羽正式發佈 1.0 版本及首支原創曲《星の夜》，由自由之光代理經營。</p>
       <p>2025 年 2 月 22 日正式由星樂之夢工作室接手並與自由之光共同營運。</p>
-      <p>2026 年 2 月 2 日起星樂之夢停止了星希羽 V1 官方活動及聲庫維護，3 月 1 日星希羽 V2 專案啟動新聲優徵選開始，4 月 9 日自由之光退出營運，4 月 30 日星希羽V2開始測試，6 月 11 日正式發行二週年紀念 EP《羽翼》並展開星希羽 V2 封測，8 月 14 日二週年推出星希羽 V2 正式版。</p>
+      <p>2026 年 2 月 2 日起星樂之夢停止了星希羽 V1 官方活動及聲庫維護，3 月 1 日星希羽 V2 專案啟動新聲優徵選開始，4 月 9 日自由之光退出營運，4 月 30 日星希羽V2開始測試，6 月 11 日正式發行二週年紀念 EP《羽翼》並展開星希羽 V2 封測，7 月 31 日推出星希羽V2.0正式版，並宣布V2.0版的Voice Style，將原本的V1與V2聲音整合，V1聲音變為V2.0的Cute聲線，V2聲音變為V2.0的Lively聲線。</p>
     </div>
     <img class="yoyo-star" src="img/星希羽提示星星.png" alt="悠悠星" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>悠悠預留</text></svg>'">
   </section>
