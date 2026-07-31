@@ -102,8 +102,14 @@
     .logo-card { padding: 30px; }
     .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
 
-    /* 立繪卡片 */
-    .portrait-card { padding: 30px 20px 0px 20px; overflow: hidden; flex: 1; justify-content: flex-end; }
+    /* 立繪卡片 - 修改為置中對齊 */
+    .portrait-card {
+      padding: 30px 20px;
+      overflow: hidden;
+      flex: 1;
+      justify-content: center; /* 垂直置中 */
+      align-items: center; /* 水平置中 */
+    }
     #profile-portrait { width: 100%; max-width: 360px; height: auto; object-fit: contain; transition: opacity 0.3s ease; }
 
     /* 右側個人資料卡片 */
@@ -638,4 +644,4 @@
     })();
   </script>
 </body>
-</html>
+</html> 
