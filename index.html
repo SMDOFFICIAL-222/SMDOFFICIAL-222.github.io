@@ -25,36 +25,50 @@
       --bg: #0a0e17;
       --text: #f0f4f8;
       --accent: #FCD676;
-      --card-bg: rgba(255,255,255,0.05);
+      /* 霧面黑玻璃特效變數 (Dark Glassmorphism) */
+      --glass-bg: rgba(10, 16, 28, 0.75); /* 深色半透明底 */
+      --glass-bg-hover: rgba(15, 22, 38, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.12); /* 微微的亮邊勾勒輪廓 */
+      --glass-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); /* 較深的陰影產生浮重感 */
+      --glass-blur: blur(20px) saturate(120%); /* 模糊與飽和度調整 */
     }
+
     body {
       margin: 0;
+      padding-top: 80px; /* 配合 fixed header */
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       background: var(--bg);
       color: var(--text);
       overflow-x: hidden;
     }
 
-    /* 星空背景 */
+    /* 星空背景圖片 */
     .stars {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       z-index: -1;
-      background: radial-gradient(circle at center, #111a2f 0%, #05080f 100%);
+      background: url('img/星樂之夢背景.png') no-repeat center center;
+      background-size: cover;
+      background-attachment: fixed;
     }
 
-    /* 頂部導覽列 */
+    /* 頂部導覽列 (霧面黑玻璃) */
     header {
-      padding: 20px 40px;
+      padding: 15px 40px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: rgba(10,14,23,0.8);
-      backdrop-filter: blur(10px);
-      position: sticky;
+      background: rgba(8, 12, 20, 0.85); /* 較深色的導覽列 */
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      position: fixed;
       top: 0;
-      z-index: 100;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      left: 0;
+      width: 100%;
+      box-sizing: border-box;
+      z-index: 1000;
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.6);
     }
 
     /* Logo 區塊與圖片設定 */
@@ -116,17 +130,19 @@
       top: calc(100% + 10px);
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(10, 14, 23, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(10, 16, 28, 0.95);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+      backdrop-filter: blur(24px) saturate(150%);
       min-width: 160px;
-      box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
+      box-shadow: var(--glass-shadow);
       border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid var(--glass-border);
       z-index: 101;
       padding: 8px 0;
     }
     .dropdown-content.show {
       display: block;
+      animation: fadeIn 0.2s ease-in-out;
     }
     .dropdown-content a {
       color: #a0aec0;
@@ -139,8 +155,13 @@
       transition: background 0.3s, color 0.3s;
     }
     .dropdown-content a:hover {
-      background: rgba(252, 214, 118, 0.1);
+      background: rgba(252, 214, 118, 0.15);
       color: var(--accent);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -5px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
     }
 
     /* 主視覺區塊 */
@@ -151,14 +172,18 @@
     .hero h1 {
       font-size: 3em;
       margin-bottom: 15px;
-      text-shadow: 0 0 20px rgba(252, 214, 118, 0.3);
+      text-shadow: 0 0 25px rgba(252, 214, 118, 0.6), 0 4px 10px rgba(0,0,0,0.8);
+      color: #ffffff;
+      letter-spacing: 2px;
     }
     .hero p {
-      font-size: 1.1em;
-      color: #a0aec0;
-      max-width: 650px;
+      font-size: 1.15em;
+      color: #f0f4f8;
+      max-width: 680px;
       margin: 0 auto 35px;
       line-height: 1.7;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.9);
+      font-weight: 500;
     }
 
     /* 通用區塊設定 */
@@ -172,6 +197,8 @@
       padding-left: 15px;
       font-size: 26px;
       margin-bottom: 40px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+      color: #ffffff;
     }
     /* 歌手系列副標題 */
     .series-title {
@@ -181,6 +208,7 @@
       margin-top: 40px;
       font-weight: bold;
       letter-spacing: 1px;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.8);
     }
 
     /* 按鈕樣式 */
@@ -193,27 +221,42 @@
       text-decoration: none;
       border-radius: 8px;
       margin-top: 25px;
-      transition: transform 0.2s, background 0.3s;
+      transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
       cursor: pointer;
       border: none;
       font-size: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
     .btn:hover {
       transform: scale(1.05);
       background: #fde49e;
+      box-shadow: 0 10px 20px rgba(252, 214, 118, 0.4);
     }
     .btn-outline {
-      background: transparent;
+      background: rgba(10, 14, 23, 0.7);
       border: 1px solid var(--accent);
       color: var(--accent);
       margin-top: 0;
+      backdrop-filter: blur(8px);
     }
     .btn-outline:hover {
-      background: rgba(252, 214, 118, 0.1);
+      background: rgba(252, 214, 118, 0.2);
       transform: scale(1.02);
     }
 
-    /* ================= 歌手網格 (4格並排) ================= */
+    /* ================= 黑玻璃共用設定 ================= */
+    .dark-glass-panel {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      box-shadow: var(--glass-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ================= 歌手網格 ================= */
     .singer-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -222,12 +265,9 @@
       margin-bottom: 50px;
     }
     .card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
       padding: 20px;
       text-align: center;
-      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+      transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s, background 0.3s;
       text-decoration: none;
       color: inherit;
       display: flex;
@@ -235,8 +275,9 @@
     }
     .card:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 30px rgba(252, 214, 118, 0.12);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 15px rgba(252, 214, 118, 0.15);
       border-color: rgba(252, 214, 118, 0.4);
+      background: var(--glass-bg-hover);
     }
     .card img {
       width: 100%;
@@ -244,15 +285,17 @@
       aspect-ratio: 1/1;
       object-fit: cover;
       border-radius: 12px;
-      background: #1a2333;
+      background: rgba(0,0,0,0.5); /* 圖片還沒載入時的深色底 */
       margin-bottom: 18px;
     }
     .card h3 {
       margin: 0 0 6px;
       font-size: 18px;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
     .card p {
-      color: #a0aec0;
+      color: #cbd5e1;
       font-size: 13px;
       margin: 0;
       flex-grow: 1;
@@ -260,179 +303,68 @@
 
     /* 敬請期待樣式 */
     .card.coming-soon {
-      opacity: 0.6;
+      opacity: 0.85; /* 調高一點透明度讓它在深色背景不要太暗 */
       pointer-events: none;
-      background: rgba(10, 14, 23, 0.5);
+      background: rgba(10, 14, 23, 0.85);
       border: 1px dashed rgba(255,255,255,0.2);
     }
     .card.coming-soon img {
-      filter: grayscale(100%) brightness(0.6);
+      filter: grayscale(80%) brightness(0.6);
     }
 
     /* 歷史概要 */
     .history-section {
-      background: var(--card-bg);
       padding: 40px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.05);
-      position: relative;
     }
-    .history-text { font-size: 15px; line-height: 1.9; color: #a0aec0; }
+    .history-text { font-size: 15px; line-height: 1.9; color: #e2e8f0; }
     .history-text p { margin-bottom: 20px; }
+    .history-text p:last-child { margin-bottom: 0; }
 
-    /* ================= 情報與消息區塊樣式 ================= */
-    .news-system-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
-      gap: 30px;
-      width: 100%;
-    }
-    .system-update-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 35px 30px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    /* ================= Nova Works 黑玻璃卡片化 ================= */
+    .works-section-wrapper {
+      padding: 40px;
       display: flex;
       flex-direction: column;
+      align-items: center; /* 內容置中 */
+      text-align: center;
     }
-
-    .kiha-update:hover {
-      transform: translateY(-5px);
-      border-color: rgba(199, 238, 251, 0.4);
-      box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15);
-    }
-
-    .huiha-update:hover {
-      transform: translateY(-5px);
-      border-color: rgba(251, 157, 158, 0.4);
-      box-shadow: 0 15px 35px rgba(251, 157, 158, 0.15);
-    }
-
-    .update-badge {
-      position: absolute;
-      top: 0;
-      right: 0;
-      background: rgba(255, 255, 255, 0.1);
-      color: #a0aec0;
-      font-size: 11px;
-      font-weight: bold;
-      padding: 6px 15px;
-      border-radius: 0 0 0 12px;
-      letter-spacing: 1px;
-    }
-    .system-header {
+    .works-logo-container {
       display: flex;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 20px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: 15px;
+      justify-content: center;
+      margin-bottom: 25px;
     }
-    .sys-logo {
-      max-height: 40px;
+    .works-logo-container img {
+      height: 45px; /* 稍微放大 Logo */
       width: auto;
-      object-fit: contain;
+      filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));
     }
-    .sys-title-wrapper {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .system-header h3 {
-      margin: 0;
-      font-size: 20px;
-      color: #ffffff;
-      line-height: 1.2;
-    }
-    .version-tag {
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 1px;
-    }
-    .kiha-update .system-header h3 { text-shadow: 0 0 10px rgba(199, 238, 251, 0.3); }
-    .kiha-update .version-tag { color: #C7EEFB; }
-    .huiha-update .system-header h3 { text-shadow: 0 0 10px rgba(251, 157, 158, 0.3); }
-    .huiha-update .version-tag { color: #FB9D9E; }
-
-    .update-content {
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-    .update-desc {
-      margin: 0 0 20px 0;
-      font-size: 15px;
+    .works-section-wrapper p {
       color: #e2e8f0;
-      line-height: 1.6;
-      font-weight: bold;
-    }
-    .update-features {
-      padding-left: 0;
-      margin: 0 0 35px 0;
-      color: #a0aec0;
-      font-size: 14px;
       line-height: 1.8;
-      list-style: none;
+      margin-bottom: 30px;
+      max-width: 800px;
+      font-size: 16px;
     }
-    .update-features li {
-      margin-bottom: 14px;
-      position: relative;
-      padding-left: 20px;
-    }
-    .update-features li::before {
-      content: '▶';
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 10px;
-    }
-    .kiha-update .update-features li::before { color: #C7EEFB; }
-    .huiha-update .update-features li::before { color: #FB9D9E; }
 
-    .update-features strong {
-      color: #ffffff;
-      font-size: 15px;
-    }
-    .kiha-update .update-features strong { color: #C7EEFB; }
-    .huiha-update .update-features strong { color: #FB9D9E; }
 
-    .update-action {
-      margin-top: auto;
-    }
-    .news-btn {
-      display: inline-block;
-      width: 100%;
+    /* ================= 情報與消息區塊樣式 ================= */
+    .news-empty-state {
+      padding: 60px 30px;
       text-align: center;
-      padding: 14px 0;
-      border-radius: 8px;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 15px;
-      transition: all 0.3s;
-      box-sizing: border-box;
+      color: #e2e8f0;
+      font-size: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      border: 1px dashed rgba(255,255,255,0.2); /* 空狀態用虛線邊框 */
     }
-    .btn-kiha {
-      background: #C7EEFB;
-      color: #0a0e17;
-    }
-    .btn-kiha:hover {
-      background: #b0d8fc;
-      transform: scale(1.02);
-      box-shadow: 0 5px 15px rgba(199, 238, 251, 0.4);
-    }
-    .btn-huiha {
-      background: transparent;
-      border: 1px solid #FB9D9E;
-      color: #FB9D9E;
-    }
-    .btn-huiha:hover {
-      background: rgba(251, 157, 158, 0.1);
-      transform: scale(1.02);
-      box-shadow: 0 5px 15px rgba(251, 157, 158, 0.2);
+    .news-empty-state svg {
+      width: 48px;
+      height: 48px;
+      fill: rgba(255, 255, 255, 0.4);
     }
 
     /* 彈出視窗 (Modal) 樣式 */
@@ -451,15 +383,15 @@
       display: flex;
     }
     .modal-card {
-      background: #161c27;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #121824; /* 純色深灰，因為彈窗通常不需要透視後面的東西 */
+      border: 1px solid rgba(255, 255, 255, 0.15);
       width: 100%;
       max-width: 650px;
       max-height: 90vh;
       border-radius: 20px;
       overflow-y: auto;
       position: relative;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.8);
       padding: 40px;
       box-sizing: border-box;
     }
@@ -490,9 +422,10 @@
       color: var(--accent);
       font-size: 24px;
       margin-bottom: 20px;
+      text-shadow: none;
     }
     .modal-card ol {
-      color: #a0aec0;
+      color: #cbd5e1;
       line-height: 1.9;
       font-size: 15px;
       padding-left: 20px;
@@ -502,21 +435,21 @@
       margin-bottom: 15px;
     }
     .modal-card strong {
-      color: #f0f4f8;
+      color: #ffffff;
       font-weight: bold;
     }
 
     /* 招募區塊 */
     .recruit-banner {
-      background: linear-gradient(135deg, rgba(252, 214, 118, 0.08), rgba(255,255,255,0.03));
       padding: 45px;
-      border-radius: 16px;
       text-align: center;
-      border: 1px solid rgba(252, 214, 118, 0.15);
+      border-color: rgba(252, 214, 118, 0.3); /* 讓邊框帶點金色 */
     }
     .recruit-banner h3 {
       font-size: 24px;
       margin-top: 0;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
 
     /* 頁尾與社群方塊連結 */
@@ -524,9 +457,11 @@
       text-align: center;
       padding: 50px 20px 40px;
       color: #a0aec0;
-      border-top: 1px solid rgba(255,255,255,0.05);
+      border-top: 1px solid rgba(255,255,255,0.1);
       margin-top: 60px;
       font-size: 14px;
+      background: rgba(8, 12, 20, 0.85);
+      backdrop-filter: blur(10px);
     }
 
     .social-links {
@@ -542,14 +477,15 @@
       justify-content: center;
       width: 54px;
       height: 54px;
-      background-color: #ffffff;
+      background-color: rgba(255,255,255,0.9);
       border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
       transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
     }
     .social-links a:hover {
       transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 8px 25px rgba(252, 214, 118, 0.5);
+      box-shadow: 0 12px 25px rgba(252, 214, 118, 0.6);
+      background-color: #ffffff;
     }
 
     /* 響應式設定 */
@@ -562,6 +498,10 @@
         padding: 15px 20px;
         flex-direction: column;
         gap: 15px;
+        position: relative; /* 手機版選單展開時避免被截斷 */
+      }
+      body {
+         padding-top: 0; /* 取消 padding */
       }
       .nav-links {
         flex-wrap: wrap;
@@ -580,7 +520,6 @@
         padding: 30px 20px;
       }
       .singer-grid { grid-template-columns: 1fr; }
-      .news-system-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -605,13 +544,13 @@
     <p>我們是一個以「虛擬歌手 × 音樂創作 × 世界觀劇情」為核心的大學生創作團隊</p>
   </div>
 
-  <section class="history-section">
+  <section class="history-section dark-glass-panel">
     <h2>歷史概要</h2>
     <div class="history-text">
       <p>星樂之夢團隊（Star Music Dream）起源於2023年5月21日成立的「自由之光音樂社」，最初作為多媒體創作團隊「自由之光」旗下的音樂創作部門，負責虛擬歌手與原創音樂相關企劃開發。</p>
       <p>2023年12月，團隊重新啟動虛擬歌手企劃，發表兒童聲虛擬歌手 星希羽 與 星彗羽。</p>
       <p>2024年2月22日，團隊更名為「星樂之夢」，開始以獨立品牌形式對外活動。2025年2月22日再次調整組織架構，更名為「星樂之夢工作室」，並正式成為自由之光旗下子團隊，全面接手星希羽營運與星彗羽開發工作。</p>
-      <p>2026年4月9日，更名為「星樂之夢團隊」，成為虛擬歌手與數位內容創作團隊。</p>
+      <p>2026年4月9日，自由之光正式解散。原子團隊獨立營運，並更名為「星樂之夢團隊」，成為獨立的虛擬歌手與數位內容創作團隊。</p>
     </div>
   </section>
 
@@ -620,25 +559,25 @@
 
     <div class="series-title">STREETECHOES 系列</div>
     <div class="singer-grid">
-      <a href="#" class="card coming-soon">
+      <a href="#" class="card coming-soon dark-glass-panel">
         <img src="img/希恩頭像ACE2.png" alt="希恩" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>希恩</h3>
         <p>台灣虛擬男聲歌手</p>
       </a>
 
-      <a href="#" class="card coming-soon">
+      <a href="#" class="card coming-soon dark-glass-panel">
         <img src="img/宇熙頭像ACE2.png" alt="宇熙" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>宇熙</h3>
         <p>台灣虛擬女聲歌手</p>
       </a>
 
-      <a href="#" class="card coming-soon">
+      <a href="#" class="card coming-soon dark-glass-panel">
         <img src="img/程都頭像ACE2.png" alt="程都" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>程都</h3>
         <p>台灣虛擬男聲歌手</p>
       </a>
 
-      <a href="#" class="card coming-soon">
+      <a href="#" class="card coming-soon dark-glass-panel">
         <img src="img/悠珊頭像ACE2.png" alt="悠珊" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>悠珊</h3>
         <p>台灣虛擬女聲歌手</p>
@@ -647,25 +586,25 @@
 
     <div class="series-title">森嶼之聲 系列</div>
     <div class="singer-grid">
-      <a href="#" class="card coming-soon">
+      <a href="#" class="card coming-soon dark-glass-panel">
         <img src="img/岳嵐頭像ACE2.png" alt="岳嵐" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>岳嵐</h3>
         <p>台灣虛擬男聲歌手</p>
       </a>
 
-      <a href="#" class="card coming-soon">
+      <a href="#" class="card coming-soon dark-glass-panel">
         <img src="img/穗蓉頭像ACE2.png" alt="穗蓉" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>穗蓉</h3>
         <p>台灣虛擬女聲歌手</p>
       </a>
 
-      <a href="#" class="card coming-soon">
+      <a href="#" class="card coming-soon dark-glass-panel">
         <img src="img/湛嶠頭像ACE2.png" alt="湛嶠" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>湛嶠</h3>
         <p>台灣虛擬男聲歌手</p>
       </a>
 
-      <a href="#" class="card coming-soon">
+      <a href="#" class="card coming-soon dark-glass-panel">
         <img src="img/雉瑜頭像ACE2.png" alt="雉瑜" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>雉瑜</h3>
         <p>台灣虛擬女聲歌手</p>
@@ -674,25 +613,25 @@
 
     <div class="series-title">星幻之城 × StarLeo 系列</div>
     <div class="singer-grid">
-      <a href="HoshiKiha.html" class="card">
+      <a href="HoshiKiha.html" class="card dark-glass-panel">
         <img src="img/星希羽頭像ACE2.png" alt="星希羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>星希羽</h3>
         <p>台灣虛擬男童聲歌手</p>
       </a>
 
-      <a href="HoshiHuiha.html" class="card">
+      <a href="HoshiHuiha.html" class="card dark-glass-panel">
         <img src="img/星彗羽頭像ACE2.png" alt="星彗羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>星彗羽</h3>
         <p>台灣虛擬女童聲歌手</p>
       </a>
 
-      <a href="HoshiJoken.html" class="card">
+      <a href="HoshiJoken.html" class="card dark-glass-panel">
         <img src="img/星丞軒頭像ACE2.png" alt="星丞軒" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>星丞軒</h3>
         <p>台灣虛擬男童聲歌手</p>
       </a>
 
-      <a href="HoshiHuishin.html" class="card">
+      <a href="HoshiHuishin.html" class="card dark-glass-panel">
         <img src="img/星卉芯頭像ACE2.png" alt="星卉芯" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
         <h3>星卉芯</h3>
         <p>台灣虛擬女童聲歌手</p>
@@ -720,94 +659,44 @@
   </div>
 
   <section id="works">
-    <div style="display: flex; align-items: center; border-left: 4px solid var(--accent); padding-left: 15px; margin-bottom: 40px;">
-      <img src="img/NovaWorks_Logo(2).png" alt="Nova Works" style="height: 35px; width: auto;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'35\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%23FCD676\' font-family=\'sans-serif\' font-size=\'24\' font-weight=\'bold\' alignment-baseline=\'middle\'>NOVA WORKS</text></svg>'">
-    </div>
-
-    <p style="color: #a0aec0; line-height: 1.6; margin-bottom: 25px;">
-      Nova Works 是 STAR MUSIC DREAM 旗下的音樂創作品牌，專注於音樂製作與作品發佈，作為星樂之夢團隊共同的音樂發表小基地。
-    </p>
-
-    <div class="works-preview">
-      <div class="works-info">
+    <!-- Nova Works 區塊改為黑玻璃卡片化 -->
+    <div class="works-section-wrapper dark-glass-panel">
+      <div class="works-logo-container">
+        <img src="img/NovaWorks_Logo(2).png" alt="Nova Works" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'45\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FCD676\' font-family=\'sans-serif\' font-size=\'28\' font-weight=\'bold\' text-anchor=\'middle\' alignment-baseline=\'middle\'>NOVA WORKS</text></svg>'">
       </div>
-    </div>
 
-    <div class="works-btn-container">
-      <a href="NovaWorks.html" class="btn">前往 Nova Works ▶</a>
+      <p>
+        Nova Works 是 STAR MUSIC DREAM 旗下的音樂創作品牌，專注於音樂製作與作品發佈，作為星樂之夢團隊共同的音樂發表小基地。
+      </p>
+
+      <div class="works-btn-container">
+        <a href="NovaWorks.html" class="btn">前往 Nova Works ▶</a>
+      </div>
     </div>
   </section>
 
   <section id="news">
     <h2>情報與消息</h2>
-    <div class="news-system-grid">
 
-      <!-- 星希羽 ACE 2 更新卡片 -->
-      <div class="system-update-card kiha-update">
-        <div class="update-badge">SYSTEM UPDATE</div>
-        <div class="system-header">
-          <img src="img/星希羽Logo.png" alt="星希羽 Logo" class="sys-logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'40\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'25\' fill=\'%23C7EEFB\' font-family=\'sans-serif\' font-size=\'18\' font-weight=\'bold\'>星希羽</text></svg>'">
-          <div class="sys-title-wrapper">
-            <h3>ACE 2 Ai Voice System</h3>
-            <span class="version-tag">V1.5.1 ➜ ACE 2</span>
-          </div>
-        </div>
-        <div class="update-content">
-          <p class="update-desc">星希羽全新 Ai 歌聲合成系統正式啟動，帶來史詩級技術革新：</p>
-          <ul class="update-features">
-            <li><strong>更換全新聲優：</strong> 至此版本起，正式更換聲優，賦予星希羽全新的生命力。</li>
-            <li><strong>Auto Pitch：</strong> 真正學習聲音提供者的演唱習慣，為單調平直的譜面注入生機，自動添加轉音、抖動、顫音，完美展現歌手唱歌技法。</li>
-            <li><strong>Cross Phoneme：</strong> 在全新架構中特別加強元音與口型之間的變換，使演唱更能呈現真實自然的發聲細節。</li>
-            <li><strong>Vocal Mode：</strong> 除特殊錄製效果外，自帶 5 種 Vocal Mode（Normal、Power、Soft、Breathy、Chest）呈現四個象限中的表現，徹底改變以往的調教方法。</li>
-            <li><strong>Re-Take：</strong> 突破架構限制，將合成最小範圍從片段縮小至音符，搭配新 DPO 技術，輕鬆讓歌手以不同方式演繹每個音符與樂段。</li>
-            <li><strong>歌曲情景理解：</strong> 自動解析譜面並適當調整演繹風格以符合需求，並加以推理情感的鋪敘與強弱變化。</li>
-            <li><strong>新增歌唱語言：</strong> 歌聲資料庫全面解鎖「韓語、法語、義大利語、葡萄牙語」演唱能力。</li>
-          </ul>
-          <div class="update-action">
-            <a href="HoshiKiha.html" class="news-btn btn-huiha">查看歌手檔案</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- 星彗羽 ACE 2 更新卡片 -->
-      <div class="system-update-card huiha-update">
-        <div class="update-badge">SYSTEM UPDATE</div>
-        <div class="system-header">
-          <img src="img/星彗羽2.0Logo.png" alt="星彗羽 Logo" class="sys-logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'120\' height=\'40\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'25\' fill=\'%23FB9D9E\' font-family=\'sans-serif\' font-size=\'18\' font-weight=\'bold\'>星彗羽</text></svg>'">
-          <div class="sys-title-wrapper">
-            <h3>ACE 2 Ai Voice System</h3>
-            <span class="version-tag">V1.1 ➜ ACE 2</span>
-          </div>
-        </div>
-        <div class="update-content">
-          <p class="update-desc">星彗羽同步迎來全新世代 Ai 引擎升級，全方位提升演唱表現：</p>
-          <ul class="update-features">
-            <li><strong>Auto Pitch：</strong> 真正學習聲音提供者的演唱習慣，為單調平直的譜面注入生機，自動添加轉音、抖動、顫音，完美展現歌手唱歌技法。</li>
-            <li><strong>Cross Phoneme：</strong> 在全新架構中特別加強元音與口型之間的變換，使演唱更能呈現真實自然的發聲細節。</li>
-            <li><strong>Vocal Mode：</strong> 除特殊錄製效果外，自帶 5 種 Vocal Mode（Normal、Power、Soft、Breathy、Chest）呈現四個象限中的表現，徹底改變以往的調教方法。</li>
-            <li><strong>Re-Take：</strong> 突破架構限制，將合成最小範圍從片段縮小至音符，搭配新 DPO 技術，輕鬆讓歌手以不同方式演繹每個音符與樂段。</li>
-            <li><strong>歌曲情景理解：</strong> 自動解析譜面並適當調整演繹風格以符合需求，並加以推理情感的鋪敘與強弱變化。</li>
-            <li><strong>新增歌唱語言：</strong> 歌聲資料庫全面解鎖「韓語、法語、義大利語、葡萄牙語」演唱能力。</li>
-          </ul>
-          <div class="update-action">
-            <a href="HoshiHuiha.html" class="news-btn btn-huiha">查看歌手檔案</a>
-          </div>
-        </div>
-      </div>
-
+    <div class="news-empty-state dark-glass-panel">
+      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+      </svg>
+      <div>暫無最新消息</div>
+      <div style="font-size: 13px; opacity: 0.7;">敬請期待星樂之夢未來的全新企劃與活動！</div>
     </div>
   </section>
 
   <section id="about">
     <h2>加入核心團隊</h2>
-    <div class="recruit-banner">
+    <div class="recruit-banner dark-glass-panel">
       <h3>一起打造虛擬歌手的未來</h3>
-      <p style="line-height: 1.9; color: #a0aec0; margin-top: 15px;">
+      <p style="line-height: 1.9; color: #e2e8f0; margin-top: 15px;">
         隨著星樂之夢的企劃日益壯大，我們正在尋找 <strong>3～4 位</strong>充滿熱忱的核心夥伴加入管理團隊。<br>
         不論你擅長的是音樂創作、社群行銷還是虛擬歌手管理，<br>
         我們都需要你的力量，一起統籌 12 位虛擬歌手的未來發展，<br>
       </p>
-      <a href="mailto:starmusicdreamstudio@gmail.com" class="btn">聯絡我們</a>
+      <a href="SingerRecruit.html" class="btn">點我了解更多</a>
     </div>
   </section>
 
@@ -859,51 +748,6 @@
         closeTermsModal();
       }
     }
-  </script>
-
-  <script>
-    // 背景星空腳本
-    (function(){
-      const canvas = document.getElementById('cursor-canvas');
-      if (!canvas) return; // 避免找不到報錯
-      const ctx = canvas.getContext('2d');
-      let width, height;
-      const DPR = window.devicePixelRatio || 1;
-
-      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
-      window.addEventListener('resize', resize); resize();
-
-      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
-      const particles = [];
-
-      function drawStar(ctx, x, y, radius, rot) {
-        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
-        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
-        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
-        ctx.moveTo(0, -outerRadius);
-        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
-        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
-      }
-
-      function addParticle(x, y) {
-        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
-      }
-
-      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
-
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i]; p.life++;
-          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
-          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
-          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
-          drawStar(ctx, p.x, p.y, p.size, p.rot);
-        }
-        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
-      }
-      animate();
-    })();
   </script>
 </body>
 </html>
