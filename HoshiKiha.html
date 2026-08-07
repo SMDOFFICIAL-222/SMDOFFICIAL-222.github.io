@@ -9,22 +9,26 @@
   <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
 
   <style>
-    /* CSS 重置與變數 (星希羽專屬：馬卡龍藍) */
+    /* CSS 重置與變數 (星希羽專屬：明亮夢幻風) */
     :root {
       --bg: #0a0e17;
-      --text: #f0f4f8;
-      --accent: #C7EEFB;
-      --card-bg: rgba(10, 16, 28, 0.6);
-      /* 玻璃特效變數 */
-      --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
-      --glass-bg-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.05));
-      --glass-border: rgba(255, 255, 255, 0.15);
-      --glass-border-soft: rgba(255, 255, 255, 0.08);
-      --glass-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-      --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      --text: #2d3748; /* 深藍灰，主要內容文字 */
+      --text-light: #4a5568;
+      --accent: #C7EEFB; /* 星希羽專屬馬卡龍藍 */
+
+      /* 明亮夢幻玻璃特效變數 (Light Glassmorphism) */
+      --card-bg: rgba(255, 255, 255, 0.45);
+      --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+      --glass-bg-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-border-soft: rgba(255, 255, 255, 0.3);
+      --glass-shadow: 0 15px 35px rgba(31, 41, 55, 0.15);
+      --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      --glass-blur: blur(24px) saturate(120%);
     }
     body {
       margin: 0;
+      padding-top: 80px;
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       background: var(--bg);
       color: var(--text);
@@ -32,49 +36,54 @@
       min-height: 100vh;
     }
 
+    /* 針對淺藍色文字在白底上的可讀性優化：加上微弱的深色陰影 */
+    .accent-text-shadow {
+        text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3);
+    }
+
     /* 星空背景與滑鼠粒子畫布 */
     .stars {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-      background: radial-gradient(circle at center, #111a2f 0%, #05080f 100%);
-    }
-    #cursor-canvas {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 9999;
+      background: url('img/StarLeo背景圖.png') no-repeat center center;
+      background-size: cover;
     }
 
-    /* 頂部導覽列 */
+    /* 頂部導覽列 (Fixed + 暗色玻璃) */
     header {
-      padding: 20px 40px;
+      padding: 15px 40px;
       display: flex; justify-content: space-between; align-items: center;
-      background: rgba(10,14,23,0.38);
-      -webkit-backdrop-filter: blur(22px) saturate(150%);
-      backdrop-filter: blur(22px) saturate(150%);
-      position: sticky; top: 0; z-index: 100;
+      background: rgba(10, 16, 28, 0.75);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 1000;
       border-bottom: 1px solid var(--glass-border-soft);
-      box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.2);
     }
     .logo { text-decoration: none; display: flex; align-items: center; }
     .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
 
     .nav-links { display: flex; align-items: center; }
-    .nav-links a { color: var(--text); text-decoration: none; margin-left: 25px; font-size: 15px; transition: color 0.3s; }
+    .nav-links a { color: #f0f4f8; text-decoration: none; margin-left: 25px; font-size: 15px; transition: color 0.3s; font-weight: 500;}
     .nav-links a:hover { color: var(--accent); }
 
     /* ================= 導覽列下拉選單樣式 ================= */
     .dropdown { position: relative; display: inline-block; margin-left: 25px; cursor: pointer; }
-    .dropdown-btn { color: var(--text); font-size: 15px; transition: color 0.3s; padding: 10px 0; user-select: none; }
+    .dropdown-btn { color: #f0f4f8; font-size: 15px; transition: color 0.3s; padding: 10px 0; user-select: none; font-weight: 500; }
     .dropdown:hover .dropdown-btn { color: var(--accent); }
+    .dropdown::after {
+      content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 15px;
+    }
     .dropdown-content {
       display: none; position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
-      background: rgba(10, 20, 38, 0.62);
-      -webkit-backdrop-filter: blur(24px) saturate(150%);
-      backdrop-filter: blur(24px) saturate(150%);
+      background: rgba(10, 16, 28, 0.95);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
       min-width: 160px;
-      box-shadow: var(--glass-shadow), var(--glass-inner); border-radius: 12px; border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
       z-index: 101; padding: 8px 0;
     }
     .dropdown-content.show { display: block; animation: fadeIn 0.2s ease-in-out; }
-    .dropdown-content a { color: #a0aec0; padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; }
+    .dropdown-content a { color: #a0aec0; padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; font-weight: normal;}
     .dropdown-content a:hover { background: rgba(199, 238, 251, 0.15); color: var(--accent); }
 
     @keyframes fadeIn {
@@ -84,198 +93,174 @@
 
     /* 通用區塊設定 */
     section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
-    h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); }
+    h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); font-weight: bold; }
+
+    /* ================= 明亮玻璃共用設定 ================= */
+    .light-glass-panel {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
+    }
 
     /* ================= 1. 頂部人物檔案區 ================= */
     .profile-section { display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px; }
 
-    /* 左側欄 */
     .left-column { flex: 0 0 400px; display: flex; flex-direction: column; gap: 20px; }
 
-    .img-card {
-      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px;
-      -webkit-backdrop-filter: blur(24px) saturate(145%);
-      backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner); display: flex; flex-direction: column; justify-content: center; align-items: center;
-    }
+    .logo-card { padding: 30px; display: flex; justify-content: center; align-items: center; }
+    .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 5px rgba(255,255,255,0.8)); }
 
-    .logo-card { padding: 30px; }
-    .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
-
-    /* 立繪卡片 - 修改為置中對齊 */
+    /* 立繪卡片 - 置中 */
     .portrait-card {
-      padding: 30px 20px;
+      padding: 30px 20px 0 20px;
       overflow: hidden;
       flex: 1;
-      justify-content: center; /* 垂直置中 */
-      align-items: center; /* 水平置中 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     #profile-portrait { width: 100%; max-width: 360px; height: auto; object-fit: contain; transition: opacity 0.3s ease; }
 
     /* 右側個人資料卡片 */
-    .profile-card {
-      flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 30px;
-      -webkit-backdrop-filter: blur(24px) saturate(145%);
-      backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner);
-    }
+    .profile-card { flex: 1; padding: 30px; }
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 15px; vertical-align: top; }
-    .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
+    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 15px; vertical-align: top; color: var(--text); font-weight: 500; }
+    /* 表格標題顏色，加上微陰影 */
+    .char-table td:first-child { color: var(--accent); font-weight: 800; width: 120px; text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3); }
 
-    /* 版本資訊區塊優化 */
     .version-info-container { display: flex; flex-direction: column; gap: 12px; }
     .version-text { font-size: 15px; }
     .version-buttons { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 
-    /* 封測按鈕小標籤樣式 (玻璃特化版) */
+    /* 封測按鈕小標籤樣式 */
     .beta-btn-small {
       display: inline-block; padding: 6px 16px;
-      background-color: rgba(199, 238, 251, 0.15); /* 馬卡龍藍微透 */
-      color: var(--accent); font-size: 13px; font-weight: bold;
-      border: 1px solid rgba(199, 238, 251, 0.5); border-radius: 20px; text-decoration: none;
+      background-color: var(--accent);
+      color: #0a0e17; /* 背景是淺藍，字用深色才清楚 */
+      font-size: 13px; font-weight: bold;
+      border: 1px solid var(--accent); border-radius: 20px; text-decoration: none;
       transition: all 0.3s ease; text-align: center;
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 10px rgba(199, 238, 251, 0.3);
     }
     .beta-btn-small:hover {
-      background-color: var(--accent); color: #0a0e17; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(199, 238, 251, 0.4);
+      background-color: #a0dff5; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(199, 238, 251, 0.5);
     }
 
+    /* 播放器 */
     .audio-player {
-      background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);
-      -webkit-backdrop-filter: blur(18px) saturate(145%); backdrop-filter: blur(18px) saturate(145%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 12px 28px rgba(0,0,0,0.18);
-      margin-bottom: 15px; /* 給多個播放器間距 */
+      background: rgba(255,255,255,0.6); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.8);
+      margin-bottom: 15px; box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 5px 15px rgba(0,0,0,0.05);
     }
-    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--accent); }
+    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: 900; color: var(--accent); text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3); }
     .audio-player audio { width: 100%; height: 40px; outline: none; }
 
     /* ================= 2. 概要區塊 ================= */
-    .intro-section {
-      text-align: center; background: var(--glass-bg-strong);
-      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
-      padding: 40px; border-radius: 18px; border: 1px solid var(--glass-border); font-size: 1.1em; line-height: 1.8; color: #e2e8f0; margin-bottom: 60px;
-      box-shadow: var(--glass-shadow), var(--glass-inner);
-    }
+    .intro-section { text-align: center; padding: 40px; font-size: 1.1em; line-height: 1.8; color: var(--text); margin-bottom: 60px; font-weight: 500; }
 
     /* ================= 3. 歷史概要 & 世界觀區塊 ================= */
-    .history-section, .worldview-content {
-      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 40px; position: relative;
-      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner);
-    }
+    .history-section, .worldview-content { padding: 40px; position: relative; }
     .yoyo-star { position: absolute; bottom: 20px; right: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
-    .history-text { font-size: 15px; line-height: 1.9; color: #a0aec0; }
+    .history-text { font-size: 15px; line-height: 1.9; color: var(--text-light); font-weight: 500;}
     .history-text p { margin-bottom: 20px; }
     .history-text p:last-child { margin-bottom: 0; }
 
-    .worldview-content { color: #a0aec0; line-height: 1.9; font-size: 15px; }
-    .worldview-content strong { color: var(--text); }
+    .worldview-content { color: var(--text-light); line-height: 1.9; font-size: 15px; font-weight: 500;}
+    .worldview-content strong { color: var(--accent); font-weight: 800; text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.2); }
 
     .lore-poem {
       text-align: center; margin: 30px 0; padding: 35px 20px;
-      background: rgba(199, 238, 251, 0.05); border-radius: 12px; border: 1px solid rgba(199, 238, 251, 0.15);
-      color: #e2e8f0; font-size: 16px; letter-spacing: 1.5px; box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+      background: rgba(255, 255, 255, 0.5); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.8);
+      color: var(--text); font-size: 16px; letter-spacing: 1.5px; font-weight: bold;
     }
     .lore-poem p { margin: 10px 0; }
 
     /* ================= 5. 中之人與形象 ================= */
-    .vp-card {
-      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 40px; display: flex; gap: 40px; align-items: center;
-      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner);
-    }
+    .vp-card { padding: 40px; display: flex; gap: 40px; align-items: center; }
     .vp-info { flex: 1; }
-    .vp-list { list-style: none; padding: 0; margin: 0 0 25px 0; color: #a0aec0; font-size: 15px; line-height: 2.2; }
-    .vp-list li { border-bottom: 1px dashed rgba(255,255,255,0.1); }
+    .vp-list { list-style: none; padding: 0; margin: 0 0 25px 0; color: var(--text); font-size: 15px; line-height: 2.2; font-weight: 500;}
+    .vp-list li { border-bottom: 1px dashed rgba(0,0,0,0.1); }
     .vp-list li:last-child { border-bottom: none; }
-    .vp-list li strong { color: var(--accent); display: inline-block; width: 140px; }
+    .vp-list li strong { color: var(--accent); display: inline-block; width: 140px; font-weight: 800; text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3);}
 
     .vp-desc {
-      color: #e2e8f0; line-height: 1.8; font-size: 15px; margin: 0;
-      background: rgba(199, 238, 251, 0.05); padding: 20px 25px; border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0;
+      color: var(--text-light); line-height: 1.8; font-size: 15px; margin: 0; font-weight: 500;
+      background: rgba(255, 255, 255, 0.6); padding: 20px 25px; border-left: 4px solid var(--accent); border-radius: 0 8px 8px 0;
     }
     .vp-img-placeholder {
       flex: 0 0 250px; display: flex; justify-content: center; align-items: flex-end;
-      background: rgba(10, 16, 28, 0.4); border-radius: 12px; padding-top: 20px; min-height: 350px;
+      background: rgba(255, 255, 255, 0.4); border-radius: 12px; padding-top: 20px; min-height: 350px; overflow: hidden; border: 1px solid rgba(255,255,255,0.6);
     }
     .vp-img-placeholder img { width: 100%; height: 100%; max-height: 350px; object-fit: contain; display: block; }
 
     /* ================= 6. 形象3視圖展示 ================= */
-    .reference-sheet-wrapper { position: relative; width: 100%; border-radius: 16px; box-shadow: var(--glass-shadow); overflow: hidden; }
-    .reference-sheet { width: 100%; display: block; background: rgba(10, 16, 28, 0.6); }
+    .reference-sheet-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 18px; border: 1px solid var(--glass-border);}
+    .reference-sheet { width: 100%; display: block; background: rgba(255, 255, 255, 0.4); }
     .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
 
     /* ================= 歷代圖繪展示區 ================= */
     .gallery-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; margin-bottom: 40px; }
-    .gallery-card {
-      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; overflow: hidden;
-      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner); transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;
-    }
-    .gallery-card:hover { transform: translateY(-5px); border-color: rgba(199, 238, 251, 0.52); box-shadow: 0 22px 55px rgba(199, 238, 251, 0.22), var(--glass-inner); }
-    .gallery-img { width: 100%; height: 260px; background: rgba(5, 12, 24, 0.28); display: flex; justify-content: center; align-items: flex-end; overflow: hidden; padding-top: 15px; }
+    .gallery-card { overflow: hidden; transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
+    .gallery-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.8); box-shadow: 0 15px 35px rgba(31, 41, 55, 0.2); }
+    .gallery-img { width: 100%; height: 260px; background: rgba(255, 255, 255, 0.3); display: flex; justify-content: center; align-items: flex-end; overflow: hidden; padding-top: 15px; }
     .gallery-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.5s ease; }
     .gallery-card:hover .gallery-img img { transform: scale(1.05); }
-    .gallery-info {
-      padding: 15px; text-align: center; background: rgba(255,255,255,0.05); border-top: 1px solid rgba(255,255,255,0.1); flex: 1; display: flex; flex-direction: column; justify-content: center;
-    }
-    .gallery-info h4 { margin: 0; color: #ffffff; font-size: 14px; letter-spacing: 0.5px; line-height: 1.4; }
-    .gallery-info p { margin: 5px 0 0 0; color: #a0aec0; font-size: 12px; }
+    .gallery-info { padding: 15px; text-align: center; background: rgba(255,255,255,0.6); border-top: 1px solid rgba(255,255,255,0.6); flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .gallery-info h4 { margin: 0; color: var(--text); font-size: 14px; letter-spacing: 0.5px; line-height: 1.4; font-weight: bold;}
+    .gallery-info p { margin: 5px 0 0 0; color: var(--text-light); font-size: 12px; font-weight: 500;}
 
     /* ================= 7. 音樂作品展示區 ================= */
     .platform-label {
-      display: inline-flex; align-items: center; gap: 8px; background: rgba(199, 238, 251, 0.1); border: 1px solid var(--accent); color: var(--accent);
-      padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(199, 238, 251, 0.15);
+      display: inline-flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid var(--accent); color: var(--accent);
+      padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.2);
     }
     .platform-label svg { width: 18px; height: 18px; fill: currentColor; }
 
     .mv-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; width: 100%; margin-bottom: 45px; }
-    .mv-card-link {
-      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 15px;
-      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; text-decoration: none; cursor: pointer;
-    }
-    .mv-card-link:hover { transform: translateY(-5px); border-color: rgba(199, 238, 251, 0.4); box-shadow: 0 22px 55px rgba(199, 238, 251, 0.2); }
+    .mv-card-link { padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; text-decoration: none; cursor: pointer; }
+    .mv-card-link:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.8); box-shadow: 0 15px 35px rgba(31, 41, 55, 0.2); }
     .mv-card-link:hover .play-btn { background: #ff0000; transform: translate(-50%, -50%) scale(1.1); }
 
-    .mv-title { color: #ffffff; font-size: 16px; font-weight: bold; margin: 5px 0 12px 5px; display: flex; align-items: center; gap: 10px; }
+    .mv-title { color: var(--text); font-size: 16px; font-weight: bold; margin: 5px 0 12px 5px; display: flex; align-items: center; gap: 10px; }
     .mv-title span { background: var(--accent); color: #0a0e17; padding: 3px 10px; border-radius: 6px; font-size: 12px; letter-spacing: 0.5px; font-weight: 800; }
-    .mv-thumbnail { width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; position: relative; background: #000; }
-    .mv-thumbnail img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; opacity: 0.85; }
+    .mv-thumbnail { width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; position: relative; background: #fff; }
+    .mv-thumbnail img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; opacity: 0.9; }
     .mv-card-link:hover .mv-thumbnail img { transform: scale(1.05); opacity: 1; }
     .play-btn {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.7); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease;
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
     .play-btn::before { content: ''; border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent #fff; margin-left: 4px; }
 
     .spotify-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; width: 100%; }
-    .spotify-embed {
-      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 12px;
-      -webkit-backdrop-filter: blur(24px) saturate(145%); backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-    }
-    .spotify-embed:hover { transform: translateY(-5px); border-color: rgba(199, 238, 251, 0.4); box-shadow: 0 15px 35px rgba(199, 238, 251, 0.15); }
+    .spotify-embed { padding: 12px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease; }
+    .spotify-embed:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.8); box-shadow: 0 15px 35px rgba(31, 41, 55, 0.2); }
     .spotify-embed iframe { display: block; border: none; width: 100%; }
 
     /* ================= 8. 最下方按鈕與連結 ================= */
     .bottom-actions { text-align: center; margin-top: 80px; margin-bottom: 60px; }
     .social-links { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 20px 10px; }
     .social-links a {
-      display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: rgba(255,255,255,0.82);
-      -webkit-backdrop-filter: blur(16px) saturate(150%); backdrop-filter: blur(16px) saturate(150%);
-      border: 1px solid rgba(255,255,255,0.55); border-radius: 14px; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.75); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: rgba(255,255,255,0.95);
+      border-radius: 14px; box-shadow: 0 8px 20px rgba(31, 41, 55, 0.15); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; flex-shrink: 0;
     }
-    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(199, 238, 251, 0.5); }
+    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 12px 25px rgba(199, 238, 251, 0.4); background-color: #ffffff; }
 
-    footer { text-align: center; padding: 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
+    /* Footer 也改為深色底確保白色文字清晰 */
+    footer {
+      text-align: center; padding: 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.1); font-size: 14px;
+      background: rgba(10, 16, 28, 0.75); backdrop-filter: var(--glass-blur); margin-top: 60px;
+    }
 
     @media (max-width: 768px) {
-      header { padding: 15px 20px; flex-direction: column; gap: 15px; }
+      header { padding: 15px 20px; flex-direction: column; gap: 15px; position: relative;}
+      body { padding-top: 0; }
       .nav-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
-      .nav-links a { margin: 0 10px; }
-      .dropdown { margin: 0 10px; }
+      .nav-links a { margin: 5px 10px; }
+      .dropdown { margin: 5px 10px; }
       .profile-section { flex-direction: column; align-items: center; }
       .left-column { flex: unset; width: 100%; max-width: 350px; }
       .mv-container, .spotify-container { grid-template-columns: 1fr; }
@@ -289,7 +274,7 @@
   </style>
 </head>
 <body>
-  <canvas id="cursor-canvas"></canvas>
+  <!-- 拿掉星星粒子畫布，因為您說不需要了 -->
   <div class="stars"></div>
 
   <header>
@@ -315,15 +300,15 @@
 
   <section class="profile-section">
     <div class="left-column">
-      <div class="img-card logo-card">
-        <img class="profile-logo-top" src="img/星希羽Logo.png" alt="星希羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%239bc8fb\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星希羽Logo</text></svg>'">
+      <div class="img-card light-glass-panel logo-card">
+        <img class="profile-logo-top" src="img/星希羽Logo.png" alt="星希羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%23C7EEFB\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星希羽Logo</text></svg>'">
       </div>
-      <div class="img-card portrait-card">
+      <div class="img-card light-glass-panel portrait-card">
         <img id="profile-portrait" src="img/星希羽(羽翼).png" alt="星希羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽立繪預留位置</text></svg>'">
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card light-glass-panel">
       <table class="char-table">
         <tr><td>本名</td><td>武田祐恩(金祐恩)</td></tr>
         <tr><td>性別</td><td>男生</td></tr>
@@ -335,7 +320,7 @@
         <tr><td>血型</td><td>AB型</td></tr>
         <tr><td>代表色</td>
           <td style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 16px; height: 16px; background-color: #C7EEFB; border-radius: 50%;"></div> 馬卡龍藍
+            <div style="width: 16px; height: 16px; background-color: var(--accent); border-radius: 50%;"></div> 馬卡龍藍
           </td>
         </tr>
         <tr><td>所屬團體</td><td>星幻之城 × StarLeo</td></tr>
@@ -354,14 +339,14 @@
       </table>
 
       <div class="audio-player">
-        <p>🎵 VOICE Cute DEMO試聽</p>
+        <p>🎵 VOICE CUTE DEMO試聽</p>
         <audio controls>
           <source src="wav/夢想前行Kiha_Cute.wav" type="audio/wav">
           您的瀏覽器不支援 audio 播放器。
         </audio>
       </div>
       <div class="audio-player">
-        <p>🎵 VOICE Lively DEMO試聽</p>
+        <p>🎵 VOICE LIVELY DEMO試聽</p>
         <audio controls>
           <source src="wav/夢想前行Kiha_Lively.wav" type="audio/wav">
           您的瀏覽器不支援 audio 播放器。
@@ -371,14 +356,14 @@
   </section>
 
   <section>
-    <div class="intro-section">
+    <div class="intro-section light-glass-panel">
       星希羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手，<br>
-      基於使用 ACE Studio 歌聲合成引擎製作，V1與V2版由不同的台灣男性小學生錄製.
+      基於使用 ACE Studio 歌聲合成引擎製作，Cute Vocie與Lively Vocie由不同的台灣男性小學生錄製.
     </div>
   </section>
 
-  <section class="history-section">
-    <h2>歷史概要</h2>
+  <section class="history-section light-glass-panel">
+    <h2 class="accent-text-shadow">歷史概要</h2>
     <div class="history-text">
       <p>星希羽的起源可追溯至 2022 年，當時創作者 Kai 受到 DeepVocal 歌手「空詩音レミ」啟發，於 2022 年 11 月 27 日創作出虛擬角色「小希」，並於 2023 年 4 月更名為「耀光」。同年自由之光啟動虛擬歌手研發計劃，原先考慮使用 Synthesizer V，後因成本與技術問題轉向 DeepVocal。不過該企劃於 2023 年 11 月終止。</p>
       <p>2023 年 12 月，自由之光重新啟動計劃，推出男女雙小學生角色虛擬歌手，男性為「星希羽」，繼承部分「耀光」設定，女性為「星彗羽」。</p>
@@ -390,8 +375,8 @@
   </section>
 
   <section>
-    <h2>團體世界觀：星幻之城 × StarLeo</h2>
-    <div class="worldview-content">
+    <h2 class="accent-text-shadow">團體世界觀：星幻之城 × StarLeo</h2>
+    <div class="worldview-content light-glass-panel">
       <p><strong>星幻之城 × StarLeo</strong> 是星樂之夢旗下的小學生虛擬歌手團體系列，由 <strong>星希羽、星彗羽、星丞軒、星卉芯</strong> 組成。</p>
 
       <div class="lore-poem">
@@ -410,8 +395,8 @@
   </section>
 
   <section>
-    <h2>中之人與形象設計來源</h2>
-    <div class="vp-card">
+    <h2 class="accent-text-shadow">中之人與形象設計來源</h2>
+    <div class="vp-card light-glass-panel">
       <div class="vp-info">
         <ul class="vp-list">
           <li><strong>活動名稱：</strong>Ian</li>
@@ -420,7 +405,7 @@
           <li><strong>錄製年齡：</strong>11 歲</li>
         </ul>
         <p class="vp-desc">
-          💫 星希羽的角色形象設計靈感源自於 V1 聲音提供者。<br>
+          💫 星希羽的角色形象設計靈感源自於 聲音提供者 Ian (Cute Voice)。<br>
           在角色塑造初期，參考了其活潑、開朗、調皮的個性特質作為創作靈感。
         </p>
       </div>
@@ -432,7 +417,7 @@
   </section>
 
   <section>
-    <h2>形象3視圖展示</h2>
+    <h2 class="accent-text-shadow">形象3視圖展示</h2>
     <div class="reference-sheet-wrapper">
         <img class="reference-sheet" src="img/星希羽三視圖.png" alt="星希羽三視圖" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>三視圖預留位置</text></svg>'">
 
@@ -441,10 +426,10 @@
   </section>
 
   <section>
-    <h2>歷代圖繪</h2>
+    <h2 class="accent-text-shadow">歷代圖繪</h2>
     <div class="gallery-container">
 
-      <div class="gallery-card">
+      <div class="gallery-card light-glass-panel">
         <div class="gallery-img">
           <img src="img/星希羽V1.0.png" alt="星希羽V1.0~V1.4.2形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V1 初始形象預留</text></svg>'">
         </div>
@@ -454,7 +439,7 @@
         </div>
       </div>
 
-      <div class="gallery-card">
+      <div class="gallery-card light-glass-panel">
         <div class="gallery-img">
           <img src="img/星希羽1.4.2.2.png" alt="星希羽V1.4.2.2" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>日常服裝預留</text></svg>'">
         </div>
@@ -464,7 +449,7 @@
         </div>
       </div>
 
-      <div class="gallery-card">
+      <div class="gallery-card light-glass-panel">
         <div class="gallery-img">
           <img src="img/星希羽2.0.png" alt="星希羽 V2 羽翼形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V2 羽翼形象預留</text></svg>'">
         </div>
@@ -474,7 +459,7 @@
         </div>
       </div>
 
-      <div class="gallery-card">
+      <div class="gallery-card light-glass-panel">
         <div class="gallery-img">
           <img src="img/出道紀念桌布.jpg" alt="出道紀念桌布" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V2 羽翼形象預留</text></svg>'">
         </div>
@@ -488,7 +473,7 @@
   </section>
 
   <section>
-    <h2>音樂作品展示區</h2>
+    <h2 class="accent-text-shadow">音樂作品展示區</h2>
 
     <div class="platform-label">
       <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -496,14 +481,14 @@
     </div>
 
     <div class="mv-container">
-      <a href="https://youtu.be/524F0af40hs" target="_blank" class="mv-card-link">
+      <a href="https://youtu.be/524F0af40hs" target="_blank" class="mv-card-link light-glass-panel">
         <div class="mv-title"><span>V1 代表作</span> 《星の夜》</div>
         <div class="mv-thumbnail">
           <img src="https://img.youtube.com/vi/524F0af40hs/maxresdefault.jpg" alt="星の夜 MV" onerror="this.src='https://img.youtube.com/vi/524F0af40hs/hqdefault.jpg'">
           <div class="play-btn"></div>
         </div>
       </a>
-      <a href="https://youtu.be/rZhvML-sdSE" target="_blank" class="mv-card-link">
+      <a href="https://youtu.be/rZhvML-sdSE" target="_blank" class="mv-card-link light-glass-panel">
         <div class="mv-title"><span>V2 代表作</span> 《飛鳥》</div>
         <div class="mv-thumbnail">
           <img src="https://img.youtube.com/vi/rZhvML-sdSE/maxresdefault.jpg" alt="飛鳥 MV" onerror="this.src='https://img.youtube.com/vi/rZhvML-sdSE/hqdefault.jpg'">
@@ -518,7 +503,7 @@
     </div>
 
     <div class="spotify-container">
-      <div class="spotify-embed">
+      <div class="spotify-embed light-glass-panel">
         <iframe
           style="border-radius:12px"
           src="https://open.spotify.com/embed/album/5GSHMiENUT4Z9Y3ZtRek1L?utm_source=generator"
@@ -527,7 +512,7 @@
           loading="lazy">
         </iframe>
       </div>
-      <div class="spotify-embed">
+      <div class="spotify-embed light-glass-panel">
         <iframe
           style="border-radius:12px"
           src="https://open.spotify.com/embed/album/3Tq8Pbd5ttMCur573RDJZL?utm_source=generator"
@@ -536,7 +521,7 @@
           loading="lazy">
         </iframe>
       </div>
-      <div class="spotify-embed">
+      <div class="spotify-embed light-glass-panel">
         <iframe
           style="border-radius:12px"
           src="https://open.spotify.com/embed/album/3d4Et8ovAYG595qZlsPjAo?utm_source=generator"
@@ -545,7 +530,7 @@
           loading="lazy">
         </iframe>
       </div>
-      <div class="spotify-embed">
+      <div class="spotify-embed light-glass-panel">
         <iframe
           style="border-radius:12px"
           src="https://open.spotify.com/embed/album/0yM5KeW2vPnJoT1FIYaIno?utm_source=generator&si=cd40ae9d0f694e7c"
@@ -600,48 +585,5 @@
       }
     }
   </script>
-
-  <script>
-    (function(){
-      const canvas = document.getElementById('cursor-canvas');
-      const ctx = canvas.getContext('2d');
-      let width, height;
-      const DPR = window.devicePixelRatio || 1;
-
-      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
-      window.addEventListener('resize', resize); resize();
-
-      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
-      const particles = [];
-
-      function drawStar(ctx, x, y, radius, rot) {
-        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
-        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
-        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
-        ctx.moveTo(0, -outerRadius);
-        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
-        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
-      }
-
-      function addParticle(x, y) {
-        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
-      }
-
-      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
-
-      function animate() {
-        ctx.clearRect(0, 0, width, height);
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i]; p.life++;
-          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
-          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
-          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
-          drawStar(ctx, p.x, p.y, p.size, p.rot);
-        }
-        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
-      }
-      animate();
-    })();
-  </script>
 </body>
-</html> 
+</html>
