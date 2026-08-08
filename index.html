@@ -37,19 +37,19 @@
       margin: 0;
       padding-top: 80px; /* 配合 fixed header */
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    /* 星空背景圖片 */
+    /* 星空背景圖片 (完美適配手機與 iOS Safari) */
     .stars {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh; /* 動態視窗高度，完美支援手機網址列伸縮 */
       z-index: -1;
       background: url('img/星樂之夢背景.png') no-repeat center center;
       background-size: cover;
-      background-attachment: fixed;
+      /* 強制硬體加速，解決 Safari 背景錯位與滑走問題 */
+      transform: translate3d(0, 0, 0);
+      -webkit-transform: translate3d(0, 0, 0);
     }
 
     /* 頂部導覽列 (霧面黑玻璃) */
