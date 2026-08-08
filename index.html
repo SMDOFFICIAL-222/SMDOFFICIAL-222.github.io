@@ -498,10 +498,10 @@
         padding: 15px 20px;
         flex-direction: column;
         gap: 15px;
-        position: relative; /* 手機版選單展開時避免被截斷 */
+        position: fixed; /* 從 relative 改回 fixed，將導覽列釘在最上方 */
       }
       body {
-         padding-top: 0; /* 取消 padding */
+         padding-top: 120px; /* 加上足夠的 padding，避免大標題被變高的手機版導覽列蓋住 */
       }
       .nav-links {
         flex-wrap: wrap;
@@ -677,7 +677,7 @@
 
   <section id="news">
     <h2>情報與消息</h2>
-
+    
     <div class="news-empty-state dark-glass-panel">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
