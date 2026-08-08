@@ -13,8 +13,8 @@
     :root {
       --bg: #0a0e17;
       --text: #2d3748; /* 深藍灰，主要內容文字 */
-      --text-light: #4a5568;
-      --accent: #C7EEFB; /* 星希羽專屬馬卡龍藍 */
+      --text-light: #4a5568; /* 次要文字顏色，深色 */
+      --accent: #C7EEFB; /* 星希羽專屬馬卡龍藍 (用於按鈕、線條、裝飾) */
 
       /* 明亮夢幻玻璃特效變數 (Light Glassmorphism) */
       --card-bg: rgba(255, 255, 255, 0.45);
@@ -32,23 +32,26 @@
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       background: var(--bg);
       color: var(--text);
-      overflow-x: hidden;
+      /* 移除 overflow-x: hidden 解決 iOS 滾動時固定背景失效的 Bug */
       min-height: 100vh;
     }
 
-    /* 針對淺藍色文字在白底上的可讀性優化：加上微弱的深色陰影 */
-    .accent-text-shadow {
-        text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3);
-    }
-
-    /* 星空背景與滑鼠粒子畫布 */
+    /* 星空背景 (完美適配手機與 iOS Safari) */
     .stars {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh; /* 動態視窗高度，完美支援手機網址列伸縮 */
+      z-index: -1;
       background: url('img/StarLeo背景圖.png') no-repeat center center;
       background-size: cover;
+      /* 強制硬體加速，解決 Safari 背景錯位與滑走問題 */
+      transform: translate3d(0, 0, 0);
+      -webkit-transform: translate3d(0, 0, 0);
     }
 
-    /* 頂部導覽列 (Fixed + 暗色玻璃) */
+    /* 頂部導覽列 (Fixed + 暗色玻璃，文字保持白色確保可見度) */
     header {
       padding: 15px 40px;
       display: flex; justify-content: space-between; align-items: center;
@@ -93,7 +96,17 @@
 
     /* 通用區塊設定 */
     section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
-    h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); font-weight: bold; }
+
+    /* 段落標題：文字深黑色，左側裝飾線為馬卡龍藍 */
+    h2 {
+        border-left: 4px solid var(--accent);
+        padding-left: 15px;
+        font-size: 26px;
+        margin-bottom: 30px;
+        color: #0a0e17;
+        font-weight: bold;
+        text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5); /* 在亮底上加點白陰影增加立體感 */
+    }
 
     /* ================= 明亮玻璃共用設定 ================= */
     .light-glass-panel {
@@ -129,14 +142,14 @@
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
     .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 15px; vertical-align: top; color: var(--text); font-weight: 500; }
-    /* 表格標題顏色，加上微陰影 */
-    .char-table td:first-child { color: var(--accent); font-weight: 800; width: 120px; text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3); }
+    /* 表格標題顏色改為深黑色 */
+    .char-table td:first-child { color: #0a0e17; font-weight: 800; width: 120px; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5); }
 
     .version-info-container { display: flex; flex-direction: column; gap: 12px; }
-    .version-text { font-size: 15px; }
+    .version-text { font-size: 15px; color: var(--text); }
     .version-buttons { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
 
-    /* 封測按鈕小標籤樣式 */
+    /* 封測按鈕小標籤樣式 (保留馬卡龍藍) */
     .beta-btn-small {
       display: inline-block; padding: 6px 16px;
       background-color: var(--accent);
@@ -155,7 +168,8 @@
       background: rgba(255,255,255,0.6); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.8);
       margin-bottom: 15px; box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 5px 15px rgba(0,0,0,0.05);
     }
-    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: 900; color: var(--accent); text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3); }
+    /* 播放器標題文字改為黑色 */
+    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: 900; color: #0a0e17; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5); }
     .audio-player audio { width: 100%; height: 40px; outline: none; }
 
     /* ================= 2. 概要區塊 ================= */
@@ -169,7 +183,8 @@
     .history-text p:last-child { margin-bottom: 0; }
 
     .worldview-content { color: var(--text-light); line-height: 1.9; font-size: 15px; font-weight: 500;}
-    .worldview-content strong { color: var(--accent); font-weight: 800; text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.2); }
+    /* 世界觀中的重點文字改為深黑色 */
+    .worldview-content strong { color: #0a0e17; font-weight: 800; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5); }
 
     .lore-poem {
       text-align: center; margin: 30px 0; padding: 35px 20px;
@@ -184,7 +199,8 @@
     .vp-list { list-style: none; padding: 0; margin: 0 0 25px 0; color: var(--text); font-size: 15px; line-height: 2.2; font-weight: 500;}
     .vp-list li { border-bottom: 1px dashed rgba(0,0,0,0.1); }
     .vp-list li:last-child { border-bottom: none; }
-    .vp-list li strong { color: var(--accent); display: inline-block; width: 140px; font-weight: 800; text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3);}
+    /* 中之人列表標題改為深黑色 */
+    .vp-list li strong { color: #0a0e17; display: inline-block; width: 140px; font-weight: 800; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5);}
 
     .vp-desc {
       color: var(--text-light); line-height: 1.8; font-size: 15px; margin: 0; font-weight: 500;
@@ -209,23 +225,46 @@
     .gallery-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.5s ease; }
     .gallery-card:hover .gallery-img img { transform: scale(1.05); }
     .gallery-info { padding: 15px; text-align: center; background: rgba(255,255,255,0.6); border-top: 1px solid rgba(255,255,255,0.6); flex: 1; display: flex; flex-direction: column; justify-content: center; }
-    .gallery-info h4 { margin: 0; color: var(--text); font-size: 14px; letter-spacing: 0.5px; line-height: 1.4; font-weight: bold;}
+    /* 畫廊文字改為黑色 */
+    .gallery-info h4 { margin: 0; color: #0a0e17; font-size: 14px; letter-spacing: 0.5px; line-height: 1.4; font-weight: bold;}
     .gallery-info p { margin: 5px 0 0 0; color: var(--text-light); font-size: 12px; font-weight: 500;}
 
-    /* ================= 7. 音樂作品展示區 ================= */
-    .platform-label {
-      display: inline-flex; align-items: center; gap: 8px; background: #ffffff; border: 1px solid var(--accent); color: var(--accent);
-      padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.2);
+    /* ================= Wallpaper 桌布區 ================= */
+    .wallpaper-container { display: flex; flex-direction: column; gap: 25px; width: 100%; margin-bottom: 40px; }
+    .wallpaper-card { overflow: hidden; transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; }
+    .wallpaper-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.8); box-shadow: 0 15px 35px rgba(31, 41, 55, 0.2); }
+    .wallpaper-img {
+      width: 100%;
+      aspect-ratio: 16 / 9; /* 修正桌布完美長寬比 */
+      background: rgba(255, 255, 255, 0.3); display: flex; justify-content: center; align-items: center; overflow: hidden;
     }
-    .platform-label svg { width: 18px; height: 18px; fill: currentColor; }
+    .wallpaper-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .wallpaper-card:hover .wallpaper-img img { transform: scale(1.02); }
+    .wallpaper-info { padding: 15px; text-align: center; background: rgba(255,255,255,0.6); border-top: 1px solid rgba(255,255,255,0.6); }
+    /* 桌布文字改為黑色 */
+    .wallpaper-info h4 { margin: 0; color: #0a0e17; font-size: 15px; letter-spacing: 0.5px; line-height: 1.4; font-weight: bold;}
+    .wallpaper-info p { margin: 5px 0 0 0; color: var(--text-light); font-size: 13px; font-weight: 500;}
+
+    /* ================= 7. 音樂作品展示區 ================= */
+    /* 平台標籤：背景馬卡龍藍微透，邊框馬卡龍藍，文字改深色 */
+    .platform-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(199, 238, 251, 0.4); /* 背景加上一點馬卡龍藍 */
+      border: 1px solid var(--accent);
+      color: #0a0e17; /* 文字深黑色 */
+      padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5);
+    }
+    .platform-label svg { width: 18px; height: 18px; fill: var(--accent); /* SVG 圖示保留馬卡龍藍 */ }
 
     .mv-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 25px; width: 100%; margin-bottom: 45px; }
     .mv-card-link { padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column; text-decoration: none; cursor: pointer; }
     .mv-card-link:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.8); box-shadow: 0 15px 35px rgba(31, 41, 55, 0.2); }
     .mv-card-link:hover .play-btn { background: #ff0000; transform: translate(-50%, -50%) scale(1.1); }
 
-    .mv-title { color: var(--text); font-size: 16px; font-weight: bold; margin: 5px 0 12px 5px; display: flex; align-items: center; gap: 10px; }
+    /* MV 標題文字改深黑色 */
+    .mv-title { color: #0a0e17; font-size: 16px; font-weight: bold; margin: 5px 0 12px 5px; display: flex; align-items: center; gap: 10px; }
+    /* MV 卡片上的小標籤 (代表作) 保留馬卡龍藍背景 */
     .mv-title span { background: var(--accent); color: #0a0e17; padding: 3px 10px; border-radius: 6px; font-size: 12px; letter-spacing: 0.5px; font-weight: 800; }
     .mv-thumbnail { width: 100%; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; position: relative; background: #fff; }
     .mv-thumbnail img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; opacity: 0.9; }
@@ -274,7 +313,7 @@
   </style>
 </head>
 <body>
-  <!-- 拿掉星星粒子畫布，因為您說不需要了 -->
+  <!-- 背景區塊 -->
   <div class="stars"></div>
 
   <header>
@@ -363,7 +402,7 @@
   </section>
 
   <section class="history-section light-glass-panel">
-    <h2 class="accent-text-shadow">歷史概要</h2>
+    <h2>歷史概要</h2>
     <div class="history-text">
       <p>星希羽的起源可追溯至 2022 年，當時創作者 Kai 受到 DeepVocal 歌手「空詩音レミ」啟發，於 2022 年 11 月 27 日創作出虛擬角色「小希」，並於 2023 年 4 月更名為「耀光」。同年自由之光啟動虛擬歌手研發計劃，原先考慮使用 Synthesizer V，後因成本與技術問題轉向 DeepVocal。不過該企劃於 2023 年 11 月終止。</p>
       <p>2023 年 12 月，自由之光重新啟動計劃，推出男女雙小學生角色虛擬歌手，男性為「星希羽」，繼承部分「耀光」設定，女性為「星彗羽」。</p>
@@ -375,7 +414,7 @@
   </section>
 
   <section>
-    <h2 class="accent-text-shadow">團體世界觀：星幻之城 × StarLeo</h2>
+    <h2>團體世界觀：星幻之城 × StarLeo</h2>
     <div class="worldview-content light-glass-panel">
       <p><strong>星幻之城 × StarLeo</strong> 是星樂之夢旗下的小學生虛擬歌手團體系列，由 <strong>星希羽、星彗羽、星丞軒、星卉芯</strong> 組成。</p>
 
@@ -395,7 +434,7 @@
   </section>
 
   <section>
-    <h2 class="accent-text-shadow">中之人與形象設計來源</h2>
+    <h2>中之人與形象設計來源</h2>
     <div class="vp-card light-glass-panel">
       <div class="vp-info">
         <ul class="vp-list">
@@ -417,7 +456,7 @@
   </section>
 
   <section>
-    <h2 class="accent-text-shadow">形象3視圖展示</h2>
+    <h2>形象3視圖展示</h2>
     <div class="reference-sheet-wrapper">
         <img class="reference-sheet" src="img/星希羽三視圖.png" alt="星希羽三視圖" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>三視圖預留位置</text></svg>'">
 
@@ -426,8 +465,19 @@
   </section>
 
   <section>
-    <h2 class="accent-text-shadow">歷代圖繪</h2>
+    <h2>歷代圖繪</h2>
     <div class="gallery-container">
+
+      <!-- 新增：Beta 形象 -->
+      <div class="gallery-card light-glass-panel">
+        <div class="gallery-img">
+          <img src="img/星希羽Beta.png" alt="星希羽 Beta 形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>Beta 形象預留</text></svg>'">
+        </div>
+        <div class="gallery-info">
+          <h4>星希羽Beta形象</h4>
+          <p>2023年設計</p>
+        </div>
+      </div>
 
       <div class="gallery-card light-glass-panel">
         <div class="gallery-img">
@@ -459,11 +509,19 @@
         </div>
       </div>
 
-      <div class="gallery-card light-glass-panel">
-        <div class="gallery-img">
-          <img src="img/出道紀念桌布.jpg" alt="出道紀念桌布" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V2 羽翼形象預留</text></svg>'">
+    </div>
+  </section>
+
+  <!-- 新增：Wallpaper 桌布專區 -->
+  <section>
+    <h2>Wallpaper 桌布專區</h2>
+    <div class="wallpaper-container">
+
+      <div class="wallpaper-card light-glass-panel">
+        <div class="wallpaper-img">
+          <img src="img/出道紀念桌布.jpg" alt="出道紀念桌布" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>桌布預留</text></svg>'">
         </div>
-        <div class="gallery-info">
+        <div class="wallpaper-info">
           <h4>V1桌布</h4>
           <p>2024年設計</p>
         </div>
@@ -473,7 +531,7 @@
   </section>
 
   <section>
-    <h2 class="accent-text-shadow">音樂作品展示區</h2>
+    <h2>音樂作品展示區</h2>
 
     <div class="platform-label">
       <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -482,14 +540,14 @@
 
     <div class="mv-container">
       <a href="https://youtu.be/524F0af40hs" target="_blank" class="mv-card-link light-glass-panel">
-        <div class="mv-title"><span>V1 代表作</span> 《星の夜》</div>
+        <div class="mv-title"><span>代表作</span> 《星の夜》</div>
         <div class="mv-thumbnail">
           <img src="https://img.youtube.com/vi/524F0af40hs/maxresdefault.jpg" alt="星の夜 MV" onerror="this.src='https://img.youtube.com/vi/524F0af40hs/hqdefault.jpg'">
           <div class="play-btn"></div>
         </div>
       </a>
       <a href="https://youtu.be/rZhvML-sdSE" target="_blank" class="mv-card-link light-glass-panel">
-        <div class="mv-title"><span>V2 代表作</span> 《飛鳥》</div>
+        <div class="mv-title"><span>代表作</span> 《星の夜(Remake)》</div>
         <div class="mv-thumbnail">
           <img src="https://img.youtube.com/vi/rZhvML-sdSE/maxresdefault.jpg" alt="飛鳥 MV" onerror="this.src='https://img.youtube.com/vi/rZhvML-sdSE/hqdefault.jpg'">
           <div class="play-btn"></div>
