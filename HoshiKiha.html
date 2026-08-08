@@ -36,19 +36,26 @@
       min-height: 100vh;
     }
 
-    /* 星空背景 (完美適配手機與 iOS Safari) */
+    /* 針對淺藍色文字在白底上的可讀性優化：加上微弱的深色陰影 */
+    .accent-text-shadow {
+        text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3);
+    }
+
+    /* 星空背景 (強制鎖定，解決手機滑動背景跳動問題) */
     .stars {
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      width: 100vw;
-      height: 100vh;
-      height: 100dvh; /* 動態視窗高度，完美支援手機網址列伸縮 */
+      /* 故意將背景拉大並往外推，防呆處理手機網址列縮放造成的邊緣露出與重繪跳動 */
+      top: -10vh;
+      left: -10vw;
+      width: 120vw;
+      height: 120vh; /* 使用大於 100 的固定比例，拒絕 dVH 的動態縮放干擾 */
       z-index: -1;
       background: url('img/StarLeo背景圖.png') no-repeat center center;
       background-size: cover;
-      /* 強制硬體加速，解決 Safari 背景錯位與滑走問題 */
-      transform: translate3d(0, 0, 0);
-      -webkit-transform: translate3d(0, 0, 0);
+      /* 強制硬體加速鎖定圖層 */
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      pointer-events: none; /* 避免干擾觸控 */
     }
 
     /* 頂部導覽列 (Fixed + 暗色玻璃，文字保持白色確保可見度) */
