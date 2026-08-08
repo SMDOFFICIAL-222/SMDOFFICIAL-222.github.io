@@ -59,42 +59,77 @@
   </script>
 
   <style>
-    /* CSS 重置與變數 (星彗羽專屬馬卡龍粉) */
+    /* CSS 重置與變數 (星彗羽專屬馬卡龍粉 + 明亮玻璃風格) */
     :root {
-      --bg: #0a0e17;
-      --text: #f0f4f8;
-      --accent: #FB9D9E; /* 星彗羽專屬主題色 */
-      --card-bg: rgba(255,255,255,0.05);
+      --bg: #0a0e17; /* 預設底色，雖然被圖片蓋住但還是留著 */
+      --text: #2d3748; /* 在明亮玻璃上，文字要改深色才看得清楚 (深藍灰) */
+      --text-light: #4a5568; /* 次要文字顏色 */
+      --accent: #FB9D9E; /* 星彗羽專屬馬卡龍粉 */
+
+      /* 明亮夢幻玻璃特效變數 (Light Glassmorphism) */
+      --card-bg: rgba(255, 255, 255, 0.45); /* 白色半透明底 */
+      --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2));
+      --glass-bg-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3));
+      --glass-border: rgba(255, 255, 255, 0.6); /* 比較明顯的白邊 */
+      --glass-border-soft: rgba(255, 255, 255, 0.3);
+      --glass-shadow: 0 15px 35px rgba(31, 41, 55, 0.15); /* 輕柔的陰影 */
+      --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.8); /* 內部高光 */
+      --glass-blur: blur(24px) saturate(120%);
     }
     body {
       margin: 0;
+      padding-top: 80px; /* 配合 fixed header 增加上方留白 */
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       background: var(--bg);
       color: var(--text);
-      overflow-x: hidden;
+      /* 移除 overflow-x: hidden 解決 iOS 滾動時固定背景失效的 Bug */
+      min-height: 100vh;
     }
 
-    /* 星空背景與滑鼠粒子畫布 */
-    .stars {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-      background: radial-gradient(circle at center, #111a2f 0%, #05080f 100%);
+    /* 針對淺色文字在白底上的可讀性優化：加上微弱的深色陰影 */
+    .accent-text-shadow {
+        text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.2);
     }
+
+    /* 星空背景 (強制鎖定，解決手機滑動背景跳動問題) */
+    .stars {
+      position: fixed;
+      /* 故意將背景拉大並往外推，防呆處理手機網址列縮放造成的邊緣露出與重繪跳動 */
+      top: -10vh;
+      left: -10vw;
+      width: 120vw;
+      height: 120vh; /* 使用大於 100 的固定比例，拒絕 dVH 的動態縮放干擾 */
+      z-index: -1;
+      background: url('img/StarLeo背景圖.png') no-repeat center center;
+      background-size: cover;
+      /* 強制硬體加速鎖定圖層 */
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      pointer-events: none; /* 避免干擾觸控 */
+    }
+
     #cursor-canvas {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 9999;
     }
 
-    /* 頂部導覽列 */
+    /* 頂部導覽列 (Fixed + 暗色玻璃，確保 Logo 和選單看得清楚) */
     header {
-      padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
-      background: rgba(10,14,23,0.8); backdrop-filter: blur(10px);
-      position: sticky; top: 0; z-index: 100; border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding: 15px 40px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(10, 16, 28, 0.75);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 1000;
+      border-bottom: 1px solid var(--glass-border-soft);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.2);
     }
     .logo { text-decoration: none; display: flex; align-items: center; }
     .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
 
+    /* 導覽列文字保持白色 */
     .nav-links { display: flex; align-items: center; }
-    .nav-links a { color: var(--text); text-decoration: none; margin-left: 25px; font-size: 15px; transition: color 0.3s; }
+    .nav-links a { color: #f0f4f8; text-decoration: none; margin-left: 25px; font-size: 15px; transition: color 0.3s; font-weight: 500;}
     .nav-links a:hover { color: var(--accent); }
 
     /* ================= 導覽列下拉選單樣式 ================= */
@@ -105,11 +140,12 @@
       cursor: pointer;
     }
     .dropdown-btn {
-      color: var(--text);
+      color: #f0f4f8;
       font-size: 15px;
       transition: color 0.3s;
-      padding: 5px 0;
+      padding: 10px 0;
       user-select: none;
+      font-weight: 500;
     }
     .dropdown:hover .dropdown-btn {
       color: var(--accent);
@@ -118,19 +154,17 @@
       content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 15px;
     }
     .dropdown-content {
-      display: none;
-      position: absolute;
-      top: calc(100% + 10px);
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(10, 14, 23, 0.95);
-      backdrop-filter: blur(10px);
+      display: none; position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
+      background: rgba(10, 16, 28, 0.95);
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
       min-width: 160px;
-      box-shadow: 0px 10px 30px rgba(0,0,0,0.5);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      z-index: 101;
-      padding: 8px 0;
+      box-shadow: var(--glass-shadow); border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+      z-index: 101; padding: 8px 0;
+    }
+    .dropdown-content.show {
+      display: block;
+      animation: fadeIn 0.2s ease-in-out;
     }
     .dropdown-content a {
       color: #a0aec0;
@@ -141,18 +175,41 @@
       font-size: 14px;
       text-align: center;
       transition: background 0.3s, color 0.3s;
+      font-weight: normal;
     }
     .dropdown-content a:hover {
       background: rgba(251, 157, 158, 0.15); /* 粉色懸浮 */
       color: var(--accent);
     }
-    .dropdown-content.show {
-      display: block;
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translate(-50%, -5px); }
+      to { opacity: 1; transform: translate(-50%, 0); }
     }
 
     /* 通用區塊設定 */
     section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
-    h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); }
+
+    /* 段落標題：文字深黑色，左側裝飾線為馬卡龍粉 */
+    h2 {
+        border-left: 4px solid var(--accent);
+        padding-left: 15px;
+        font-size: 26px;
+        margin-bottom: 30px;
+        color: #0a0e17;
+        font-weight: bold;
+        text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5); /* 在亮底上加點白陰影增加立體感 */
+    }
+
+    /* ================= 明亮玻璃共用設定 ================= */
+    .light-glass-panel {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      -webkit-backdrop-filter: var(--glass-blur);
+      backdrop-filter: var(--glass-blur);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
+    }
 
     /* ================= 1. 頂部人物檔案區 ================= */
     .profile-section { display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px; }
@@ -165,52 +222,39 @@
       gap: 20px;
     }
 
-    /* 獨立卡片共用樣式 */
-    .img-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
+    .logo-card { padding: 30px; display: flex; justify-content: center; align-items: center;}
+    .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 5px rgba(255,255,255,0.8)); }
 
-    /* Logo 卡片 */
-    .logo-card {
-      padding: 30px;
-    }
-
-    .profile-logo-top {
-      max-width: 200px;
-      height: auto;
-      filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
-    }
-
-    /* 立繪卡片 */
+    /* 立繪卡片 - 置中 */
     .portrait-card {
-      padding: 30px 20px 0px 20px; /* 底部 0 讓人物貼底 */
+      padding: 30px 20px 0px 20px;
       overflow: hidden;
       flex: 1;
-      justify-content: flex-end; /* 讓圖片靠下對齊 */
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
 
     #profile-portrait { width: 100%; max-width: 360px; height: auto; object-fit: contain; transition: opacity 0.3s ease; }
 
     /* 右側個人資料卡片 */
-    .profile-card { flex: 1; background: var(--card-bg); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+    .profile-card { flex: 1; padding: 30px; }
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; vertical-align: top; }
-    .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
+    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 15px; vertical-align: top; color: var(--text); font-weight: 500;}
+    /* 表格標題顏色改為深黑色 */
+    .char-table td:first-child { color: #0a0e17; font-weight: 800; width: 120px; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5);}
 
-    /* 封測按鈕小標籤樣式 */
+    .version-info-container { display: flex; flex-direction: column; gap: 12px; }
+    .version-text { font-size: 15px; color: var(--text);}
+    .version-buttons { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+
+    /* 封測按鈕小標籤樣式 (保留馬卡龍粉) */
     .beta-btn-small {
       display: inline-block;
       padding: 6px 14px;
-      background-color: rgba(251, 157, 158, 0.15);
-      color: var(--accent);
+      background-color: var(--accent);
+      color: #0a0e17; /* 背景是淺粉，字用深色才清楚 */
       font-size: 13px;
       font-weight: bold;
       border: 1px solid var(--accent);
@@ -218,59 +262,57 @@
       text-decoration: none;
       transition: all 0.3s ease;
       text-align: center;
-    }
-    .beta-btn-small:hover {
-      background-color: var(--accent);
-      color: #0a0e17;
-      transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(251, 157, 158, 0.3);
     }
+    .beta-btn-small:hover {
+      background-color: #fcb8b9;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(251, 157, 158, 0.5);
+    }
 
-    .audio-player { background: rgba(0,0,0,0.2); padding: 15px; border-radius: 12px; }
-    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--text); }
+    /* 播放器 */
+    .audio-player {
+      background: rgba(255,255,255,0.6); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.8);
+      margin-bottom: 15px; box-shadow: inset 0 1px 0 rgba(255,255,255,1), 0 5px 15px rgba(0,0,0,0.05);
+    }
+    /* 播放器標題文字改為黑色 */
+    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: 900; color: #0a0e17; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5); }
     .audio-player audio { width: 100%; height: 40px; outline: none; }
 
-    /* 概要區塊 */
-    .intro-section { text-align: center; background: linear-gradient(135deg, rgba(251,157,158,0.08), rgba(255,255,255,0.02)); padding: 40px; border-radius: 16px; border: 1px solid rgba(251,157,158,0.15); font-size: 1.1em; line-height: 1.8; color: #e2e8f0; margin-bottom: 60px; }
+    /* ================= 2. 概要區塊 ================= */
+    .intro-section { text-align: center; padding: 40px; font-size: 1.1em; line-height: 1.8; color: var(--text); margin-bottom: 60px; font-weight: 500; }
 
-    /* 歷史概要區塊 */
-    .history-section { background: var(--card-bg); padding: 40px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); position: relative; }
+    /* ================= 3. 歷史概要區塊 ================= */
+    .history-section { padding: 40px; position: relative; }
     .yoyo-star { position: absolute; bottom: 20px; right: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
-    .history-text { font-size: 15px; line-height: 1.9; color: #a0aec0; }
+    .history-text { font-size: 15px; line-height: 1.9; color: var(--text-light); font-weight: 500; }
     .history-text p { margin-bottom: 20px; }
+    .history-text p:last-child { margin-bottom: 0; }
 
     /* ================= 4. 世界觀區塊 ================= */
     .worldview-content {
-      background: var(--card-bg);
       padding: 40px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,0.05);
-      color: #a0aec0;
+      color: var(--text-light);
       line-height: 1.9;
       font-size: 15px;
+      font-weight: 500;
     }
+    /* 世界觀中的重點文字改為深黑色 */
     .worldview-content strong {
-      color: var(--text);
+      color: #0a0e17; font-weight: 800; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5);
     }
     .lore-poem {
-      text-align: center;
-      margin: 30px 0;
-      padding: 35px 20px;
-      background: linear-gradient(135deg, rgba(251,157,158,0.08), rgba(255,255,255,0.02));
-      border-radius: 12px;
-      border: 1px solid rgba(251,157,158,0.15);
-      color: #e2e8f0;
-      font-size: 16px;
-      letter-spacing: 1.5px;
-      box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+      text-align: center; margin: 30px 0; padding: 35px 20px;
+      background: rgba(255, 255, 255, 0.5); border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.8);
+      color: var(--text); font-size: 16px; letter-spacing: 1.5px; font-weight: bold;
     }
     .lore-poem p {
       margin: 10px 0;
     }
 
     /* ================= 6. 形象3視圖展示 ================= */
-    .reference-sheet-wrapper { position: relative; width: 100%; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); overflow: hidden; }
-    .reference-sheet { width: 100%; display: block; background: #1a2333; }
+    .reference-sheet-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 18px; border: 1px solid var(--glass-border); }
+    .reference-sheet { width: 100%; display: block; background: rgba(255, 255, 255, 0.4); }
     .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
 
     /* ================= 歷代圖繪展示區 ================= */
@@ -282,29 +324,15 @@
       margin-bottom: 40px;
     }
     .gallery-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
+      overflow: hidden; transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;
     }
     .gallery-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(251, 157, 158, 0.4);
-      box-shadow: 0 15px 35px rgba(251, 157, 158, 0.15);
+      transform: translateY(-5px); border-color: rgba(255,255,255,0.8); box-shadow: 0 15px 35px rgba(31, 41, 55, 0.2);
     }
     .gallery-img {
       width: 100%;
       height: 260px;
-      background: #151c28;
-      display: flex;
-      justify-content: center;
-      align-items: flex-end;
-      overflow: hidden;
-      padding-top: 15px;
+      background: rgba(255, 255, 255, 0.3); display: flex; justify-content: center; align-items: flex-end; overflow: hidden; padding-top: 15px;
     }
     .gallery-img img {
       width: 100%;
@@ -316,48 +344,30 @@
       transform: scale(1.05);
     }
     .gallery-info {
-      padding: 15px;
-      text-align: center;
-      background: rgba(10, 14, 23, 0.8);
-      border-top: 1px solid rgba(255,255,255,0.05);
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      padding: 15px; text-align: center; background: rgba(255,255,255,0.6); border-top: 1px solid rgba(255,255,255,0.6); flex: 1; display: flex; flex-direction: column; justify-content: center;
     }
+    /* 畫廊文字改為黑色 */
     .gallery-info h4 {
-      margin: 0;
-      color: #ffffff;
-      font-size: 14px;
-      letter-spacing: 0.5px;
-      line-height: 1.4;
+      margin: 0; color: #0a0e17; font-size: 14px; letter-spacing: 0.5px; line-height: 1.4; font-weight: bold;
     }
     .gallery-info p {
-      margin: 5px 0 0 0;
-      color: #a0aec0;
-      font-size: 12px;
+      margin: 5px 0 0 0; color: var(--text-light); font-size: 12px; font-weight: 500;
     }
 
     /* ================= 7. 音樂作品展示區 ================= */
+    /* 平台標籤：背景馬卡龍粉微透，邊框馬卡龍粉，文字改深色 */
     .platform-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(251, 157, 158, 0.1);
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(251, 157, 158, 0.4); /* 背景加上一點馬卡龍粉 */
       border: 1px solid var(--accent);
-      color: var(--accent);
-      padding: 8px 18px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 20px;
-      letter-spacing: 1px;
-      box-shadow: 0 4px 15px rgba(251, 157, 158, 0.15);
+      color: #0a0e17; /* 文字深黑色 */
+      padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 20px; letter-spacing: 1px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5);
     }
     .platform-label svg {
       width: 18px;
       height: 18px;
-      fill: currentColor;
+      fill: var(--accent); /* SVG 圖示保留馬卡龍粉 */
     }
 
     /* 直接 iframe 播放器 (無封面) */
@@ -369,37 +379,18 @@
       margin-bottom: 45px;
     }
     .mv-card {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 15px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
-      display: flex;
-      flex-direction: column;
+      padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;
     }
     .mv-card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(251, 157, 158, 0.4);
-      box-shadow: 0 15px 35px rgba(251, 157, 158, 0.15);
+      transform: translateY(-5px); border-color: rgba(255,255,255,0.8); box-shadow: 0 15px 35px rgba(31, 41, 55, 0.2);
     }
+    /* MV 標題文字改深黑色 */
     .mv-title {
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: bold;
-      margin: 5px 0 12px 5px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      color: #0a0e17; font-size: 16px; font-weight: bold; margin: 5px 0 12px 5px; display: flex; align-items: center; gap: 10px;
     }
+    /* MV 卡片上的小標籤 (代表作) 保留馬卡龍粉背景 */
     .mv-title span {
-      background: var(--accent);
-      color: #0a0e17;
-      padding: 3px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      letter-spacing: 0.5px;
-      font-weight: 800;
+      background: var(--accent); color: #0a0e17; padding: 3px 10px; border-radius: 6px; font-size: 12px; letter-spacing: 0.5px; font-weight: 800;
     }
     .mv-card iframe {
       width: 100%;
@@ -417,17 +408,10 @@
       width: 100%;
     }
     .spotify-embed {
-      background: var(--card-bg);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+      padding: 12px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.3s ease, box-shadow 0.3s ease;
     }
     .spotify-embed:hover {
-      transform: translateY(-5px);
-      border-color: rgba(251, 157, 158, 0.4);
-      box-shadow: 0 15px 35px rgba(251, 157, 158, 0.15);
+      transform: translateY(-5px); border-color: rgba(255,255,255,0.8); box-shadow: 0 15px 35px rgba(31, 41, 55, 0.2);
     }
     .spotify-embed iframe {
       display: block;
@@ -449,34 +433,32 @@
     }
 
     .social-links a {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 50px;
-      background-color: #ffffff;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      flex-shrink: 0; /* 防止按鈕被壓縮 */
+      display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: rgba(255,255,255,0.95);
+      border-radius: 14px; box-shadow: 0 8px 20px rgba(31, 41, 55, 0.15); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; flex-shrink: 0;
     }
 
     .social-links a:hover {
-      transform: translateY(-5px) scale(1.05);
-      box-shadow: 0 8px 25px rgba(251, 157, 158, 0.5); /* 專屬粉色懸浮 */
+      transform: translateY(-5px) scale(1.05); box-shadow: 0 12px 25px rgba(251, 157, 158, 0.4); background-color: #ffffff;
     }
 
-    footer { text-align: center; padding: 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
+    /* Footer 也改為深色底確保白色文字清晰 */
+    footer {
+      text-align: center; padding: 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.1); font-size: 14px;
+      background: rgba(10, 16, 28, 0.75); backdrop-filter: var(--glass-blur); margin-top: 60px;
+    }
 
     @media (max-width: 768px) {
-      header { padding: 15px 20px; flex-direction: column; gap: 15px; }
+      header { padding: 12px 20px; flex-direction: column; gap: 10px; position: fixed;}
+      body { padding-top: 110px; } /* 手機版導覽列較高，增加 padding */
       .nav-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
-      .nav-links a { margin: 0 10px; }
-      .dropdown { margin: 0 10px; }
+      .nav-links a { margin: 5px 10px; }
+      .dropdown { margin: 5px 10px; }
       .profile-section { flex-direction: column; align-items: center; }
       .left-column { flex: unset; width: 100%; max-width: 350px; }
       .mv-container, .spotify-container { grid-template-columns: 1fr; }
       .gallery-container { grid-template-columns: 1fr; }
+      .social-links { gap: 15px; }
+      .social-links a { width: 45px; height: 45px; }
     }
   </style>
 </head>
@@ -501,21 +483,22 @@
         </div>
       </div>
 
+      <a href="WORKS.html">作品企劃</a>
     </nav>
   </header>
 
   <section class="profile-section">
     <div class="left-column">
-      <div class="img-card logo-card">
+      <div class="img-card light-glass-panel logo-card">
         <img class="profile-logo-top" src="img/星彗羽2.0Logo.png" alt="星彗羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%23FB9D9E\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' alignment-baseline=\'middle\'>星彗羽Logo</text></svg>'">
       </div>
 
-      <div class="img-card portrait-card">
+      <div class="img-card light-glass-panel portrait-card">
         <img id="profile-portrait" src="img/星彗羽2.0.png" alt="星彗羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星彗羽立繪預留位置</text></svg>'">
       </div>
     </div>
 
-    <div class="profile-card">
+    <div class="profile-card light-glass-panel">
       <table class="char-table">
         <tr><td>世界觀本名</td><td>陳彗羽</td></tr>
         <tr><td>性別</td><td>女生</td></tr>
@@ -527,7 +510,7 @@
         <tr><td>血型</td><td>O型</td></tr>
         <tr><td>代表色</td>
           <td style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 16px; height: 16px; background-color: #FB9D9E; border-radius: 50%;"></div> 馬卡龍粉
+            <div style="width: 16px; height: 16px; background-color: var(--accent); border-radius: 50%;"></div> 馬卡龍粉
           </td>
         </tr>
         <tr><td>所屬團體</td><td>星幻之城 × StarLeo</td></tr>
@@ -535,10 +518,11 @@
         <tr>
           <td>當前版本</td>
           <td>
-            <!-- 改成上下排列，解決手機版擠在一起的問題 -->
-            <div style="margin-bottom: 8px; font-size: 15px;">星彗羽ACE Ai Voice System V2.0</div>
-            <div style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; align-items: flex-start;">
-              <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-left: 0;">前往ACE社群</a>
+            <div class="version-info-container">
+              <div class="version-text">星彗羽ACE Ai V1.1</div>
+              <div class="version-buttons">
+                <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small">前往ACE社群</a>
+              </div>
             </div>
           </td>
         </tr>
@@ -555,13 +539,13 @@
   </section>
 
   <section>
-    <div class="intro-section">
+    <div class="intro-section light-glass-panel">
       星彗羽，是由星樂之夢開發並營運的女性兒童聲虛擬歌手，<br>
       基於使用 ACE Studio 歌聲合成引擎製作，台灣女性小學生錄製。
     </div>
   </section>
 
-  <section class="history-section">
+  <section class="history-section light-glass-panel">
     <h2>歷史概要</h2>
     <div class="history-text">
       <p>2023年12月，自由之光團隊重新啟動計劃，推出男女雙小學生角色虛擬歌手。男性為「星希羽」，女性為「星彗羽」。</p>
@@ -573,7 +557,7 @@
 
   <section>
     <h2>團體世界觀：星幻之城 × StarLeo</h2>
-    <div class="worldview-content">
+    <div class="worldview-content light-glass-panel">
       <p><strong>星幻之城 × StarLeo</strong> 是星樂之夢旗下的小學生虛擬歌手團體系列，由 <strong>星希羽、星彗羽、星丞軒、星卉芯</strong> 組成。</p>
 
       <div class="lore-poem">
@@ -603,10 +587,21 @@
     <h2>歷代圖繪</h2>
     <div class="gallery-container">
 
-      <!-- 卡片 3 (或唯一一張) -->
-      <div class="gallery-card" style="margin: 0 auto; max-width: 350px;">
+      <!-- 新增：Beta 形象 -->
+      <div class="gallery-card light-glass-panel">
         <div class="gallery-img">
-          <img src="img/星彗羽2.0.png" alt="星彗羽V1形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V2.0 形象預留</text></svg>'">
+          <img src="img/星彗羽Beta.png" alt="星彗羽 Beta 形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>Beta 形象預留</text></svg>'">
+        </div>
+        <div class="gallery-info">
+          <h4>星彗羽Beta形象</h4>
+          <p>2023年設計</p>
+        </div>
+      </div>
+
+      <!-- V1.1 形象 (移除寬度限制，讓它跟星希羽一樣自動排版) -->
+      <div class="gallery-card light-glass-panel">
+        <div class="gallery-img">
+          <img src="img/星彗羽2.0.png" alt="星彗羽V1形象" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>V1.1 形象預留</text></svg>'">
         </div>
         <div class="gallery-info">
           <h4>V1.1 形象</h4>
@@ -627,7 +622,7 @@
 
     <!-- YouTube iframe 播放器 (無封面) -->
     <div class="mv-container">
-      <div class="mv-card">
+      <div class="mv-card light-glass-panel">
         <div class="mv-title"><span>原創曲</span> 《黎明》</div>
         <iframe src="https://www.youtube.com/embed/ZqR51TqI2yE?si=Dnt6G8b2c_Hk_c1X" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
       </div>
@@ -640,7 +635,7 @@
 
     <!-- 只保留第一個 Spotify 播放器 -->
     <div class="spotify-container">
-      <div class="spotify-embed">
+      <div class="spotify-embed light-glass-panel">
         <iframe style="border-radius:12px" src="https://open.spotify.com/embed/album/0cgCiSGnX09zfKcu5WhAty?utm_source=generator" width="100%" height="352" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
       </div>
     </div>
@@ -725,4 +720,4 @@
     })();
   </script>
 </body>
-</html>
+</html> 
