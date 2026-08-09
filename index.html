@@ -37,6 +37,9 @@
       margin: 0;
       padding-top: 80px; /* 配合 fixed header */
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      overflow-x: hidden;
+    }
+
     /* 星空背景圖片 (完美適配手機與 iOS Safari) */
     .stars {
       position: fixed;
@@ -541,27 +544,12 @@
       100% { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* 手機版微調 */
-    @media (max-width: 768px) {
-      #mascot-container {
-        bottom: 10px;
-        right: 10px;
-      }
-      #mascot-bubble {
-        max-width: 200px;
-        font-size: 13px;
-        padding: 10px;
-      }
-      #mascot-ou {
-        width: 80px;
-      }
-    }
-
     /* 響應式設定 */
     @media (max-width: 1024px) {
         .singer-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
+    /* 手機版微調與隱藏小歐 */
     @media (max-width: 768px) {
       header {
         padding: 15px 20px;
@@ -589,11 +577,17 @@
         padding: 30px 20px;
       }
       .singer-grid { grid-template-columns: 1fr; }
+
+      /* 在手機版隱藏吉祥物小歐，避免擋住主要內容 */
+      #mascot-container {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
 
+  <!-- 背景區塊 -->
   <div class="stars"></div>
 
   <header>
@@ -609,7 +603,7 @@
 
   <div class="hero">
     <h1>STAR MUSIC DREAM</h1>
-    <p>我們是一個以「虛擬歌手 × 音樂創作 × 世界觀劇情」為核心的大學生創作團隊</p>
+    <p>我們是一個以「虛擬歌手 × 音樂創作」為核心的大學生創作團隊</p>
   </div>
 
   <section class="history-section dark-glass-panel">
@@ -618,66 +612,12 @@
       <p>星樂之夢團隊（Star Music Dream）起源於2023年5月21日成立的「自由之光音樂社」，最初作為多媒體創作團隊「自由之光」旗下的音樂創作部門，負責虛擬歌手與原創音樂相關企劃開發。</p>
       <p>2023年12月，團隊重新啟動虛擬歌手企劃，發表兒童聲虛擬歌手 星希羽 與 星彗羽。</p>
       <p>2024年2月22日，團隊更名為「星樂之夢」，開始以獨立品牌形式對外活動。2025年2月22日再次調整組織架構，更名為「星樂之夢工作室」，並正式成為自由之光旗下子團隊，全面接手星希羽營運與星彗羽開發工作。</p>
-      <p>2026年4月9日，自由之光正式解散。原子團隊獨立營運，並更名為「星樂之夢團隊」，成為獨立的虛擬歌手與數位內容創作團隊。</p>
+      <p>2026年4月9日，更名為「星樂之夢團隊」，成為虛擬歌手與數位內容創作團隊。</p>
     </div>
   </section>
 
   <section id="singers">
     <h2>旗下歌手陣容</h2>
-
-    <div class="series-title">STREETECHOES 系列</div>
-    <div class="singer-grid">
-      <a href="#" class="card coming-soon dark-glass-panel">
-        <img src="img/希恩頭像ACE2.png" alt="希恩" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>希恩</h3>
-        <p>台灣虛擬男聲歌手</p>
-      </a>
-
-      <a href="#" class="card coming-soon dark-glass-panel">
-        <img src="img/宇熙頭像ACE2.png" alt="宇熙" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>宇熙</h3>
-        <p>台灣虛擬女聲歌手</p>
-      </a>
-
-      <a href="#" class="card coming-soon dark-glass-panel">
-        <img src="img/程都頭像ACE2.png" alt="程都" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>程都</h3>
-        <p>台灣虛擬男聲歌手</p>
-      </a>
-
-      <a href="#" class="card coming-soon dark-glass-panel">
-        <img src="img/悠珊頭像ACE2.png" alt="悠珊" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>悠珊</h3>
-        <p>台灣虛擬女聲歌手</p>
-      </a>
-    </div>
-
-    <div class="series-title">森嶼之聲 系列</div>
-    <div class="singer-grid">
-      <a href="#" class="card coming-soon dark-glass-panel">
-        <img src="img/岳嵐頭像ACE2.png" alt="岳嵐" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>岳嵐</h3>
-        <p>台灣虛擬男聲歌手</p>
-      </a>
-
-      <a href="#" class="card coming-soon dark-glass-panel">
-        <img src="img/穗蓉頭像ACE2.png" alt="穗蓉" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>穗蓉</h3>
-        <p>台灣虛擬女聲歌手</p>
-      </a>
-
-      <a href="#" class="card coming-soon dark-glass-panel">
-        <img src="img/湛嶠頭像ACE2.png" alt="湛嶠" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>湛嶠</h3>
-        <p>台灣虛擬男聲歌手</p>
-      </a>
-
-      <a href="#" class="card coming-soon dark-glass-panel">
-        <img src="img/雉瑜頭像ACE2.png" alt="雉瑜" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%231a2333\' width=\'100%\' height=\'100%\'/></svg>'">
-        <h3>雉瑜</h3>
-        <p>台灣虛擬女聲歌手</p>
-      </a>
-    </div>
 
     <div class="series-title">星幻之城 × StarLeo 系列</div>
     <div class="singer-grid">
@@ -706,7 +646,21 @@
       </a>
     </div>
 
-    <div style="text-align: center; margin-top: 40px;">
+    <!-- 待開發企劃橫幅 -->
+    <div class="series-title" style="margin-top: 60px;">STREETECHOES 系列 & 森嶼之聲 系列</div>
+    <div class="news-empty-state dark-glass-panel" style="padding: 40px 20px; border-color: rgba(252, 214, 118, 0.3);">
+      <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent); margin-bottom: 10px;">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12 6 12 12 16 14"></polyline>
+      </svg>
+      <h3 style="margin: 0 0 10px 0; color: #ffffff; font-size: 20px;">企劃籌備中 / 待開發</h3>
+      <div style="font-size: 15px; color: #cbd5e1; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+        「STREETECHOES 系列」與「森嶼之聲 系列」目前尚處於企劃雛形階段，<br>
+        開發日程未定。敬請期待星樂之夢未來的更多可能性！
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 50px;">
       <button class="btn btn-outline" onclick="openTermsModal()">⚖️ 查看角色使用規範</button>
     </div>
   </section>
@@ -791,7 +745,6 @@
     <div id="mascot-bubble">
       嗨嗨！我是星樂之夢吉祥物「小歐」，想了解星樂之夢旗下虛擬歌手製作方式歡迎參考<a href="https://youtu.be/_RaKnxQegEY" target="_blank">這裡</a>！
     </div>
-    <!-- 使用您指定的真實圖片路徑 -->
     <img id="mascot-ou" src="img/吉祥物小歐.png" alt="吉祥物小歐" onerror="this.style.display='none'">
   </div>
 
