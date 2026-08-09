@@ -488,6 +488,75 @@
       background-color: #ffffff;
     }
 
+    /* ================= 吉祥物小歐樣式 ================= */
+    #mascot-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      z-index: 2000; /* 確保在最上層 */
+    }
+
+    #mascot-bubble {
+      background: rgba(10, 16, 28, 0.9);
+      border: 1px solid var(--accent);
+      color: #f0f4f8;
+      padding: 15px;
+      border-radius: 12px 12px 0 12px;
+      font-size: 14px;
+      max-width: 250px;
+      margin-bottom: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      transform-origin: bottom right;
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #mascot-bubble a {
+      color: var(--accent);
+      text-decoration: underline;
+      font-weight: bold;
+    }
+
+    #mascot-bubble a:hover {
+      color: #fde49e;
+    }
+
+    #mascot-ou {
+      width: 100px; /* 根據您的圖片大小調整 */
+      height: auto;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+    }
+
+    #mascot-ou:hover {
+      transform: scale(1.1) rotate(-5deg);
+    }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    /* 手機版微調 */
+    @media (max-width: 768px) {
+      #mascot-container {
+        bottom: 10px;
+        right: 10px;
+      }
+      #mascot-bubble {
+        max-width: 200px;
+        font-size: 13px;
+        padding: 10px;
+      }
+      #mascot-ou {
+        width: 80px;
+      }
+    }
+
     /* 響應式設定 */
     @media (max-width: 1024px) {
         .singer-grid { grid-template-columns: repeat(2, 1fr); }
@@ -677,7 +746,7 @@
 
   <section id="news">
     <h2>情報與消息</h2>
-    
+
     <div class="news-empty-state dark-glass-panel">
       <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
@@ -717,6 +786,15 @@
     </div>
     <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
   </footer>
+
+  <!-- 吉祥物小歐區塊 -->
+  <div id="mascot-container">
+    <div id="mascot-bubble">
+      嗨嗨！我是星樂之夢吉祥物「小歐」，想了解星樂之夢旗下虛擬歌手製作方式歡迎參考<a href="https://youtu.be/_RaKnxQegEY" target="_blank">這裡</a>！
+    </div>
+    <!-- 使用您指定的真實圖片路徑 -->
+    <img id="mascot-ou" src="img/吉祥物小歐.png" alt="吉祥物小歐" onerror="this.style.display='none'">
+  </div>
 
   <script>
     // 導覽列與彈出視窗整合腳本
