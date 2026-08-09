@@ -35,6 +35,17 @@
       min-height: 100vh;
     }
 
+    /* 針對淺色文字在白底上的可讀性優化：加上微弱的深色/白色陰影 */
+    .accent-text-shadow {
+        text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3);
+    }
+
+    /* 滑鼠星星粒子畫布樣式 */
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90;
+    }
+
     /* 星空背景 (防手機跳動鎖死版) */
     .stars {
       position: fixed;
@@ -84,10 +95,10 @@
 
     /* 通用區塊設定 */
     section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
-    
+
     /* 段落標題：深黑色 + 馬卡龍深藍邊框 */
-    h2 { 
-      border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; 
+    h2 {
+      border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px;
       color: #0a0e17; font-weight: bold; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5);
     }
 
@@ -113,7 +124,7 @@
 
     .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
     .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.08); font-size: 15px; vertical-align: top; color: var(--text); font-weight: 500; }
-    
+
     /* 修正：表格標題顏色，改為深黑色 */
     .char-table td:first-child { color: #0a0e17; font-weight: 800; width: 120px; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5); }
 
@@ -139,13 +150,13 @@
     /* ================= 3. 歷史概要 & 世界觀區塊 ================= */
     .history-section, .worldview-content { padding: 40px; position: relative; }
     .yoyo-star { position: absolute; bottom: 20px; right: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; }
-    
+
     .history-text { font-size: 15px; line-height: 1.9; color: var(--text-light); font-weight: 500;}
     .history-text p { margin-bottom: 20px; }
     .history-text p:last-child { margin-bottom: 0; }
 
     .worldview-content { color: var(--text-light); line-height: 1.9; font-size: 15px; font-weight: 500;}
-    
+
     /* 修正：世界觀重點粗體字，改為深黑色 */
     .worldview-content strong { color: #0a0e17; font-weight: 800; text-shadow: 0px 1px 2px rgba(255, 255, 255, 0.5); }
 
@@ -200,6 +211,9 @@
   </style>
 </head>
 <body>
+  <!-- 新增：滑鼠星星粒子畫布 -->
+  <canvas id="cursor-canvas"></canvas>
+
   <!-- 背景區塊 -->
   <div class="stars"></div>
 
@@ -245,7 +259,7 @@
         <tr><td>血型</td><td>B型</td></tr>
         <tr><td>代表色</td>
           <td style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 16px; height: 16px; background-color: var(--accent); border-radius: 50%;"></div> 馬卡龍深藍
+            <div style="width: 16px; height: 16px; background-color: var(--accent); border-radius: 50%;"></div> 馬卡深藍
           </td>
         </tr>
         <tr><td>所屬團體</td><td>星幻之城 × StarLeo</td></tr>
@@ -366,6 +380,116 @@
         });
       }
     }
+  </script>
+
+  <!-- 新增：滑鼠星星粒子腳本 -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('cursor-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+
+      function resize(){
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * DPR;
+        canvas.height = height * DPR;
+        ctx.scale(DPR, DPR);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const particles = [];
+
+      function drawStar(ctx, x, y, radius, rot) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rot);
+        ctx.beginPath();
+        const spikes = 5;
+        const outerRadius = radius;
+        const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3;
+        let step = Math.PI / spikes;
+
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius);
+          angle += step;
+          ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius);
+          angle += step;
+        }
+        ctx.lineTo(0, -outerRadius);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function addParticle(x, y) {
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5),
+          vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5,
+          size: Math.random() * 8 + 6,
+          color: palette[Math.floor(Math.random() * palette.length)],
+          alpha: 0.8,
+          life: 0,
+          maxLife: Math.random() * 40 + 40,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.1
+        });
+      }
+
+      // 電腦滑鼠移動
+      window.addEventListener('mousemove', (e) => {
+        for(let i=0; i<2; i++) {
+            addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10);
+        }
+      }, {passive: true});
+
+      // 手機觸控移動
+      window.addEventListener('touchmove', (e) => {
+        if(e.touches.length > 0) {
+            for(let i=0; i<2; i++) {
+                addParticle(e.touches[0].clientX + (Math.random()-0.5)*10, e.touches[0].clientY + (Math.random()-0.5)*10);
+            }
+        }
+      }, {passive: true});
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life++;
+
+          if (p.life >= p.maxLife) {
+              particles.splice(i, 1);
+              continue;
+          }
+
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.05;
+          p.rot += p.rotSpeed;
+          p.alpha = 0.8 * (1 - p.life / p.maxLife);
+
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = p.color;
+
+          drawStar(ctx, p.x, p.y, p.size, p.rot);
+        }
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
   </script>
 </body>
 </html>
