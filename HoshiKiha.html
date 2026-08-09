@@ -41,6 +41,12 @@
         text-shadow: 0px 1px 2px rgba(10, 14, 23, 0.3);
     }
 
+    /* 新增：滑鼠星星粒子畫布樣式 */
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90;
+    }
+
     /* 星空背景 (強制鎖定，解決手機滑動背景跳動問題) */
     .stars {
       position: fixed;
@@ -320,6 +326,9 @@
   </style>
 </head>
 <body>
+  <!-- 新增：滑鼠星星粒子畫布 -->
+  <canvas id="cursor-canvas"></canvas>
+
   <!-- 背景區塊 -->
   <div class="stars"></div>
 
@@ -482,7 +491,7 @@
         </div>
         <div class="gallery-info">
           <h4>星希羽Beta形象</h4>
-          <p>2023年設計,Kai繪製</p>
+          <p>2023年設計</p>
         </div>
       </div>
 
@@ -492,7 +501,7 @@
         </div>
         <div class="gallery-info">
           <h4>星希羽V1.0~V1.4.2形象</h4>
-          <p>2024年設計,Kai繪製</p>
+          <p>2024年設計</p>
         </div>
       </div>
 
@@ -502,7 +511,7 @@
         </div>
         <div class="gallery-info">
           <h4>星希羽V1.4.2.1~V1.4.2.2形象</h4>
-          <p>2025設計,Kai繪製</p>
+          <p>2025設計</p>
         </div>
       </div>
 
@@ -512,7 +521,7 @@
         </div>
         <div class="gallery-info">
           <h4>V1.5形象</h4>
-          <p>2025年設計,非當事炸蝦繪製</p>
+          <p>2025年設計</p>
         </div>
       </div>
 
@@ -529,8 +538,8 @@
           <img src="img/出道紀念桌布.jpg" alt="出道紀念桌布" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'320\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>桌布預留</text></svg>'">
         </div>
         <div class="wallpaper-info">
-          <h4>V1紀念桌布</h4>
-          <p>2024年設計,斯貝繪製</p>
+          <h4>V1桌布</h4>
+          <p>2024年設計</p>
         </div>
       </div>
 
@@ -649,6 +658,116 @@
         });
       }
     }
+  </script>
+
+  <!-- 新增：滑鼠星星粒子腳本 -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('cursor-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+
+      function resize(){
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * DPR;
+        canvas.height = height * DPR;
+        ctx.scale(DPR, DPR);
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const particles = [];
+
+      function drawStar(ctx, x, y, radius, rot) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rot);
+        ctx.beginPath();
+        const spikes = 5;
+        const outerRadius = radius;
+        const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3;
+        let step = Math.PI / spikes;
+
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius);
+          angle += step;
+          ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius);
+          angle += step;
+        }
+        ctx.lineTo(0, -outerRadius);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function addParticle(x, y) {
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5),
+          vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5,
+          size: Math.random() * 8 + 6,
+          color: palette[Math.floor(Math.random() * palette.length)],
+          alpha: 0.8,
+          life: 0,
+          maxLife: Math.random() * 40 + 40,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.1
+        });
+      }
+
+      // 電腦滑鼠移動
+      window.addEventListener('mousemove', (e) => {
+        for(let i=0; i<2; i++) {
+            addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10);
+        }
+      }, {passive: true});
+
+      // 手機觸控移動
+      window.addEventListener('touchmove', (e) => {
+        if(e.touches.length > 0) {
+            for(let i=0; i<2; i++) {
+                addParticle(e.touches[0].clientX + (Math.random()-0.5)*10, e.touches[0].clientY + (Math.random()-0.5)*10);
+            }
+        }
+      }, {passive: true});
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.life++;
+
+          if (p.life >= p.maxLife) {
+              particles.splice(i, 1);
+              continue;
+          }
+
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.05;
+          p.rot += p.rotSpeed;
+          p.alpha = 0.8 * (1 - p.life / p.maxLife);
+
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = p.color;
+
+          drawStar(ctx, p.x, p.y, p.size, p.rot);
+        }
+        ctx.shadowBlur = 0;
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
   </script>
 </body>
 </html>
