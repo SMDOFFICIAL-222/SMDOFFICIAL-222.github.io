@@ -11,7 +11,7 @@
   <style>
     /* ================= 全域設定與重置 ================= */
     *, *::before, *::after {
-      box-sizing: border-box; /* 確保 padding 不會撐破寬度，修復偏左與破版問題 */
+      box-sizing: border-box;
     }
 
     /* 變數 (明亮馬卡龍藍 + 白底風格) */
@@ -31,12 +31,12 @@
 
     body {
       margin: 0;
-      padding-top: 80px;
+      padding-top: 80px; /* 電腦版留給 header 的空間 */
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       color: var(--text-main);
       min-height: 100vh;
       /* ================= 官網背景 ================= */
-      background: url('img/星希羽官網背景.png') no-repeat center center fixed;
+      background: url('img/星希羽官網背景_2.png') no-repeat center center fixed;
       background-size: cover;
     }
 
@@ -91,11 +91,11 @@
 
     /* ================= 通用區塊設定 (完美置中修復) ================= */
     main {
-      max-width: 1100px; /* 放大一點讓版面更寬敞 */
+      max-width: 1100px;
       margin: 0 auto;
       padding: 0 20px;
       width: 100%;
-      display: block; /* 移除 flex center，回歸標準塊狀排版以防子元素寬度崩塌 */
+      display: block;
     }
     section { width: 100%; margin-bottom: 60px; }
 
@@ -166,7 +166,6 @@
     }
     .char-table tr:last-child td { border-bottom: none; }
 
-    /* 修復手機版文字被擠壓換行：加上 white-space: nowrap */
     .char-table td:first-child {
       color: var(--accent-dark);
       font-weight: 900;
@@ -423,7 +422,7 @@
     footer {
       text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
       background: rgba(199, 238, 251, 0.9); margin-top: 60px;
-      width: 100%;
+      width: 100%; /* 讓 footer 滿版寬度 */
     }
     .social-links { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 20px 10px; margin-bottom: 10px; }
     .social-links a {
@@ -432,7 +431,7 @@
     }
     .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
 
-    /* RWD 手機響應式修正 */
+    /* ================= RWD 手機響應式修正 ================= */
     @media (max-width: 900px) {
       .profile-section { flex-direction: column; gap: 30px;}
       .left-column { flex: unset; width: 100%; max-width: 100%; gap: 20px; flex-direction: row;}
@@ -444,9 +443,25 @@
       .gallery-item.wide { grid-column: span 2; height: 250px; }
     }
     @media (max-width: 768px) {
-      header { padding: 12px 20px; flex-direction: column; gap: 10px; position: fixed; height: auto;}
-      .header-left, .header-center, .header-right { justify-content: center; width: 100%; gap: 15px; flex-wrap: wrap;}
-      body { padding-top: 170px; }
+      /* 手機版導覽列：隱藏多餘連結，只留 Logo 置中與其他歌手選單 */
+      header {
+        padding: 12px 20px;
+        flex-direction: column;
+        gap: 10px;
+        position: fixed;
+        height: auto;
+        background: rgba(255, 255, 255, 0.4); /* 手機版導覽列毛玻璃更白一點 */
+      }
+      .header-left, .header-right a[href="index.html"] {
+        display: none; /* 隱藏 ACE 官網/社群、返回首頁 */
+      }
+      .header-center, .header-right {
+        justify-content: center;
+        width: 100%;
+        gap: 15px;
+      }
+
+      body { padding-top: 130px; }
       .left-column { flex-direction: column; height: auto; }
       .logo-card { height: auto; padding: 20px;}
       .portrait-card { height: 350px; }
@@ -462,8 +477,10 @@
   </style>
 </head>
 <body>
+  <!-- 滑鼠星星粒子畫布 -->
   <canvas id="cursor-canvas"></canvas>
 
+  <!-- 頂部導覽列 -->
   <header>
     <div class="header-left">
       <a href="https://acestudio.ai/" target="_blank">ACE官網</a>
@@ -517,6 +534,7 @@
           </tr>
         </table>
 
+        <!-- 新版等分按鈕群組 -->
         <div class="info-btn-group">
           <button class="info-btn-small" onclick="openLoreModal('infoModal')">📖 詳細人設</button>
           <button class="info-btn-small" onclick="openLoreModal('storyModal')">📜 故事背景</button>
@@ -526,6 +544,7 @@
       </div>
     </section>
 
+    <!-- ================= 專屬聲庫資訊區塊 ================= -->
     <section>
       <div class="macaron-glass-panel voicebank-panel">
         <div class="vb-header">
@@ -551,6 +570,7 @@
           </div>
         </div>
 
+        <!-- YouTube 聲庫示範預留版位 -->
         <div style="margin-top: 30px;">
           <div class="platform-label" style="margin-bottom: 15px;">
             <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -564,6 +584,7 @@
       </div>
     </section>
 
+    <!-- 歷史概要 -->
     <section class="history-section macaron-glass-panel">
       <h2>歷史概要</h2>
       <div class="history-text">
@@ -607,6 +628,7 @@
       </div>
     </section>
 
+    <!-- ================= 修正版圖繪專區 (優化版 Masonry Grid) ================= -->
     <section>
       <h2>圖繪專區</h2>
       <div class="gallery-masonry">
@@ -643,6 +665,7 @@
           </div>
         </div>
 
+        <!-- 桌布卡片 (跨滿下方寬度) -->
         <div class="gallery-item wide" onclick="openLightbox(this)">
           <img src="img/出道紀念桌布.jpg" alt="出道紀念桌布" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' text-anchor=\'middle\'>V1桌布</text></svg>'">
           <div class="gallery-item-overlay">
@@ -663,6 +686,7 @@
       </div>
 
       <div class="mv-container">
+        <!-- 原有的 MV 1 -->
         <a href="https://youtu.be/524F0af40hs" target="_blank" class="mv-card-link macaron-glass-panel">
           <div class="mv-title"><span>代表作</span> 《星の夜》</div>
           <div class="mv-thumbnail">
@@ -671,6 +695,7 @@
           </div>
         </a>
 
+        <!-- 原有的 MV 2 -->
         <a href="https://youtu.be/ZRHA1HQoNFA" target="_blank" class="mv-card-link macaron-glass-panel">
           <div class="mv-title"><span>代表作</span> 《星の夜(Remake)》</div>
           <div class="mv-thumbnail">
@@ -679,6 +704,7 @@
           </div>
         </a>
 
+        <!-- 新增：羽翼預告 -->
         <a href="#" target="_blank" class="mv-card-link macaron-glass-panel">
           <div class="mv-title"><span>預告</span> 《羽翼》</div>
           <div class="mv-thumbnail">
@@ -687,6 +713,7 @@
           </div>
         </a>
 
+        <!-- 新增：流星群預告 -->
         <a href="#" target="_blank" class="mv-card-link macaron-glass-panel">
           <div class="mv-title"><span>預告</span> 《流星群》</div>
           <div class="mv-thumbnail">
@@ -742,6 +769,7 @@
     </section>
   </main>
 
+  <!-- ================= 彈出視窗：人設資訊 ================= -->
   <div class="modal-overlay" id="infoModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('infoModal')">✕</div>
@@ -772,6 +800,7 @@
     </div>
   </div>
 
+  <!-- ================= 彈出視窗：人設故事 ================= -->
   <div class="modal-overlay" id="storyModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('storyModal')">✕</div>
@@ -854,6 +883,7 @@
     </div>
   </div>
 
+  <!-- ================= 彈出視窗：團體世界觀 ================= -->
   <div class="modal-overlay" id="worldModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('worldModal')">✕</div>
@@ -873,6 +903,7 @@
     </div>
   </div>
 
+  <!-- Lightbox 燈箱元件 (用於放大顯示圖片) -->
   <div id="lightbox" onclick="this.classList.remove('active')">
     <img id="lightbox-img" src="" alt="放大圖片">
   </div>
@@ -935,6 +966,7 @@
     }
   </script>
 
+  <!-- 滑鼠星星粒子特效 -->
   <script>
     (function(){
       const canvas = document.getElementById('cursor-canvas');
