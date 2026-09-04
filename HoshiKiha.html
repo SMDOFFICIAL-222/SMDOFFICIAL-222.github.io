@@ -5,10 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>星希羽 HoshiKiha | 官方網站</title>
   <meta name="description" content="星希羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手。">
+
   <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
 
   <style>
-    /* CSS 重置與變數 (明亮馬卡龍藍 + 白底風格) */
+    /* ================= 全域設定與重置 ================= */
+    *, *::before, *::after {
+      box-sizing: border-box; /* 確保 padding 不會撐破寬度，修復偏左與破版問題 */
+    }
+
+    /* 變數 (明亮馬卡龍藍 + 白底風格) */
     :root {
       --bg: #ffffff; /* 全白背景預設 */
       --text-main: #1e293b; /* 主要深色文字 */
@@ -22,13 +28,14 @@
       --card-shadow-hover: 0 12px 35px rgba(0, 0, 0, 0.12);
       --glass-blur: blur(12px) saturate(110%);
     }
+
     body {
       margin: 0;
       padding-top: 80px;
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       color: var(--text-main);
       min-height: 100vh;
-      /* ================= 替換為新版背景圖 ================= */
+      /* ================= 官網背景 ================= */
       background: url('img/星希羽官網背景.png') no-repeat center center fixed;
       background-size: cover;
     }
@@ -43,11 +50,10 @@
     header {
       padding: 10px 40px;
       display: flex; justify-content: space-between; align-items: center;
-      /* 改為高透明度的霧面玻璃設定 */
       background: rgba(255, 255, 255, 0.2);
       backdrop-filter: blur(16px) saturate(120%);
       -webkit-backdrop-filter: blur(16px) saturate(120%);
-      position: fixed; top: 0; left: 0; width: 100%; box-sizing: border-box; z-index: 1000;
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
       border-bottom: 1px solid rgba(255, 255, 255, 0.4);
       box-shadow: 0 4px 20px rgba(0,0,0,0.03);
     }
@@ -55,7 +61,7 @@
     .header-left, .header-center, .header-right {
       display: flex; align-items: center; flex: 1;
     }
-    .header-left { justify-content: flex-start; gap: 25px; } /* 補回左側區塊 */
+    .header-left { justify-content: flex-start; gap: 25px; }
     .header-center { justify-content: center; } /* 讓 Logo 完美置中 */
     .header-right { justify-content: flex-end; gap: 25px; }
 
@@ -83,19 +89,13 @@
     .dropdown-content a { color: var(--text-main); padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; }
     .dropdown-content a:hover { background: rgba(199, 238, 251, 0.5); color: var(--accent-dark); }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, -5px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
-    }
-
-    /* 通用區塊設定 (整體置中) */
+    /* ================= 通用區塊設定 (完美置中修復) ================= */
     main {
-      max-width: 1000px;
+      max-width: 1100px; /* 放大一點讓版面更寬敞 */
       margin: 0 auto;
       padding: 0 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center; /* 讓內部區塊置中 */
+      width: 100%;
+      display: block; /* 移除 flex center，回歸標準塊狀排版以防子元素寬度崩塌 */
     }
     section { width: 100%; margin-bottom: 60px; }
 
@@ -127,7 +127,6 @@
       margin-top: 40px;
       margin-bottom: 60px;
       width: 100%;
-      justify-content: center; /* 確保內容水平居中 */
     }
 
     .left-column { flex: 0 0 350px; display: flex; flex-direction: column; gap: 30px; }
@@ -154,10 +153,10 @@
       transition: opacity 0.3s ease;
     }
 
-    /* 右側個人資料卡片 (優化版) */
-    .profile-card { flex: 1; padding: 40px; }
+    /* 右側個人資料卡片 */
+    .profile-card { flex: 1; padding: 40px; display: flex; flex-direction: column;}
 
-    .char-table { width: 100%; border-collapse: collapse; }
+    .char-table { width: 100%; border-collapse: collapse; margin-bottom: auto;}
     .char-table td {
       padding: 16px 0;
       border-bottom: 1px solid rgba(0,0,0,0.06);
@@ -166,17 +165,22 @@
       color: var(--text-main);
     }
     .char-table tr:last-child td { border-bottom: none; }
-    /* 表格標題顏色 (深藍色加粗) */
-    .char-table td:first-child { color: var(--accent-dark); font-weight: 900; width: 100px; }
 
-    /* 修復代表色的空隙：讓圓點和文字靠左對齊，消除不必要的 margin */
+    /* 修復手機版文字被擠壓換行：加上 white-space: nowrap */
+    .char-table td:first-child {
+      color: var(--accent-dark);
+      font-weight: 900;
+      width: 100px;
+      white-space: nowrap;
+    }
+
     .color-indicator {
       display: flex;
       align-items: center;
       gap: 8px;
     }
 
-    /* 人設/故事資訊按鈕群組 (等分三欄，對應截圖排版) */
+    /* 人設/故事資訊按鈕群組 (等分三欄，底部對齊) */
     .info-btn-group {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -219,7 +223,7 @@
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
     .beta-btn-small:hover {
-      background: var(--accent-dark); color: #ffffff; transform: translateY(-2px);
+      background-color: var(--accent-dark); color: #ffffff; transform: translateY(-2px);
     }
 
     /* ================= 2. 聲庫資訊區塊 ================= */
@@ -292,7 +296,7 @@
     .reference-sheet { width: 100%; display: block; background: rgba(255,255,255,0.5); }
     .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
 
-    /* ================= 新版圖繪專區 (優化版 Masonry Grid) ================= */
+    /* ================= 新版圖繪專區 (九宮格瀑布流排版) ================= */
     .gallery-masonry {
       display: grid;
       grid-template-columns: repeat(4, 1fr); /* 強制均分4欄 */
@@ -304,15 +308,14 @@
       border-radius: 12px;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      background: #ffffff; /* 純白底色，避免透明圖層透色 */
+      background: #ffffff; /* 純白底色充當畫框 */
       aspect-ratio: 3 / 4; /* 給定一個統一的長寬比例 */
     }
     .gallery-item img {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* 確保圖片完整顯示，不被裁切 */
-      padding: 10px; /* 加上內縮的留白空間 */
-      box-sizing: border-box;
+      object-fit: contain; /* 保證圖片完整不超出 */
+      padding: 10px; /* 畫框內縮效果 */
       transition: transform 0.4s ease;
     }
     .gallery-item:hover img {
@@ -326,8 +329,8 @@
       height: 350px;
     }
     .gallery-item.wide img {
-      object-fit: cover; /* 桌布還是維持填滿比較好看 */
-      padding: 0; /* 移除留白 */
+      object-fit: cover; /* 桌布維持填滿比較好看 */
+      padding: 0; /* 桌布不需內縮 */
     }
 
     /* 懸停浮水印層 */
@@ -342,7 +345,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      pointer-events: none; /* 避免干擾點擊 */
+      pointer-events: none;
     }
     .gallery-item:hover .gallery-item-overlay {
       opacity: 1;
@@ -420,7 +423,7 @@
     footer {
       text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
       background: rgba(199, 238, 251, 0.9); margin-top: 60px;
-      width: 100%; /* 讓 footer 滿版寬度 */
+      width: 100%;
     }
     .social-links { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 20px 10px; margin-bottom: 10px; }
     .social-links a {
@@ -429,9 +432,9 @@
     }
     .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); }
 
-    /* RWD 響應式 */
+    /* RWD 手機響應式修正 */
     @media (max-width: 900px) {
-      .top-layout { flex-direction: column; gap: 30px;}
+      .profile-section { flex-direction: column; gap: 30px;}
       .left-column { flex: unset; width: 100%; max-width: 100%; gap: 20px; flex-direction: row;}
       .logo-card { flex: 1; height: 250px;}
       .portrait-card { flex: 2; height: 250px; padding: 20px;}
@@ -441,25 +444,26 @@
       .gallery-item.wide { grid-column: span 2; height: 250px; }
     }
     @media (max-width: 768px) {
-      header { padding: 12px 20px; flex-direction: column; gap: 15px; position: fixed; height: auto;}
-      .header-center, .header-right { justify-content: center; width: 100%; gap: 15px;}
-      body { padding-top: 130px; }
+      header { padding: 12px 20px; flex-direction: column; gap: 10px; position: fixed; height: auto;}
+      .header-left, .header-center, .header-right { justify-content: center; width: 100%; gap: 15px; flex-wrap: wrap;}
+      body { padding-top: 170px; }
       .left-column { flex-direction: column; height: auto; }
       .logo-card { height: auto; padding: 20px;}
       .portrait-card { height: 350px; }
+      .profile-card { padding: 25px 20px; }
       .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
       .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vp-list li strong { width: auto; margin-right: 15px; }
       .vb-header { flex-direction: column; text-align: center; }
       .info-btn-group { grid-template-columns: 1fr; } /* 手機版按鈕變直排 */
+      .gallery-masonry { grid-template-columns: 1fr; }
+      .gallery-item.wide { grid-column: span 1; }
     }
   </style>
 </head>
 <body>
-  <!-- 滑鼠星星粒子畫布 -->
   <canvas id="cursor-canvas"></canvas>
 
-  <!-- 頂部導覽列 -->
   <header>
     <div class="header-left">
       <a href="https://acestudio.ai/" target="_blank">ACE官網</a>
@@ -513,7 +517,6 @@
           </tr>
         </table>
 
-        <!-- 新版等分按鈕群組 -->
         <div class="info-btn-group">
           <button class="info-btn-small" onclick="openLoreModal('infoModal')">📖 詳細人設</button>
           <button class="info-btn-small" onclick="openLoreModal('storyModal')">📜 故事背景</button>
@@ -523,7 +526,6 @@
       </div>
     </section>
 
-    <!-- ================= 專屬聲庫資訊區塊 ================= -->
     <section>
       <div class="macaron-glass-panel voicebank-panel">
         <div class="vb-header">
@@ -549,7 +551,6 @@
           </div>
         </div>
 
-        <!-- YouTube 聲庫示範預留版位 -->
         <div style="margin-top: 30px;">
           <div class="platform-label" style="margin-bottom: 15px;">
             <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
@@ -563,7 +564,6 @@
       </div>
     </section>
 
-    <!-- 歷史概要 -->
     <section class="history-section macaron-glass-panel">
       <h2>歷史概要</h2>
       <div class="history-text">
@@ -571,7 +571,7 @@
         <p>2023 年 12 月，自由之光重新啟動計劃，推出男女雙小學生角色虛擬歌手，男性為「星希羽」，繼承部分「耀光」設定，女性為「星彗羽」。</p>
         <p>2024 年 2 月 22 日開設「星樂之夢工作室」，並於 4 月轉用 ACE Studio 進行開發。2024 年 8 月 14 日，星希羽正式發佈 1.0 版本及首支原創曲《星の夜》，由自由之光代理經營。</p>
         <p>2025 年 2 月 22 日正式由星樂之夢工作室接手並與自由之光共同營運。</p>
-        <p>2026 年 2 月 2 日起星樂之夢停止了星希羽 V1 官方活動及聲庫維護，3 月 1 日星希羽 V2 專案啟動新聲優徵選開始，4 月 9 日自由之光退出營運，4 月 30 日星希羽V2開始測試，6 月 11 日正式發行二週年紀念 EP《羽翼》並展開星希羽 V2 封測，7 月 31 日推出星希羽V1.5.2正式版，並宣布V1.5.2版的Voice Style，Ian錄製的聲音變為Cute聲線(萌音)，新中之人錄製的聲音變為Lively聲線(稚音)。</p>
+        <p>2026 年 2 月 2 日起星樂之夢停止了星希羽 V1 官方活動及聲庫維護，3 月 1 日星希羽 V2 專案啟動新聲優徵選開始，4 月 9 日自由之光退出營運，4 月 30 日星希羽V2開始測試，6 月 11 日正式發行二週年紀念 EP《羽翼》並展開星希羽 V2 封測，7 月 31 日推出星希羽V1.5.2正式版，並宣布V1.5.2版的Voice Style，Ian錄製的聲音為Cute聲線(萌音)，新中之人錄製的聲音為Lively聲線(稚音)。</p>
       </div>
       <img class="yoyo-star" src="img/星希羽提示星星.png" alt="悠悠星" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>悠悠預留</text></svg>'">
     </section>
@@ -607,7 +607,6 @@
       </div>
     </section>
 
-    <!-- ================= 修正版圖繪專區 (優化版 Masonry Grid) ================= -->
     <section>
       <h2>圖繪專區</h2>
       <div class="gallery-masonry">
@@ -644,7 +643,6 @@
           </div>
         </div>
 
-        <!-- 桌布卡片 (跨滿下方寬度) -->
         <div class="gallery-item wide" onclick="openLightbox(this)">
           <img src="img/出道紀念桌布.jpg" alt="出道紀念桌布" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' text-anchor=\'middle\'>V1桌布</text></svg>'">
           <div class="gallery-item-overlay">
@@ -672,10 +670,27 @@
             <div class="play-btn"></div>
           </div>
         </a>
+
         <a href="https://youtu.be/ZRHA1HQoNFA" target="_blank" class="mv-card-link macaron-glass-panel">
           <div class="mv-title"><span>代表作</span> 《星の夜(Remake)》</div>
           <div class="mv-thumbnail">
             <img src="https://img.youtube.com/vi/ZRHA1HQoNFA/maxresdefault.jpg" alt="星の夜(Remake) MV" onerror="this.src='https://img.youtube.com/vi/ZRHA1HQoNFA/hqdefault.jpg'">
+            <div class="play-btn"></div>
+          </div>
+        </a>
+
+        <a href="#" target="_blank" class="mv-card-link macaron-glass-panel">
+          <div class="mv-title"><span>預告</span> 《羽翼》</div>
+          <div class="mv-thumbnail">
+            <img src="img/星希羽_羽翼預告_Youtube縮圖.png" alt="羽翼預告" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230369a1\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>羽翼預留</text></svg>'">
+            <div class="play-btn"></div>
+          </div>
+        </a>
+
+        <a href="#" target="_blank" class="mv-card-link macaron-glass-panel">
+          <div class="mv-title"><span>預告</span> 《流星群》</div>
+          <div class="mv-thumbnail">
+            <img src="img/星希羽_流星群_Youtube預告圖片.png" alt="流星群預告" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230369a1\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>流星群預留</text></svg>'">
             <div class="play-btn"></div>
           </div>
         </a>
@@ -727,7 +742,6 @@
     </section>
   </main>
 
-  <!-- ================= 彈出視窗：人設資訊 ================= -->
   <div class="modal-overlay" id="infoModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('infoModal')">✕</div>
@@ -758,7 +772,6 @@
     </div>
   </div>
 
-  <!-- ================= 彈出視窗：人設故事 ================= -->
   <div class="modal-overlay" id="storyModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('storyModal')">✕</div>
@@ -841,7 +854,6 @@
     </div>
   </div>
 
-  <!-- ================= 彈出視窗：團體世界觀 ================= -->
   <div class="modal-overlay" id="worldModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('worldModal')">✕</div>
@@ -861,7 +873,6 @@
     </div>
   </div>
 
-  <!-- Lightbox 燈箱元件 (用於放大顯示圖片) -->
   <div id="lightbox" onclick="this.classList.remove('active')">
     <img id="lightbox-img" src="" alt="放大圖片">
   </div>
@@ -924,7 +935,6 @@
     }
   </script>
 
-  <!-- 滑鼠星星粒子特效 -->
   <script>
     (function(){
       const canvas = document.getElementById('cursor-canvas');
