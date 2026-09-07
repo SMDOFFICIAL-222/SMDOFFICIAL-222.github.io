@@ -17,7 +17,7 @@
   <meta property="og:site_name" content="星樂之夢" />
   <meta property="og:image" content="https://SMDOFFICIAL-222.github.io/img/星彗羽2.0.png" />
 
-  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <link rel="icon" href="img/StarLeo_Logo.png" type="image/png">
 
   <script type="application/ld+json">
   {
@@ -270,19 +270,12 @@
       box-shadow: 0 4px 10px rgba(251, 157, 158, 0.3);
     }
 
-    .beta-btn-small {
-      display: inline-block; padding: 6px 16px;
-      background-color: #ffffff;
-      color: var(--accent-dark);
-      font-size: 13px; font-weight: bold;
-      border: 1px solid var(--accent-dark); border-radius: 20px; text-decoration: none;
-      transition: all 0.3s ease; text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    .beta-btn-small:hover { background-color: var(--accent-dark); color: #ffffff; transform: translateY(-2px); }
-
     /* ================= 2. 聲庫資訊區塊 ================= */
-    .voicebank-panel { padding: 40px; margin-bottom: 60px; }
+    .voicebank-panel {
+      padding: 40px;
+      margin-bottom: 60px;
+      position: relative; /* 為了讓安可可以絕對定位在這個區塊內 */
+    }
     .vb-header {
       display: flex; gap: 25px; align-items: center; margin-bottom: 25px;
       border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 25px;
@@ -325,12 +318,16 @@
     }
     .play-btn::before { content: ''; border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent #fff; margin-left: 4px; }
 
-    /* ================= 3. 歷史概要 ================= */
-    .history-section { padding: 40px; position: relative; }
-    .yoyo-star { position: absolute; bottom: 20px; right: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-    .history-text { font-size: 15px; line-height: 1.9; color: var(--text-muted); }
-    .history-text p { margin-bottom: 20px; }
-    .history-text p:last-child { margin-bottom: 0; }
+    /* 安可 (Anco) 樣式，定位於聲庫區塊右下角 */
+    .yoyo-star {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      max-height: 100px;
+      opacity: 0.9;
+      pointer-events: none;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
 
     /* ================= 5. 形象3視圖展示 ================= */
     .reference-sheet-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 18px; border: 1px solid var(--card-border);}
@@ -458,10 +455,9 @@
       .gallery-item.wide { grid-column: span 2; height: 250px; }
     }
     @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏 ACE 連結，保留其他歌手與返回首頁，置中排列 */
       header { padding: 10px 0; background: rgba(255, 255, 255, 0.4);}
       .nav-container { flex-direction: column; gap: 10px; justify-content: center; padding: 10px 20px; }
-      .header-left { display: none; } /* 只隱藏 ACE 連結 */
+      .header-left { display: none; }
       .header-center, .header-right { flex: unset; justify-content: center; width: 100%; gap: 15px; }
 
       body { padding-top: 130px; }
@@ -469,6 +465,12 @@
       .logo-card { height: auto; padding: 20px;}
       .portrait-card { height: 350px; }
       .profile-card { padding: 25px 20px; }
+
+      .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
+      .vp-list li { display: flex; flex-direction: row; flex-wrap: wrap; }
+      .vp-list li strong { width: auto; margin-right: 15px; flex-shrink: 0;}
+
+      .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vb-header { flex-direction: column; text-align: center; }
       .info-btn-group { grid-template-columns: 1fr; }
     }
@@ -575,18 +577,10 @@
             <div class="play-btn"></div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 歷史概要 -->
-    <section class="history-section macaron-glass-panel">
-      <h2>歷史概要</h2>
-      <div class="history-text">
-        <p>2023年12月，自由之光團隊重新啟動計劃，推出男女雙小學生角色虛擬歌手。男性為「星希羽」，女性為「星彗羽」。</p>
-        <p>2024年2月22日開設「星樂之夢」，並於4月轉用 ACE Studio 進行開發。</p>
-        <p>2025年1月7日開始研發，2月22日正式由星樂之夢接手開發，2025年4月9日正式發佈1.0版本並由星樂之夢全面營運，於同年11月2日發布首張 EP 專輯《黎明》。</p>
+        <!-- 將安可移到此處的右下角 -->
+        <img class="yoyo-star" src="img/安可提示.png" alt="安可提示" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>安可</text></svg>'">
       </div>
-      <img class="yoyo-star" src="img/安可提示.png" alt="安可提示" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>安可</text></svg>'">
     </section>
 
     <section>
