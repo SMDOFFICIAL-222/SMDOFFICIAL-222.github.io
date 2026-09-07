@@ -188,10 +188,10 @@
 
     .color-indicator { display: flex; align-items: center; gap: 8px; }
 
-    /* 人設按鈕群組 */
+    /* 人設按鈕群組 (星丞軒：詳細人設、團體世界觀) */
     .info-btn-group {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       margin-top: 30px;
       padding-top: 20px;
@@ -367,10 +367,11 @@
       .portrait-card { flex: 2; height: 250px; padding: 20px;}
     }
     @media (max-width: 768px) {
-      header { padding: 12px 20px; flex-direction: column; gap: 10px; position: fixed; height: auto; background: rgba(255, 255, 255, 0.4);}
-      .nav-container { padding: 0; justify-content: center; flex-direction: column; gap: 10px;}
+      /* 手機版導覽列：隱藏 ACE 連結與其他歌手 */
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.4);}
+      .nav-container { flex-direction: column; gap: 10px; justify-content: center; padding: 10px 20px; }
       .header-left, .header-right .dropdown { display: none; }
-      .header-center, .header-right { flex: unset; justify-content: center; width: 100%; gap: 15px;}
+      .header-center, .header-right { flex: unset; justify-content: center; width: 100%; gap: 15px; }
 
       body { padding-top: 130px; }
       .left-column { flex-direction: column; height: auto; }
@@ -425,7 +426,6 @@
 
       <div class="profile-card macaron-glass-panel">
         <table class="char-table">
-          <tr><td>世界觀本名</td><td>許丞軒</td></tr>
           <tr><td>性別</td><td>男生</td></tr>
           <tr><td>年齡</td><td>10歲</td></tr>
           <tr><td>身高</td><td>140cm</td></tr>
@@ -444,10 +444,9 @@
           <tr><td>相關親屬</td><td>星卉芯(妹妹)</td></tr>
         </table>
 
-        <!-- 按鈕群組 -->
-        <div class="info-btn-group">
+        <!-- 按鈕群組 (星丞軒專屬：詳細人設、團體世界觀) -->
+        <div class="info-btn-group" style="grid-template-columns: repeat(2, 1fr);">
           <button class="info-btn-small" onclick="openLoreModal('infoModal')">📖 詳細人設</button>
-          <button class="info-btn-small" onclick="openLoreModal('storyModal')">📜 故事背景</button>
           <button class="info-btn-small" onclick="openLoreModal('worldModal')">🌌 團體世界觀</button>
         </div>
 
@@ -461,8 +460,8 @@
           <!-- 暫時使用立繪作為頭像 -->
           <img class="vb-avatar" src="img/星丞軒立繪.png" alt="星丞軒頭像" style="object-position: top;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/></svg>'">
           <div class="vb-info">
-            <h3>星丞軒 ACE Ai Voice System V2.0</h3>
-            <p>是由星樂之夢開發並營運的男性兒童聲虛擬歌手，基於使用 ACE Studio 歌聲合成引擎製作，由台灣男性小學生錄製。</p>
+            <h3>星丞軒 ACE Ai Voice System RC</h3>
+            <p>是由星樂之夢開發並營運的男童聲虛擬歌手，基於使用 ACE Studio 歌聲合成引擎製作，由台灣男性小學生錄製。</p>
             <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-top: 10px;">前往ACE社群</a>
           </div>
         </div>
@@ -546,17 +545,6 @@
       <ul class="lore-list">
         <li><strong>特徵：</strong>目前官方設定建置中...</li>
       </ul>
-    </div>
-  </div>
-
-  <!-- ================= 彈出視窗：人設故事 ================= -->
-  <div class="modal-overlay" id="storyModal">
-    <div class="modal-card">
-      <div class="close-modal" onclick="closeLoreModal('storyModal')">✕</div>
-      <h2>📜 故事背景</h2>
-      <div class="lore-desc" style="color: var(--text-main); line-height: 1.8; font-size: 15px;">
-        <p>目前官方故事背景正在建置中，敬請期待...</p>
-      </div>
     </div>
   </div>
 
