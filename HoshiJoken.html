@@ -367,10 +367,10 @@
       .portrait-card { flex: 2; height: 250px; padding: 20px;}
     }
     @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏 ACE 連結與其他歌手 */
+      /* 手機版導覽列：隱藏 ACE 連結，保留其他歌手與返回首頁，置中排列 */
       header { padding: 10px 0; background: rgba(255, 255, 255, 0.4);}
       .nav-container { flex-direction: column; gap: 10px; justify-content: center; padding: 10px 20px; }
-      .header-left, .header-right .dropdown { display: none; }
+      .header-left { display: none; } /* 只隱藏 ACE 連結 */
       .header-center, .header-right { flex: unset; justify-content: center; width: 100%; gap: 15px; }
 
       body { padding-top: 130px; }
