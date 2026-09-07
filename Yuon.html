@@ -9,25 +9,33 @@
   <link rel="icon" href="img/NovaWorks_Logo(1).png" type="image/png">
 
   <style>
-    /* CSS 重置與變數 (祐恩專屬：科技藍) */
+    /* ================= 全域設定與重置 ================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* CSS 重置與變數 (祐恩專屬：深色科技藍) */
     :root {
       --bg: #0a0e17;
-      --text: #f0f4f8;
-      --accent: #4DA8DA; /* 科技藍 */
-      --accent-hover: #75c4eb;
+      --text-main: #f0f4f8; /* 主要淺色文字 */
+      --text-muted: #a0aec0; /* 次要灰白文字 */
+      --accent-dark: #4DA8DA; /* 科技藍 */
+
+      /* 霧面玻璃卡片變數 */
       --card-bg: rgba(10, 16, 28, 0.6);
-      --glass-bg: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
-      --glass-bg-strong: linear-gradient(135deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08));
-      --glass-border: rgba(255, 255, 255, 0.22);
-      --glass-border-soft: rgba(255, 255, 255, 0.12);
-      --glass-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
-      --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --card-shadow: 0 24px 70px rgba(0, 0, 0, 0.35);
+      --card-shadow-hover: 0 12px 40px rgba(77, 168, 218, 0.15);
+      --glass-blur: blur(24px) saturate(145%);
+      --glass-inner: inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
+
     body {
       margin: 0;
+      padding-top: 80px;
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       background: var(--bg);
-      color: var(--text);
+      color: var(--text-main);
       overflow-x: hidden;
       min-height: 100vh;
     }
@@ -41,200 +49,389 @@
       background-size: cover;
     }
     #cursor-canvas {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      pointer-events: none; z-index: 9999;
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90;
     }
 
-    /* 頂部導覽列 */
+    /* ================= 頂部導覽列 (霧面透明玻璃風) ================= */
     header {
-      padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
-      background: rgba(10,14,23,0.38);
-      -webkit-backdrop-filter: blur(22px) saturate(150%);
-      backdrop-filter: blur(22px) saturate(150%);
-      position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--glass-border-soft);
-      box-shadow: 0 10px 35px rgba(0,0,0,0.18);
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      background: rgba(10, 14, 23, 0.6);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      border-bottom: 1px solid var(--card-border);
+      box-shadow: 0 10px 35px rgba(0,0,0,0.3);
     }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 20px;
+    }
+
+    /* 確保左中右三等分，讓 Logo 完美置中 */
+    .header-left, .header-center, .header-right {
+      display: flex; align-items: center; flex: 1; flex-basis: 0;
+    }
+    .header-left { justify-content: flex-start; gap: 25px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 25px; }
+
     .logo { text-decoration: none; display: flex; align-items: center; }
     .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
 
-    .nav-links { display: flex; align-items: center; }
-    .nav-links a { color: var(--text); text-decoration: none; margin-left: 25px; font-size: 15px; transition: color 0.3s; }
-    .nav-links a:hover { color: var(--accent); }
+    header a, .dropdown-btn {
+      color: var(--text-main); text-decoration: none; font-size: 15px; font-weight: bold; transition: color 0.3s; cursor: pointer;
+    }
+    header a:hover, .dropdown:hover .dropdown-btn { color: var(--accent-dark); }
 
-    /* ================= 導覽列下拉選單樣式 ================= */
-    .dropdown { position: relative; display: inline-block; margin-left: 25px; cursor: pointer; }
-    .dropdown-btn { color: var(--text); font-size: 15px; transition: color 0.3s; padding: 10px 0; user-select: none; }
-    .dropdown:hover .dropdown-btn { color: var(--accent); }
+    /* 下拉選單樣式 */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-btn { padding: 10px 0; user-select: none; }
+    .dropdown::after { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 15px; }
     .dropdown-content {
       display: none; position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
-      background: rgba(10, 20, 38, 0.62);
-      -webkit-backdrop-filter: blur(24px) saturate(150%);
-      backdrop-filter: blur(24px) saturate(150%);
+      background: rgba(10, 16, 28, 0.95);
+      backdrop-filter: var(--glass-blur);
       min-width: 160px;
-      box-shadow: var(--glass-shadow), var(--glass-inner); border-radius: 12px; border: 1px solid var(--glass-border);
+      box-shadow: var(--card-shadow); border-radius: 12px; border: 1px solid var(--card-border);
       z-index: 101; padding: 8px 0;
     }
     .dropdown-content.show { display: block; animation: fadeIn 0.2s ease-in-out; }
-    .dropdown-content a { color: #a0aec0; padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; }
-    .dropdown-content a:hover { background: rgba(77, 168, 218, 0.15); color: var(--accent); }
+    .dropdown-content a { color: var(--text-main); padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; font-weight: normal;}
+    .dropdown-content a:hover { background: rgba(77, 168, 218, 0.2); color: var(--accent-dark); }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translate(-50%, -5px); }
       to { opacity: 1; transform: translate(-50%, 0); }
     }
 
-    /* 通用區塊設定 */
-    section { max-width: 1000px; margin: 0 auto 60px; padding: 0 20px; }
-    h2 { border-left: 4px solid var(--accent); padding-left: 15px; font-size: 26px; margin-bottom: 30px; color: var(--text); }
+    /* 漢堡選單按鈕 (電腦版隱藏) */
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 1001;
+      position: relative;
+    }
+    .menu-btn svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--text-main);
+      transition: stroke 0.3s;
+    }
+    .menu-btn:hover svg { stroke: var(--accent-dark); }
 
-    /* ================= 霧面玻璃 (Glassmorphism) 共用特效 ================= */
-    .img-card, .profile-card, .gallery-card {
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1px solid rgba(255, 255, 255, 0.12);
+    /* ================= 手機版全螢幕選單 (Mobile Overlay) ================= */
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(10, 14, 23, 0.95);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      text-align: center;
+    }
+    .mobile-nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      transition: color 0.3s;
+    }
+    .mobile-nav-links a:hover, .mobile-nav-links a.active { color: var(--accent-dark); }
+
+    /* ================= 通用區塊設定 ================= */
+    main { max-width: 1100px; margin: 0 auto; padding: 0 20px; width: 100%; display: block; }
+    section { width: 100%; margin-bottom: 60px; }
+
+    /* 段落標題 */
+    h2 {
+        border-left: 5px solid var(--accent-dark);
+        padding-left: 15px;
+        font-size: 26px;
+        margin-bottom: 30px;
+        color: var(--text-main);
+        font-weight: bold;
+    }
+
+    /* ================= 科技藍霧面玻璃卡片 ================= */
+    .glass-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      box-shadow: var(--card-shadow), var(--glass-inner);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
     }
 
     /* ================= 1. 頂部人物檔案區 ================= */
-    .profile-section { display: flex; gap: 40px; align-items: stretch; margin-top: 40px; margin-bottom: 60px; }
-
-    /* 左側欄 */
-    .left-column { flex: 0 0 400px; display: flex; flex-direction: column; gap: 20px; }
-
-    .img-card {
-      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px;
-      -webkit-backdrop-filter: blur(24px) saturate(145%);
-      backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner); display: flex; flex-direction: column; justify-content: center; align-items: center;
+    .profile-section {
+      display: flex;
+      gap: 30px;
+      align-items: stretch;
+      margin-top: 40px;
+      margin-bottom: 60px;
+      width: 100%;
     }
 
-    .logo-card { padding: 30px; }
+    .left-column { flex: 0 0 350px; display: flex; flex-direction: column; gap: 30px; }
+
+    .logo-card { padding: 30px; display: flex; justify-content: center; align-items: center; }
     .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5)); }
 
     /* 立繪卡片 */
-    .portrait-card { padding: 30px 20px 0px 20px; overflow: hidden; flex: 1; justify-content: flex-end; }
-    #profile-portrait { width: 100%; max-width: 360px; height: auto; object-fit: contain; transition: opacity 0.3s ease; }
+    .portrait-card {
+      padding: 30px;
+      overflow: hidden;
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #profile-portrait {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      transition: opacity 0.3s ease;
+    }
 
     /* 右側個人資料卡片 */
-    .profile-card {
-      flex: 1; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; padding: 30px;
-      -webkit-backdrop-filter: blur(24px) saturate(145%);
-      backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner);
+    .profile-card { flex: 1; padding: 40px; display: flex; flex-direction: column;}
+
+    .char-table { width: 100%; border-collapse: collapse; margin-bottom: auto;}
+    .char-table td {
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 16px;
+      vertical-align: middle;
+      color: var(--text-main);
+    }
+    .char-table tr:last-child td { border-bottom: none; }
+
+    .char-table td:first-child {
+      color: var(--accent-dark);
+      font-weight: 900;
+      width: 100px;
+      white-space: nowrap;
     }
 
-    .char-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-    .char-table td { padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.12); font-size: 15px; vertical-align: top; }
-    .char-table td:first-child { color: var(--accent); font-weight: bold; width: 120px; }
+    .color-indicator { display: flex; align-items: center; gap: 8px; }
 
-    /* 封測按鈕小標籤樣式 (玻璃特化版) */
-    .beta-btn-small {
-      display: inline-block;
-      padding: 6px 16px;
-      background-color: rgba(77, 168, 218, 0.15); /* 科技藍微透 */
-      color: var(--accent);
-      font-size: 13px;
-      font-weight: bold;
-      border: 1px solid rgba(77, 168, 218, 0.5);
-      border-radius: 20px;
-      text-decoration: none;
+    /* 人設按鈕群組 */
+    .info-btn-group {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+    .info-btn-small {
+      background: rgba(255,255,255,0.05);
+      color: var(--accent-dark);
+      border: 1px solid var(--accent-dark);
+      padding: 10px 5px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
       transition: all 0.3s ease;
-      text-align: center;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
-    .beta-btn-small:hover {
-      background-color: var(--accent);
+    .info-btn-small:hover {
+      background: var(--accent-dark);
       color: #0a0e17;
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba(77, 168, 218, 0.4);
     }
 
+    .beta-btn-small {
+      display: inline-block; padding: 6px 16px;
+      background-color: rgba(77, 168, 218, 0.15);
+      color: var(--accent-dark);
+      font-size: 13px; font-weight: bold;
+      border: 1px solid rgba(77, 168, 218, 0.5); border-radius: 20px; text-decoration: none;
+      transition: all 0.3s ease; text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .beta-btn-small:hover { background-color: var(--accent-dark); color: #0a0e17; transform: translateY(-2px); }
+
+    /* ================= 2. 聲庫資訊區塊 ================= */
+    .voicebank-panel { padding: 40px; margin-bottom: 60px; position: relative; }
+    .vb-header {
+      display: flex; gap: 25px; align-items: center; margin-bottom: 25px;
+      border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 25px;
+    }
+    .vb-avatar {
+      width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
+      border: 2px solid var(--accent-dark); flex-shrink: 0; background: rgba(255,255,255,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+    .vb-info { flex: 1; }
+    .vb-info h3 { margin: 0 0 10px 0; color: var(--accent-dark); font-size: 20px; line-height: 1.3;}
+    .vb-info p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+
+    .audio-grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
     .audio-player {
-      background: rgba(255,255,255,0.09); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.16);
-      -webkit-backdrop-filter: blur(18px) saturate(145%);
-      backdrop-filter: blur(18px) saturate(145%);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.16), 0 12px 28px rgba(0,0,0,0.18);
+      background: rgba(255,255,255,0.05); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1);
+      max-width: 500px;
     }
-    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--accent); }
-    .audio-player audio { width: 100%; height: 40px; outline: none; }
+    .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--accent-dark); }
+    .audio-player audio { width: 100%; height: 40px; outline: none; opacity: 0.9;}
+    .audio-player audio::-webkit-media-controls-panel { background-color: rgba(255, 255, 255, 0.1); }
+    .audio-player audio::-webkit-media-controls-current-time-display,
+    .audio-player audio::-webkit-media-controls-time-remaining-display { color: #fff; }
 
-    /* 概要區塊 */
-    .intro-section {
-      text-align: center; background: var(--glass-bg-strong);
-      -webkit-backdrop-filter: blur(24px) saturate(145%);
-      backdrop-filter: blur(24px) saturate(145%);
-      padding: 40px; border-radius: 18px; border: 1px solid var(--glass-border); font-size: 1.1em; line-height: 1.8; color: #e2e8f0; margin-bottom: 60px;
-      box-shadow: var(--glass-shadow), var(--glass-inner);
+    /* YouTube 聲庫示範預留版位 */
+    .platform-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--accent-dark);
+      color: var(--accent-dark);
+      padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .platform-label svg { width: 18px; height: 18px; fill: var(--accent-dark); }
+
+    .vb-video-container {
+      position: relative; border-radius: 12px; overflow: hidden;
+      background: rgba(255,255,255,0.03); aspect-ratio: 16/9; cursor: default; border: 1px dashed rgba(255,255,255,0.2);
+      box-shadow: var(--card-shadow);
+      max-width: 600px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center; color: var(--text-muted);
+    }
+    .vb-video-container svg { width: 48px; height: 48px; fill: rgba(255,255,255,0.2); margin-bottom: 10px; }
+
+    /* ================= 彈出視窗 (Modal) 樣式 ================= */
+    .modal-overlay {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal-card {
+      background: rgba(16, 25, 42, 0.95);
+      border: 1px solid var(--card-border);
+      width: 100%; max-width: 700px; max-height: 90vh; border-radius: 18px; overflow-y: auto; position: relative;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5); padding: 40px; box-sizing: border-box;
+    }
+    .close-modal {
+      position: absolute; right: 20px; top: 20px; width: 35px; height: 35px; background: rgba(255,255,255,0.1);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--accent-dark); font-size: 18px; transition: background 0.3s;
+    }
+    .close-modal:hover { background: rgba(255,255,255,0.2); }
+    .modal-card h2 { color: var(--accent-dark); font-size: 24px; margin-top: 0; border-left: 5px solid var(--accent-dark); padding-left: 15px; margin-bottom: 25px; text-shadow: none; }
+
+    .modal-content-text { line-height: 1.8; font-size: 15px; color: var(--text-main); }
+    .lore-list { list-style: none; padding: 0; margin: 0; color: var(--text-main); line-height: 2; font-size: 15px; }
+    .lore-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
+    .lore-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .lore-list strong { color: var(--accent-dark); display: inline-block; min-width: 100px; }
+
+    /* ================= 回到頂部按鈕 ================= */
+    .back-to-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: rgba(77, 168, 218, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(77, 168, 218, 0.5);
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+      z-index: 999;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+    .back-to-top.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover {
+      background: var(--accent-dark);
+      transform: translateY(-5px);
+      box-shadow: 0 6px 20px rgba(77, 168, 218, 0.5);
+    }
+    .back-to-top svg {
+      width: 24px;
+      height: 24px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    .history-text {
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 18px;
-      padding: 30px 34px;
-      color: #e2e8f0;
-      font-size: 1.05em;
-      line-height: 1.9;
-      -webkit-backdrop-filter: blur(24px) saturate(145%);
-      backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner);
-    }
-    .history-text p { margin: 0 0 18px 0; }
-    .history-text p:last-child { margin-bottom: 0; }
-
-    /* ================= 歷代圖繪展示區 ================= */
-    .gallery-container {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; margin-bottom: 40px;
-    }
-    .gallery-card {
-      background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 18px; overflow: hidden;
-      -webkit-backdrop-filter: blur(24px) saturate(145%);
-      backdrop-filter: blur(24px) saturate(145%);
-      box-shadow: var(--glass-shadow), var(--glass-inner); transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; display: flex; flex-direction: column;
-    }
-    .gallery-card:hover {
-      transform: translateY(-5px); border-color: rgba(117, 196, 235, 0.52); box-shadow: 0 22px 55px rgba(77, 168, 218, 0.22), var(--glass-inner);
-    }
-    .gallery-img { width: 100%; height: 260px; background: rgba(5, 12, 24, 0.28); display: flex; justify-content: center; align-items: flex-end; overflow: hidden; padding-top: 15px; }
-    .gallery-img img { width: 100%; height: 100%; object-fit: contain; transition: transform 0.5s ease; }
-    .gallery-card:hover .gallery-img img { transform: scale(1.05); }
-    .gallery-info {
-      padding: 15px; text-align: center; background: rgba(255,255,255,0.08); border-top: 1px solid rgba(255,255,255,0.14); flex: 1; display: flex; flex-direction: column; justify-content: center;
-      -webkit-backdrop-filter: blur(18px) saturate(145%);
-      backdrop-filter: blur(18px) saturate(145%);
-    }
-    .gallery-info h4 { margin: 0; color: #ffffff; font-size: 14px; letter-spacing: 0.5px; line-height: 1.4; }
-    .gallery-info p { margin: 5px 0 0 0; color: #a0aec0; font-size: 12px; }
-
-    /* 最下方按鈕與連結 */
-    .bottom-actions { text-align: center; margin-top: 80px; margin-bottom: 60px; }
-
-    .social-links { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 20px 10px; }
-    .social-links a {
-      display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: rgba(255,255,255,0.82);
-      -webkit-backdrop-filter: blur(16px) saturate(150%);
-      backdrop-filter: blur(16px) saturate(150%);
-      border: 1px solid rgba(255,255,255,0.55);
-      border-radius: 14px; box-shadow: 0 12px 28px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255,255,255,0.75); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0;
-    }
-    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 25px rgba(77, 168, 218, 0.5); }
-
+    /* ================= 8. 頁尾 ================= */
     footer {
-      text-align: center; padding: 40px; color: #a0aec0; border-top: 1px solid rgba(255,255,255,0.12); font-size: 14px;
-      background: transparent;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
+      text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
+      background: transparent; margin-top: 60px;
+      width: 100%; border-top: 1px solid rgba(255,255,255,0.1);
     }
 
-    @media (max-width: 768px) {
-      header { padding: 15px 20px; flex-direction: column; gap: 15px; }
-      .nav-links { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; }
-      .nav-links a { margin: 0 10px; }
-      .dropdown { margin: 0 10px; }
+    @media (max-width: 900px) {
       .profile-section { flex-direction: column; align-items: center; }
       .left-column { flex: unset; width: 100%; max-width: 350px; }
-      .social-links { gap: 15px; }
-      .social-links a { width: 45px; height: 45px; }
+      .logo-card { height: 250px;}
+      .portrait-card { height: 350px; padding: 20px;}
+    }
+    @media (max-width: 768px) {
+      /* 手機版導覽列：隱藏左側連結，右側改為漢堡選單 */
+      header { padding: 15px 20px; flex-direction: row; justify-content: space-between;}
+      .header-left, .header-right { display: none; }
+      .menu-btn { display: block; }
+      .logo { margin: 0 auto; position: absolute; left: 50%; transform: translateX(-50%);}
+
+      body { padding-top: 130px; }
+      .left-column { flex-direction: column; height: auto; }
+      .logo-card { height: auto; padding: 20px;}
+      .profile-card { padding: 25px 20px; }
+      .vb-header { flex-direction: column; text-align: center; }
+      .info-btn-group { grid-template-columns: 1fr; }
+
+      .back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; }
+      .back-to-top svg { width: 20px; height: 20px; }
     }
   </style>
 </head>
@@ -243,123 +440,233 @@
   <canvas id="cursor-canvas"></canvas>
 
   <header>
-    <a href="NovaWorks.html" class="logo">
-      <img src="img/NovaWorks_Logo(2).png" alt="Nova Works Logo" class="logo-image" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'45\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%23FCD676\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' alignment-baseline=\'middle\'>NOVA WORKS</text></svg>'">
-    </a>
-    <nav class="nav-links">
-      <a href="NovaWorks.html">返回首頁</a>
-      <a href="index.html">返回星樂之夢</a>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="https://acestudio.ai/" target="_blank">ACE官網</a>
+        <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank">ACE社群</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo">
+          <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'150\' height=\'45\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'0\' y=\'50%\' fill=\'%234DA8DA\' font-family=\'sans-serif\' font-size=\'20\' font-weight=\'bold\' alignment-baseline=\'middle\'>星樂之夢</text></svg>'">
+        </a>
+      </div>
+      <div class="header-right">
+        <div class="dropdown" onclick="toggleDropdown(event, this)">
+          <span class="dropdown-btn">其他歌手 ▾</span>
+          <div class="dropdown-content">
+            <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
+            <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
+            <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
+            <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
+            <a href="vsinger.html">查看全陣容</a>
+          </div>
+        </div>
+        <a href="index.html">返回首頁</a>
+      </div>
+    </div>
 
+    <!-- 手機版：漢堡選單按鈕 -->
+    <button class="menu-btn" id="mobileMenuBtn" aria-label="打開選單">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12" class="line-mid"></line>
+        <line x1="3" y1="6" x2="21" y2="6" class="line-top"></line>
+        <line x1="3" y1="18" x2="21" y2="18" class="line-bot"></line>
+      </svg>
+    </button>
+  </header>
+
+  <!-- 手機版：全螢幕展開選單 -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-nav-links">
+      <a href="index.html">返回首頁</a>
       <div class="dropdown" onclick="toggleDropdown(event, this)">
-        <span class="dropdown-btn">SMD旗下歌手 ▾</span>
+        <span class="dropdown-btn" style="color: var(--text-main);">其他歌手 ▾</span>
         <div class="dropdown-content">
           <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
-          <a href="index.html#singers">查看全陣容</a>
+          <a href="vsinger.html">查看全陣容</a>
         </div>
       </div>
-    </nav>
-  </header>
+    </div>
+  </div>
 
-  <section class="profile-section">
-    <div class="left-column">
-      <div class="img-card logo-card">
-        <!-- 如果祐恩有專屬 Logo，可替換 src -->
-        <img class="profile-logo-top" src="img/Yuon_Logo.png" alt="祐恩 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%234DA8DA\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' text-anchor=\'middle\' alignment-baseline=\'middle\'>祐恩 Yuon</text></svg>'">
+  <main>
+    <section class="profile-section">
+      <div class="left-column">
+        <div class="img-card glass-panel logo-card">
+          <!-- 祐恩專屬 Logo -->
+          <img class="profile-logo-top" src="img/Yuon_Logo.png" alt="祐恩 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%234DA8DA\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' text-anchor=\'middle\' alignment-baseline=\'middle\'>祐恩 Yuon</text></svg>'">
+        </div>
+        <div class="img-card glass-panel portrait-card">
+          <img id="profile-portrait" src="img/祐恩立繪.png" alt="祐恩全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>祐恩立繪預留位置</text></svg>'">
+        </div>
       </div>
 
-      <div class="img-card portrait-card">
-        <img id="profile-portrait" src="img/祐恩立繪.png" alt="祐恩全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>祐恩立繪</text></svg>'">
+      <div class="profile-card glass-panel">
+        <table class="char-table">
+          <tr><td>性別</td><td>男生</td></tr>
+          <tr><td>年齡</td><td>14歲</td></tr>
+          <tr><td>身高</td><td>173cm</td></tr>
+          <tr><td>體重</td><td>62kg</td></tr>
+          <tr><td>生日</td><td>8月14日</td></tr>
+          <tr><td>星座</td><td>獅子座</td></tr>
+          <tr><td>血型</td><td>AB型</td></tr>
+          <tr><td>代表色</td>
+            <td>
+              <div class="color-indicator">
+                <div style="width: 16px; height: 16px; background-color: var(--accent-dark); border-radius: 50%;"></div> 科技藍
+              </div>
+            </td>
+          </tr>
+          <tr><td>所屬企劃</td><td>Nova 企劃</td></tr>
+          <tr><td>角色定位</td><td>星希羽未來的二次創作衍生形象</td></tr>
+        </table>
+
+        <!-- 按鈕群組 (祐恩只有人設與故事，沒有世界觀) -->
+        <div class="info-btn-group">
+          <button class="info-btn-small" onclick="openLoreModal('infoModal')">📖 詳細人設</button>
+          <button class="info-btn-small" onclick="openLoreModal('storyModal')">📜 故事背景</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ================= 聲庫資訊區塊 ================= -->
+    <section>
+      <div class="glass-panel voicebank-panel">
+        <div class="vb-header">
+          <!-- 使用立繪作為頭像 -->
+          <img class="vb-avatar" src="img/祐恩立繪.png" alt="祐恩頭像" style="object-position: top;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/></svg>'">
+          <div class="vb-info">
+            <h3>祐恩 ACE Ai Voice System</h3>
+            <p>是由星樂之夢開發並由 Nova Works 營運的男性少年聲虛擬歌手，基於使用 ACE Studio 歌聲合成引擎製作，由星希羽一代中之人 14 歲後重新錄製。</p>
+            <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-top: 10px;">前往ACE社群</a>
+          </div>
+        </div>
+
+        <div class="audio-grid">
+          <div class="audio-player">
+            <p>🎵 VOICE DEMO 試聽</p>
+            <audio controls>
+              <source src="wav/夢想前行Yuon.wav" type="audio/wav">
+            </audio>
+          </div>
+        </div>
+
+        <!-- YouTube 聲庫示範預留版位 -->
+        <div style="margin-top: 30px;">
+          <div class="platform-label" style="margin-bottom: 15px;">
+            <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            聲庫示範影片 (準備中)
+          </div>
+          <div class="vb-video-container">
+            <svg viewBox="0 0 68 48"><path class="ytp-large-play-button-bg" d="M66.52,7.74c-0.78-2.93-2.49-5.41-5.42-6.19C55.79,.13,34,0,34,0S12.21,.13,6.9,1.55 C3.97,2.33,2.27,4.81,1.48,7.74C0.06,13.05,0,24,0,24s0.06,10.95,1.48,16.26c0.78,2.93,2.49,5.41,5.42,6.19 C12.21,47.87,34,48,34,48s21.79-0.13,27.1-1.55c2.93-0.78,4.64-3.26,5.42-6.19C67.94,34.95,68,24,68,24S67.94,13.05,66.52,7.74z" fill="#212121" fill-opacity="0.8"></path><path d="M 45,24 27,14 27,34" fill="#fff"></path></svg>
+            <span style="font-size: 14px; letter-spacing: 1px;">聲庫示範影片預留位置</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= 彈出視窗：人設資訊 ================= -->
+  <div class="modal-overlay" id="infoModal">
+    <div class="modal-card">
+      <div class="close-modal" onclick="closeLoreModal('infoModal')">✕</div>
+      <h2>🌟 祐恩｜人設設定</h2>
+      <ul class="lore-list">
+        <li><strong>本名：</strong>武田祐恩</li>
+        <li><strong>MBTI：</strong>ENFJ-A</li>
+        <li><strong>星座：</strong>獅子座 ♌️</li>
+        <li><strong>血型：</strong>AB型</li>
+        <li><strong>個性：</strong>待公開</li>
+        <li><strong>喜歡：</strong>創作音樂</li>
+        <li><strong>喜歡的食物：</strong>納豆</li>
+        <li><strong>討厭的食物：</strong>香菜</li>
+        <li><strong>視力：</strong>遠視</li>
+        <li><strong>出生日期：</strong>2017年8月14日 AM 4:09</li>
+        <li><strong>出生地：</strong>日本・東京都</li>
       </div>
     </div>
+  </div>
 
-    <div class="profile-card">
-      <h2 style="border: none; padding: 0; margin-top: 0; font-size: 32px;">祐恩 Yuon</h2>
-      <p style="color: #a0aec0; margin-top: -20px; margin-bottom: 25px; font-weight: bold;">星希羽長大後 (Age 14 ver.)</p>
+  <!-- ================= 彈出視窗：人設故事 (優化版) ================= -->
+  <div class="modal-overlay" id="storyModal">
+    <div class="modal-card">
+      <div class="close-modal" onclick="closeLoreModal('storyModal')">✕</div>
+      <h2>📜 故事背景</h2>
+      <div class="modal-content-text">
+        <h3 style="color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 8px; margin-top: 0;">星希羽與祐恩的故事</h3>
+        <p>「星希羽」與「祐恩Yuon」並不是兩個不同的人。<br>
+        他們，是同一個孩子在人生不同階段所使用的名字與身分。<br>
+        這是一個從日本來到台灣、在台灣成長，最後再次回到日本的故事。</p>
 
-      <table class="char-table">
-        <tr><td>本名</td><td>武田祐恩</td></tr>
-        <tr><td>性別</td><td>男性</td></tr>
-        <tr><td>年齡</td><td>14歲</td></tr>
-        <tr><td>身高</td><td>173cm</td></tr>
-        <tr><td>體重</td><td>62kg</td></tr>
-        <tr><td>生日</td><td>8月14日</td></tr>
-        <tr><td>血型</td><td>AB型</td></tr>
-        <tr><td>代表色</td>
-          <td style="display: flex; align-items: center; gap: 8px;">
-            <div style="width: 16px; height: 16px; background-color: var(--accent); border-radius: 50%;"></div> 科技藍
-          </td>
-        <tr>
-          <td>當前版本</td>
-          <td>
-            <div style="margin-bottom: 10px; font-size: 15px;">祐恩ACE Ai Voice System V2.0</div>
-            <!-- 優化版並排按鈕區塊 -->
-            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-              <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small">前往 ACE 社群</a>
-            </div>
-          </td>
-        </tr>
-      </table>
+        <h4 style="color: var(--accent-dark); margin-top: 25px; margin-bottom: 10px;">📌 5歲｜來到台灣</h4>
+        <p>2022年，5歲的祐恩來到台灣。<br>
+        對年幼的祐恩而言，這只是人生中的一次環境變化。<br>
+        然而，從這一天開始，他逐漸在台灣建立起自己的生活、學校、朋友與回憶。</p>
 
-      <div class="audio-player">
-        <p>🎵 VOICE DEMO 試聽</p>
-        <audio controls>
-          <source src="wav/夢想前行Yuon.wav" type="audio/wav">
-          您的瀏覽器不支援 audio 播放器。
-        </audio>
+        <h4 style="color: var(--accent-dark); margin-top: 25px; margin-bottom: 10px;">📌 7歲｜「星希羽」與「金祐恩」的誕生</h4>
+        <p>7歲那年，祐恩的人生出現了新的身分。<br>
+        在台灣生活的他開始使用：<strong>金祐恩</strong><br>
+        而在成為歌手之後，他又有了另一個名字：<strong>星希羽</strong></p>
+        <p>從這時開始，祐恩的生活形成了「台上與台下」的模式。<br>
+        <strong>台上：星希羽</strong> —— 站在舞台上，以歌手的身分唱歌、活動。<br>
+        <strong>台下：武田祐恩／金祐恩</strong> —— 回到日常生活後，他仍然是那個喜歡玩耍、唱歌、創作，也會與朋友一起度過日常生活的孩子。</p>
+
+        <h4 style="color: var(--accent-dark); margin-top: 25px; margin-bottom: 10px;">📌 14歲｜少年期的轉變與新生</h4>
+        <p>在另一個時空的節點上，那個曾經用盡全力唱著《星の夜》的金髮小男孩長大了。<br>
+        14歲的祐恩，迎來了男孩子無可避免的變聲期。一開始，他對於自己失去過去清脆的高音感到非常失落，甚至有段時間不願再開口唱歌。直到某天，他接觸到了全新的 AI 歌聲合成技術與電子音樂編曲，他才發現，原來聲音的表達方式不僅限於原來的樣子。</p>
+        <p>變聲後的嗓音，少了尖銳，卻多了一份溫潤與厚實的少年感。他開始學習用這種新的聲音去詮釋不同風格的歌曲，從輕快的 Pop 到節奏強烈的 EDM，他不斷地突破自己的極限。對他來說，「祐恩」這個名字不只是一個新的身分，更是一種對於「進化」與「重新出發」的期許。</p>
+
+        <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-top: 30px; border: 1px solid var(--card-border);">
+          <h3 style="color: var(--accent-dark); margin-top: 0; margin-bottom: 15px; font-size: 18px; text-align: center;">⏳ 人生時間線</h3>
+          <ul style="list-style: none; padding-left: 0; color: var(--text-main);">
+            <li style="margin-bottom: 15px;"><strong>5歲｜2022年</strong><br>武田祐恩來到台灣</li>
+            <li style="margin-bottom: 15px;"><strong>7歲｜2024年</strong><br>金祐恩 × 星希羽誕生<br>台上是星希羽，台下是武田祐恩／金祐恩</li>
+            <li style="margin-bottom: 15px;"><strong>10歲｜2027年10月</strong><br>💭 爸爸詢問是否要回日本生活，祐恩決定返回日本</li>
+            <li style="margin-bottom: 15px;"><strong>11歲｜2028年8月24日</strong><br>✈️ 離開台灣，返回日本，金祐恩與星希羽的台灣篇章告一段落</li>
+            <li><strong>14歲</strong><br>與朋友們組了樂團，重新以祐恩Yuon身份，踏上舞台，繼續寫下的新篇章。</li>
+          </ul>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section>
-    <div class="intro-section">
-      祐恩，是由星樂之夢開發並由Nova Works營運的男性少年聲虛擬歌手，基於使用 ACE Studio 歌聲合成引擎製作，由星希羽中之人Ian 14歲後重新錄製。<br>
-      祐恩設定為星希羽成長至14歲後的未來樣貌，展現了截然不同的少年感聲線與穩重氣質，屬星樂之夢旗下「平行時空衍生」的角色。<br>
-    </div>
-  </section>
-
-  <section class="history-section">
-    <h2>歷史概要</h2>
-    <div class="history-text">
-      <p>2025 年 1 月 1 日，星希羽 V1.4.2 推出第二聲線系統 Mature(沉音)，此版本利用 ACE Studio 的 Ai 技術，模擬Ian在變聲前較成熟的聲音表現，作為星希羽的第二聲線。<p>
-      <p>2025 年 11 月 2 日，發布 V1.5，作為銜接 V2 的過渡版本，由於得知 ACE 2 將導入 Vocal Mode 技術，未來已不再需要以獨立角色方式製作多聲線，因此取消 Mature 的定位，同時，V1.5 採用Ian 14 歲的聲音重新錄製，角色名稱也調整為 「星希羽 Teen」，象徵星希羽少年時期的形象。<p>
-      <p>2026 年 6 月 11 日，為了與星希羽做出更明確的區別，星希羽 Teen 正式更名為 「祐恩（Yuon）」，祐恩與星希羽依然設定為同一位角色、與V1版本星希羽是同一位中之人，只是代表不同年齡階段的形象；同日，祐恩的營運與管理正式移交至旗下品牌 Nova Works，作為 Nova Works 所屬虛擬歌手發展。
-    </div>
-  </section>
-
-  <section class="history-section">
-    <h2>⚖️查看角色使用規範</h2>
-    <div class="history-text">
-      <p>1.不得用於色情或非法用途。<p>
-      <p>2.不得惡意損毀人物形象（接受二創但注意尺度），爭議性內容星樂之夢有權要求下架且保留法律追訴權。<p>
-      <p>3.所有權在星樂之夢之中，即有權取消、收回授權。<p>
-      <p>4.未經另外申請，不得販售、轉賣相關物品。<p>
-      <p>5.授權僅限制個人創作或用於二創翻唱，作品由創作者所有，因此如有造成爭議與星樂之夢無關，創作者應承當相關責任。<p>
-      <p>6.不得用於創作可能造成物化兒童或兒童性剝削之作品。<p>
-    </div>
-  </section>
-
-  <section class="bottom-actions">
-    <div class="social-links">
-      <a href="https://acestudio.ai/" target="_blank" aria-label="ACE Studio">
-        <img src="img/ACE_LOGO.png" alt="ACE Studio" style="width: 30px; height: 30px; object-fit: contain;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'30\' height=\'30\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'10\' text-anchor=\'middle\' alignment-baseline=\'middle\'>ACE</text></svg>'">
-      </a>
-      <a href="https://www.youtube.com/@SMDWORKS_222" target="_blank" aria-label="YouTube">
-        <svg viewBox="0 0 24 24" width="30" height="30" fill="#D10020"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-      </a>
-      <a href="https://x.com/SMDOFFICIAL_222" target="_blank" aria-label="X (Twitter)">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-      </a>
-    </div>
-  </section>
+  <!-- 回到頂部按鈕 -->
+  <div class="back-to-top" id="backToTopBtn" aria-label="回到頂部">
+    <svg viewBox="0 0 24 24">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+  </div>
 
   <footer>
     <p>© 2026 Star Music Dream / Nova Works</p>
   </footer>
 
   <script>
+    // 手機版漢堡選單邏輯
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    let isMenuOpen = false;
+
+    if(mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', () => {
+          isMenuOpen = !isMenuOpen;
+          if(isMenuOpen) {
+            mobileMenuOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            mobileMenuBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+          } else {
+            mobileMenuOverlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            mobileMenuBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+          }
+        });
+    }
+
     // 處理下拉選單點擊
     function toggleDropdown(event, element) {
       event.stopPropagation();
@@ -369,11 +676,42 @@
       element.querySelector('.dropdown-content').classList.toggle('show');
     }
 
+    // 彈窗開關
+    function openLoreModal(id) {
+      document.getElementById(id).classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLoreModal(id) {
+      document.getElementById(id).classList.remove('active');
+      document.body.style.overflow = 'auto';
+    }
+
     window.onclick = function(event) {
       if (!event.target.matches('.dropdown-btn')) {
         document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
       }
+      if (event.target.classList.contains('modal-overlay')) {
+        event.target.classList.remove('active');
+        document.body.style.overflow = 'auto';
+      }
     }
+
+    // 回到頂部按鈕邏輯
+    const backToTopBtn = document.getElementById('backToTopBtn');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
   </script>
 
   <script>
