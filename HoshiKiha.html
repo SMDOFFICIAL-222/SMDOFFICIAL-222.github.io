@@ -11,27 +11,27 @@
   <style>
     /* ================= 全域設定與重置 ================= */
     *, *::before, *::after {
-      box-sizing: border-box; /* 確保 padding 不會撐破寬度，修復偏左與破版問題 */
+      box-sizing: border-box;
     }
 
     /* 變數 (明亮馬卡龍藍 + 白底風格) */
     :root {
-      --bg: #ffffff; /* 全白背景預設 */
-      --text-main: #1e293b; /* 主要深色文字 */
-      --text-muted: #475569; /* 次要深灰文字 */
-      --accent-dark: #0369a1; /* 深藍色 (用於強調、按鈕文字) */
+      --bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --accent-dark: #0369a1;
 
       /* 馬卡龍藍霧面玻璃卡片變數 */
-      --card-bg: rgba(199, 238, 251, 0.85); /* #C7EEFB 帶 85% 透明度 */
-      --card-border: rgba(255, 255, 255, 0.6); /* 白色亮邊 */
-      --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* 輕柔陰影 */
+      --card-bg: rgba(199, 238, 251, 0.85);
+      --card-border: rgba(255, 255, 255, 0.6);
+      --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
       --card-shadow-hover: 0 12px 35px rgba(0, 0, 0, 0.12);
       --glass-blur: blur(12px) saturate(110%);
     }
 
     body {
       margin: 0;
-      padding-top: 80px; /* 電腦版留給 header 的空間 */
+      padding-top: 80px;
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       color: var(--text-main);
       min-height: 100vh;
@@ -111,7 +111,7 @@
       margin: 0 auto;
       padding: 0 20px;
       width: 100%;
-      display: block; /* 移除 flex center，回歸標準塊狀排版以防子元素寬度崩塌 */
+      display: block;
     }
     section { width: 100%; margin-bottom: 60px; }
 
@@ -227,6 +227,20 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
+    /* 封測按鈕小標籤樣式 */
+    .beta-btn-small {
+      display: inline-block; padding: 6px 16px;
+      background-color: #ffffff;
+      color: var(--accent-dark);
+      font-size: 13px; font-weight: bold;
+      border: 1px solid var(--accent-dark); border-radius: 20px; text-decoration: none;
+      transition: all 0.3s ease; text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .beta-btn-small:hover {
+      background-color: var(--accent-dark); color: #ffffff; transform: translateY(-2px);
+    }
+
     /* ================= 2. 聲庫資訊區塊 ================= */
     .voicebank-panel { padding: 40px; margin-bottom: 60px; }
     .vb-header {
@@ -279,9 +293,11 @@
     .vp-card { padding: 40px; display: flex; gap: 40px; align-items: center; }
     .vp-info { flex: 1; }
     .vp-list { list-style: none; padding: 0; margin: 0 0 25px 0; color: var(--text-muted); font-size: 15px; line-height: 2.2; }
-    .vp-list li { border-bottom: 1px dashed rgba(0,0,0,0.1); }
+
+    /* 修復 Bug: 確保文字與標題不會在空間不足時被擠壓 */
+    .vp-list li { border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 8px; margin-bottom: 8px;}
     .vp-list li:last-child { border-bottom: none; }
-    .vp-list li strong { color: var(--accent-dark); display: inline-block; width: 140px; font-weight: bold; }
+    .vp-list li strong { color: var(--accent-dark); display: inline-block; width: 140px; font-weight: bold; flex-shrink: 0;}
 
     .vp-desc {
       color: var(--text-muted); line-height: 1.8; font-size: 15px; margin: 0;
@@ -447,10 +463,10 @@
       .gallery-item.wide { grid-column: span 2; height: 250px; }
     }
     @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏 ACE 連結，保留其他歌手與返回首頁，置中排列 */
+      /* 手機版導覽列：隱藏左側 ACE 連結，保留其他歌手與返回首頁 */
       header { padding: 10px 0; background: rgba(255, 255, 255, 0.4);}
       .nav-container { flex-direction: column; gap: 10px; justify-content: center; padding: 10px 20px; }
-      .header-left { display: none; } /* 只隱藏 ACE 連結 */
+      .header-left { display: none; } /* 只隱藏左側 ACE 連結 */
       .header-center, .header-right { flex: unset; justify-content: center; width: 100%; gap: 15px; }
 
       body { padding-top: 130px; }
@@ -458,6 +474,13 @@
       .logo-card { height: auto; padding: 20px;}
       .portrait-card { height: 350px; }
       .profile-card { padding: 25px 20px; }
+
+      /* 修復中之人文字變直排：確保 li 內的內容不會被壓縮 */
+      .vp-card { flex-direction: column; padding: 30px 20px; gap: 25px; }
+      .vp-list li { display: flex; flex-direction: row; flex-wrap: wrap; }
+      .vp-list li strong { width: auto; margin-right: 15px; flex-shrink: 0;}
+
+      .vp-img-placeholder { flex: unset; width: 100%; max-width: 300px; min-height: 300px; }
       .vb-header { flex-direction: column; text-align: center; }
       .info-btn-group { grid-template-columns: 1fr; }
     }
