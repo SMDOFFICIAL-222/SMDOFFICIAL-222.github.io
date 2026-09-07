@@ -6,7 +6,7 @@
   <title>星希羽 HoshiKiha | 官方網站</title>
   <meta name="description" content="星希羽，是由星樂之夢開發並營運的男性兒童聲虛擬歌手。">
 
-  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <link rel="icon" href="img/StarLeo_Logo.png" type="image/png">
 
   <style>
     /* ================= 全域設定與重置 ================= */
@@ -227,22 +227,12 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
 
-    /* 封測按鈕小標籤樣式 */
-    .beta-btn-small {
-      display: inline-block; padding: 6px 16px;
-      background-color: #ffffff;
-      color: var(--accent-dark);
-      font-size: 13px; font-weight: bold;
-      border: 1px solid var(--accent-dark); border-radius: 20px; text-decoration: none;
-      transition: all 0.3s ease; text-align: center;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    }
-    .beta-btn-small:hover {
-      background-color: var(--accent-dark); color: #ffffff; transform: translateY(-2px);
-    }
-
     /* ================= 2. 聲庫資訊區塊 ================= */
-    .voicebank-panel { padding: 40px; margin-bottom: 60px; }
+    .voicebank-panel {
+      padding: 40px;
+      margin-bottom: 60px;
+      position: relative; /* 為了讓悠悠可以絕對定位在這個區塊內 */
+    }
     .vb-header {
       display: flex; gap: 25px; align-items: center; margin-bottom: 25px;
       border-bottom: 1px solid rgba(0,0,0,0.06); padding-bottom: 25px;
@@ -282,12 +272,16 @@
     .vb-video-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.5s ease; display: block;}
     .vb-video-container:hover img { transform: scale(1.05); opacity: 1; }
 
-    /* ================= 3. 歷史概要 ================= */
-    .history-section { padding: 40px; position: relative; }
-    .yoyo-star { position: absolute; bottom: 20px; right: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-    .history-text { font-size: 15px; line-height: 1.9; color: var(--text-muted); }
-    .history-text p { margin-bottom: 20px; }
-    .history-text p:last-child { margin-bottom: 0; }
+    /* 悠悠 (yoyo-star) 樣式，定位於聲庫區塊右下角 */
+    .yoyo-star {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      max-height: 100px;
+      opacity: 0.9;
+      pointer-events: none;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
 
     /* ================= 5. 中之人與形象 ================= */
     .vp-card { padding: 40px; display: flex; gap: 40px; align-items: center; }
@@ -594,20 +588,10 @@
             <div class="play-btn"></div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- 歷史概要 -->
-    <section class="history-section macaron-glass-panel">
-      <h2>歷史概要</h2>
-      <div class="history-text">
-        <p>星希羽的起源可追溯至 2022 年，當時創作者 Kai 受到 DeepVocal 歌手「空詩音レミ」啟發，於 2022 年 11 月 27 日創作出虛擬角色「小希」，並於 2023 年 4 月更名為「耀光」。同年自由之光啟動虛擬歌手研發計劃，原先考慮使用 Synthesizer V，後因成本與技術問題轉向 DeepVocal。不過該企劃於 2023 年 11 月終止。</p>
-        <p>2023 年 12 月，自由之光重新啟動計劃，推出男女雙小學生角色虛擬歌手，男性為「星希羽」，繼承部分「耀光」設定，女性為「星彗羽」。</p>
-        <p>2024 年 2 月 22 日開設「星樂之夢工作室」，並於 4 月轉用 ACE Studio 進行開發。2024 年 8 月 14 日，星希羽正式發佈 1.0 版本及首支原創曲《星の夜》，由自由之光代理經營。</p>
-        <p>2025 年 2 月 22 日正式由星樂之夢工作室接手並與自由之光共同營運。</p>
-        <p>2026 年 2 月 2 日起星樂之夢停止了星希羽 V1 官方活動及聲庫維護，3 月 1 日星希羽 V2 專案啟動新聲優徵選開始，4 月 9 日自由之光退出營運，4 月 30 日星希羽V2開始測試，6 月 11 日正式發行二週年紀念 EP《羽翼》並展開星希羽 V2 封測，7 月 31 日推出星希羽V1.5.2正式版，並宣布V1.5.2版的Voice Style，Ian錄製的聲音為Cute聲線(萌音)，新中之人錄製的聲音為Lively聲線(稚音)。</p>
+        <!-- 將悠悠移到此處的右下角 -->
+        <img class="yoyo-star" src="img/星希羽提示星星.png" alt="悠悠星" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>悠悠預留</text></svg>'">
       </div>
-      <img class="yoyo-star" src="img/星希羽提示星星.png" alt="悠悠星" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>悠悠預留</text></svg>'">
     </section>
 
     <section>
