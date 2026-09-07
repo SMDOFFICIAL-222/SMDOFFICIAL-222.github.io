@@ -51,7 +51,7 @@
       pointer-events: none !important; z-index: 90;
     }
 
-    /* ================= 頂部導覽列 ================= */
+    /* ================= 頂部導覽列 (電腦版) ================= */
     header {
       padding: 10px 0;
       display: flex;
@@ -80,10 +80,10 @@
     .header-center { justify-content: center; }
     .header-right { justify-content: flex-end; gap: 20px; }
 
-    .logo { text-decoration: none; display: flex; align-items: center; }
+    .logo { text-decoration: none; display: flex; align-items: center; z-index: 1001; position: relative;}
     .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
 
-    header a {
+    .nav-links a {
       color: var(--text-main);
       text-decoration: none;
       font-size: 15px;
@@ -91,8 +91,69 @@
       transition: color 0.3s;
       cursor: pointer;
     }
-    header a:hover { color: var(--accent-dark); }
-    header a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+    .nav-links a:hover { color: var(--accent-dark); }
+    .nav-links a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+
+    /* 漢堡選單按鈕 (電腦版隱藏) */
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 1001; /* 確保在展開選單的最上層 */
+      position: relative;
+    }
+    .menu-btn svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--text-main);
+      transition: stroke 0.3s;
+    }
+    .menu-btn:hover svg { stroke: var(--accent-dark); }
+
+    /* ================= 手機版全螢幕選單 (Mobile Overlay) ================= */
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      text-align: center;
+    }
+
+    .mobile-nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      transition: color 0.3s;
+    }
+    .mobile-nav-links a:hover, .mobile-nav-links a.active {
+      color: var(--accent-dark);
+    }
 
     /* ================= 通用區塊設定 ================= */
     main {
@@ -202,12 +263,24 @@
       margin-top: auto; /* 確保內容不夠時 footer 在最下面 */
     }
 
-    /* RWD 響應式 */
+    /* ================= RWD 響應式 ================= */
     @media (max-width: 768px) {
-      header { padding: 10px 0; background: rgba(255, 255, 255, 0.7); }
-      .nav-container { flex-direction: column; gap: 12px; justify-content: center; padding: 10px 20px; }
-      .header-left, .header-right { display: none; } /* 手機版簡化導覽列，只留Logo */
-      .header-center { flex: unset; justify-content: center; width: 100%; }
+      /* 導覽列：手機版 Logo 至左，漢堡選單至右 */
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.8); }
+      .nav-container {
+        flex-direction: row; /* 強制左右排列 */
+        justify-content: space-between;
+        padding: 10px 25px;
+      }
+
+      /* 隱藏電腦版的文字連結區塊 */
+      .header-left, .header-right { display: none; }
+
+      /* Logo 改為靠左 */
+      .header-center { flex: unset; justify-content: flex-start; }
+
+      /* 顯示漢堡選單按鈕 */
+      .menu-btn { display: block; }
 
       .page-hero { padding: 30px 15px; }
       .page-hero h1 { font-size: 28px; }
@@ -220,21 +293,46 @@
 
   <header>
     <div class="nav-container">
-      <div class="header-left">
+      <!-- 電腦版：左側連結 -->
+      <div class="header-left nav-links">
         <a href="vsinger.html">歌手資訊</a>
         <a href="news.html" class="active">情報與消息</a>
       </div>
+
+      <!-- Logo (電腦版置中，手機版靠左) -->
       <div class="header-center">
         <a href="index.html" class="logo">
           <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
         </a>
       </div>
-      <div class="header-right">
+
+      <!-- 電腦版：右側連結 -->
+      <div class="header-right nav-links">
         <a href="about.html">關於我們</a>
         <a href="history.html">歷史概要</a>
       </div>
+
+      <!-- 手機版：漢堡選單按鈕 (電腦版隱藏) -->
+      <button class="menu-btn" id="mobileMenuBtn" aria-label="打開選單">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 預設顯示三條線 -->
+          <line x1="3" y1="12" x2="21" y2="12" class="line-mid"></line>
+          <line x1="3" y1="6" x2="21" y2="6" class="line-top"></line>
+          <line x1="3" y1="18" x2="21" y2="18" class="line-bot"></line>
+        </svg>
+      </button>
     </div>
   </header>
+
+  <!-- 手機版：全螢幕展開選單 -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-nav-links">
+      <a href="vsinger.html">歌手資訊</a>
+      <a href="news.html" class="active">情報與消息</a>
+      <a href="about.html">關於我們</a>
+      <a href="history.html">歷史概要</a>
+    </div>
+  </div>
 
   <main>
     <!-- 頁面大標題 -->
@@ -276,6 +374,37 @@
   <footer>
     <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
   </footer>
+
+  <!-- 手機版選單切換腳本 -->
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    let isMenuOpen = false;
+
+    mobileMenuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      if(isMenuOpen) {
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 鎖定背景滾動
+        // 替換圖示為 'X' (關閉)
+        mobileMenuBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+      } else {
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto'; // 恢復背景滾動
+        // 替換回漢堡選單 (三條線)
+        mobileMenuBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+      }
+    });
+
+    // 點擊選單內的連結後自動關閉選單
+    document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        if(isMenuOpen) {
+          mobileMenuBtn.click(); // 模擬點擊按鈕來關閉
+        }
+      });
+    });
+  </script>
 
   <!-- 滑鼠星星粒子特效 -->
   <script>
