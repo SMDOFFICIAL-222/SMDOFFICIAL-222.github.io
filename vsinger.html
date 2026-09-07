@@ -1,0 +1,582 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>歌手陣容 | 星樂之夢 Star Music Dream</title>
+  <meta name="description" content="探索星樂之夢 Star Music Dream 旗下的四大虛擬歌手系列：StreetEchoes、森嶼之聲、星幻之城 × StarLeo、Nova 系列。">
+
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+
+  <style>
+    /* ================= 全域設定與重置 ================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* 變數 (星樂之夢：柔和藍白明亮風) */
+    :root {
+      --bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #475569;
+      --accent-dark: #63a4ff; /* 主題藍 */
+      --accent-street: #26d9ff; /* StreetEchoes 專屬色 (活力橘) */
+      --accent-forest: #ABC48B; /* 森嶼之聲 專屬色 (自然綠) */
+      --accent-starleo: #FFDB82; /* StarLeo 專屬色 (星空紫) */
+      --accent-nova: #6366F1; /* Nova 專屬色 (新星粉) */
+
+      /* 明亮霧面玻璃卡片變數 */
+      --card-bg: rgba(255, 255, 255, 0.55);
+      --card-border: rgba(255, 255, 255, 0.8);
+      --card-shadow: 0 8px 30px rgba(99, 164, 255, 0.12);
+      --card-shadow-hover: 0 12px 40px rgba(99, 164, 255, 0.22);
+      --glass-blur: blur(20px) saturate(120%);
+    }
+
+    body {
+      margin: 0;
+      padding-top: 80px;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      /* ================= 專屬背景 ================= */
+      background: url('img/星樂之夢官網首頁背景_1.png') no-repeat center center fixed;
+      background-color: #f0f8ff;
+      background-size: cover;
+    }
+
+    /* 滑鼠星星粒子畫布樣式 */
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90;
+    }
+
+    /* ================= 頂部導覽列 ================= */
+    header {
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 20px;
+    }
+
+    .header-left, .header-center, .header-right {
+      display: flex; align-items: center; flex: 1;
+    }
+    .header-left { justify-content: flex-start; gap: 20px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 20px; }
+
+    .logo { text-decoration: none; display: flex; align-items: center; }
+    .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
+
+    header a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    header a:hover { color: var(--accent-dark); }
+    header a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+
+    /* ================= 通用區塊設定 ================= */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* 頁面大標題 */
+    .page-hero {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 60px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px 20px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+    }
+    .page-hero h1 {
+      margin: 0 0 15px 0;
+      color: var(--accent-dark);
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 5px rgba(255,255,255,0.8);
+    }
+    .page-hero p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.8;
+      font-weight: bold;
+    }
+
+    /* ================= 系列展示區塊 ================= */
+    .series-section {
+      width: 100%;
+      margin-bottom: 80px;
+    }
+
+    .series-title-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid rgba(0,0,0,0.05);
+      padding-bottom: 15px;
+    }
+
+    .series-title {
+      font-size: 28px;
+      margin: 0;
+      color: var(--text-main);
+      font-weight: 900;
+    }
+
+    /* 系列 Logo 圖片樣式 */
+    .series-logo {
+      height: 40px; /* 統一高度 */
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    /* ================= 歌手卡片網格 ================= */
+    .singers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* 使用 auto-fill 確保不足時靠左排列 */
+      gap: 25px;
+      width: 100%;
+    }
+
+    .singer-card {
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      overflow: hidden;
+      text-decoration: none;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .singer-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--card-shadow-hover);
+      border-color: #ffffff;
+    }
+
+    /* 針對不同系列設定 Hover 外發光顏色 */
+    .singer-card.hover-street:hover { box-shadow: 0 12px 30px rgba(38, 217, 255, 0.2); }
+    .singer-card.hover-forest:hover { box-shadow: 0 12px 30px rgba(171, 196, 139, 0.2); }
+    .singer-card.hover-starleo:hover { box-shadow: 0 12px 30px rgba(255, 219, 130, 0.2); }
+    .singer-card.hover-nova:hover { box-shadow: 0 12px 30px rgba(99, 102, 241, 0.2); }
+
+    .singer-img-box {
+      width: 100%;
+      height: 260px;
+      background: rgba(255,255,255,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-top: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* 讓立繪底部切齊卡片邊緣 */
+    .singer-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: bottom;
+      transition: transform 0.5s ease;
+    }
+
+    .singer-card:hover .singer-img-box img {
+      transform: scale(1.08);
+    }
+
+    /* 如果沒有圖片，顯示預設漸層圓圈 */
+    .placeholder-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 30px;
+      font-weight: bold;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    .bg-street { background: linear-gradient(135deg, #71e6ff, #26d9ff); }
+    .bg-forest { background: linear-gradient(135deg, #c7ddab, #ABC48B); }
+    .bg-starleo { background: linear-gradient(135deg, #ffeaa3, #FFDB82); }
+    .bg-nova { background: linear-gradient(135deg, #a5a7f9, #6366F1); }
+
+    .singer-info {
+      padding: 18px 15px;
+      text-align: center;
+      background: rgba(255,255,255,0.9);
+      border-top: 1px solid rgba(255,255,255,0.6);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .singer-info h3 {
+      margin: 0 0 5px 0;
+      color: var(--text-main);
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .singer-info p {
+      margin: 0;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .txt-street { color: var(--accent-street); }
+    .txt-forest { color: var(--accent-forest); }
+    .txt-starleo { color: var(--accent-starleo); }
+    .txt-nova { color: var(--accent-nova); }
+
+    /* ================= 8. 頁尾 ================= */
+    footer {
+      text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px;
+      background: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(0,0,0,0.05);
+      width: 100%;
+      backdrop-filter: var(--glass-blur);
+    }
+
+    /* RWD 響應式 */
+    @media (max-width: 768px) {
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.7); }
+      .nav-container { flex-direction: column; gap: 12px; justify-content: center; padding: 10px 20px; }
+      .header-left, .header-right { display: none; } /* 手機版簡化導覽列，只留Logo */
+      .header-center { flex: unset; justify-content: center; width: 100%; }
+
+      .series-title-container { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .page-hero { padding: 30px 15px; }
+      .page-hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 滑鼠星星粒子畫布 -->
+  <canvas id="cursor-canvas"></canvas>
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="vsinger.html" class="active">歌手資訊</a>
+        <a href="news.html">情報與消息</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo">
+          <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="about.html">關於我們</a>
+        <a href="history.html">歷史概要</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 頁面大標題 -->
+    <div class="page-hero">
+      <h1>VSinger / 歌手陣容</h1>
+      <p>來自四大音樂宇宙的聲音。<br>探索星樂之夢旗下獨一無二的虛擬歌手與企劃角色。</p>
+    </div>
+
+    <!-- ================= 1. StreetEchoes 系列 ================= -->
+    <section class="series-section">
+      <div class="series-title-container">
+        <!-- 替換為 Logo -->
+        <img src="img/STREETECHOES_Logo.png" alt="StreetEchoes Logo" class="series-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+        <span class="series-badge badge-street" style="display: none;">SERIES 01</span>
+        <h2 class="series-title">StreetEchoes 系列</h2>
+      </div>
+
+      <div class="singers-grid">
+        <!-- 希恩 -->
+        <a href="#" class="singer-card hover-street">
+          <div class="singer-img-box">
+            <!-- 替換為立繪 -->
+            <img src="img/希恩立繪.png" alt="希恩" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2326d9ff\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>希恩</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>希恩</h3>
+            <p class="txt-street">Xien</p>
+          </div>
+        </a>
+        <!-- 宇熙 -->
+        <a href="#" class="singer-card hover-street">
+          <div class="singer-img-box">
+             <!-- 替換為立繪 -->
+            <img src="img/宇熙立繪.png" alt="宇熙" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2326d9ff\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>宇熙</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>宇熙</h3>
+            <p class="txt-street">Yuxi</p>
+          </div>
+        </a>
+        <!-- 程都 -->
+        <a href="#" class="singer-card hover-street">
+          <div class="singer-img-box">
+             <!-- 替換為立繪 -->
+             <img src="img/程都立繪.png" alt="程都" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2326d9ff\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>程都</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>程都</h3>
+            <p class="txt-street">Chengdu</p>
+          </div>
+        </a>
+        <!-- 悠珊 -->
+        <a href="#" class="singer-card hover-street">
+          <div class="singer-img-box">
+             <!-- 替換為立繪 -->
+             <img src="img/悠珊立繪.png" alt="悠珊" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2326d9ff\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>悠珊</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>悠珊</h3>
+            <p class="txt-street">Youshan</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= 2. 森嶼之聲 系列 ================= -->
+    <section class="series-section">
+      <div class="series-title-container">
+        <!-- 替換為 Logo -->
+        <img src="img/森嶼之聲Logo.png" alt="森嶼之聲 Logo" class="series-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+        <span class="series-badge badge-forest" style="display: none;">SERIES 02</span>
+        <h2 class="series-title">森嶼之聲 系列</h2>
+      </div>
+
+      <div class="singers-grid">
+        <!-- 岳嵐 -->
+        <a href="#" class="singer-card hover-forest">
+          <div class="singer-img-box">
+            <!-- 替換為立繪 -->
+            <img src="img/岳嵐立繪.png" alt="岳嵐" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23ABC48B\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>岳嵐</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>岳嵐</h3>
+            <p class="txt-forest">Yuelan</p>
+          </div>
+        </a>
+        <!-- 穗蓉 -->
+        <a href="#" class="singer-card hover-forest">
+          <div class="singer-img-box">
+            <!-- 替換為立繪 -->
+            <img src="img/穗蓉立繪.png" alt="穗蓉" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23ABC48B\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>穗蓉</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>穗蓉</h3>
+            <p class="txt-forest">Suirong</p>
+          </div>
+        </a>
+        <!-- 湛嶠 -->
+        <a href="#" class="singer-card hover-forest">
+          <div class="singer-img-box">
+             <!-- 替換為立繪 -->
+             <img src="img/湛嶠立繪.png" alt="湛嶠" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23ABC48B\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>湛嶠</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>湛嶠</h3>
+            <p class="txt-forest">Zhanqiao</p>
+          </div>
+        </a>
+        <!-- 雉瑜 -->
+        <a href="#" class="singer-card hover-forest">
+          <div class="singer-img-box">
+             <!-- 替換為立繪 -->
+             <img src="img/雉瑜立繪.png" alt="雉瑜" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23ABC48B\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>雉瑜</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>雉瑜</h3>
+            <p class="txt-forest">Zhiyu</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= 3. 星幻之城 × StarLeo 系列 ================= -->
+    <section class="series-section">
+      <div class="series-title-container">
+        <!-- 替換為 Logo -->
+        <img src="img/StarLeo_Logo.png" alt="StarLeo Logo" class="series-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+        <span class="series-badge badge-starleo" style="display: none;">SERIES 03</span>
+        <h2 class="series-title">星幻之城 × StarLeo 系列</h2>
+      </div>
+
+      <div class="singers-grid">
+        <!-- 星希羽 -->
+        <a href="HoshiKiha.html" class="singer-card hover-starleo">
+          <div class="singer-img-box">
+            <img src="img/星希羽(羽翼).png" alt="星希羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FFDB82\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星希羽</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>星希羽</h3>
+            <p class="txt-starleo">HoshiKiha</p>
+          </div>
+        </a>
+
+        <!-- 星彗羽 -->
+        <a href="HoshiHuiha.html" class="singer-card hover-starleo">
+          <div class="singer-img-box">
+            <img src="img/星彗羽2.0.png" alt="星彗羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FFDB82\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星彗羽</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>星彗羽</h3>
+            <p class="txt-starleo">HoshiHuiha</p>
+          </div>
+        </a>
+
+        <!-- 星丞軒 -->
+        <a href="HoshiJoken.html" class="singer-card hover-starleo">
+          <div class="singer-img-box">
+            <img src="img/星丞軒立繪.png" alt="星丞軒" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FFDB82\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星丞軒</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>星丞軒</h3>
+            <p class="txt-starleo">HoshiJoken</p>
+          </div>
+        </a>
+
+        <!-- 星卉芯 -->
+        <a href="HoshiHuishin.html" class="singer-card hover-starleo">
+          <div class="singer-img-box">
+            <img src="img/星卉芯立繪.png" alt="星卉芯" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FFDB82\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星卉芯</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>星卉芯</h3>
+            <p class="txt-starleo">HoshiHuishin</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ================= 4. Nova 系列 ================= -->
+    <section class="series-section">
+      <div class="series-title-container">
+        <!-- 替換為 Logo -->
+        <img src="img/Nova_Logo.png" alt="Nova Logo" class="series-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
+        <span class="series-badge badge-nova" style="display: none;">SERIES 04</span>
+        <h2 class="series-title">Nova 系列</h2>
+      </div>
+
+      <div class="singers-grid">
+        <!-- 祐恩 -->
+        <a href="Yuon.html" class="singer-card hover-nova">
+          <div class="singer-img-box">
+             <!-- 替換為立繪 -->
+             <img src="img/祐恩立繪.png" alt="祐恩" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%236366F1\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>祐恩</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>祐恩</h3>
+            <p class="txt-nova">Yuon</p>
+          </div>
+        </a>
+        <!-- 月城凌恩 -->
+        <a href="#" class="singer-card hover-nova">
+          <div class="singer-img-box">
+             <!-- 替換為立繪 -->
+             <img src="img/月城凌恩立繪.png" alt="月城凌恩" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%236366F1\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>月城凌恩</text></svg>'">
+          </div>
+          <div class="singer-info">
+            <h3>月城凌恩</h3>
+            <p class="txt-nova">Tsukishiro Rion</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
+  </footer>
+
+  <!-- 滑鼠星星粒子特效 -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('cursor-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+
+      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
+      window.addEventListener('resize', resize); resize();
+
+      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const particles = [];
+
+      function drawStar(ctx, x, y, radius, rot) {
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
+        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
+      }
+
+      function addParticle(x, y) {
+        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
+      }
+
+      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i]; p.life++;
+          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
+          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+          drawStar(ctx, p.x, p.y, p.size, p.rot);
+        }
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+</body>
+</html>

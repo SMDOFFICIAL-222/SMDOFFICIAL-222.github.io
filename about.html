@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>關於我們 | 星樂之夢 Star Music Dream</title>
+  <meta name="description" content="了解星樂之夢 Star Music Dream：一個以「虛擬歌手 × 音樂創作」為核心的大學生創作團隊。">
+
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+
+  <style>
+    /* ================= 全域設定與重置 ================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* 變數 (星樂之夢：柔和藍白明亮風) */
+    :root {
+      --bg: #ffffff;
+      --text-main: #1e293b;
+      --text-title: #0f172a;
+      --text-muted: #64748b;
+      --accent-dark: #63a4ff; /* 主題藍 */
+
+      /* 明亮霧面玻璃卡片變數 */
+      --card-bg: rgba(255, 255, 255, 0.65);
+      --card-border: rgba(255, 255, 255, 0.9);
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --card-shadow-hover: 0 12px 30px rgba(99, 164, 255, 0.15);
+      --glass-blur: blur(20px) saturate(120%);
+    }
+
+    body {
+      margin: 0;
+      padding-top: 80px;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      /* ================= 專屬背景 ================= */
+      background: url('img/星樂之夢官網首頁背景_1.png') no-repeat center center fixed;
+      background-color: #f0f8ff;
+      background-size: cover;
+    }
+
+    /* 滑鼠星星粒子畫布樣式 */
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90;
+    }
+
+    /* ================= 頂部導覽列 ================= */
+    header {
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 20px;
+    }
+
+    .header-left, .header-center, .header-right {
+      display: flex; align-items: center; flex: 1;
+    }
+    .header-left { justify-content: flex-start; gap: 20px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 20px; }
+
+    .logo { text-decoration: none; display: flex; align-items: center; }
+    .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
+
+    header a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    header a:hover { color: var(--accent-dark); }
+    header a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+
+    /* ================= 通用區塊設定 ================= */
+    main {
+      max-width: 1000px; /* 稍微縮窄，讓文字排版更集中舒適 */
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+    }
+
+    /* 頁面大標題 */
+    .page-hero {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 40px;
+      width: 100%;
+    }
+    .page-hero h1 {
+      margin: 0;
+      color: var(--accent-dark);
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 5px rgba(255,255,255,0.8);
+    }
+
+    /* ================= 玻璃卡片共用樣式 ================= */
+    .glass-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      padding: 40px;
+      width: 100%;
+      margin-bottom: 40px;
+    }
+
+    /* ================= 關於星樂之夢 內文 ================= */
+    .about-intro {
+      font-size: 16px;
+      line-height: 2;
+      color: var(--text-main);
+      text-align: center;
+    }
+    .about-intro p {
+      margin-bottom: 20px;
+    }
+    .about-intro p:last-child {
+      margin-bottom: 0;
+    }
+    .highlight-text {
+      color: var(--accent-dark);
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    /* ================= 旗下歌手 & Coming Soon 網格 ================= */
+    .roster-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      width: 100%;
+      margin-bottom: 60px;
+    }
+
+    .roster-card {
+      background: rgba(255, 255, 255, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+    }
+
+    .roster-card h2 {
+      font-size: 22px;
+      color: var(--accent-dark);
+      margin-top: 0;
+      margin-bottom: 25px;
+      border-bottom: 2px solid rgba(99, 164, 255, 0.2);
+      padding-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .series-group {
+      margin-bottom: 20px;
+    }
+    .series-group:last-child {
+      margin-bottom: 0;
+    }
+    .series-name {
+      font-size: 15px;
+      font-weight: 900;
+      color: var(--text-title);
+      margin-bottom: 8px;
+      display: inline-block;
+      background: rgba(255,255,255,0.8);
+      padding: 4px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .series-members {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      padding-left: 5px;
+      font-weight: bold;
+    }
+
+    /* ================= 結語標語 ================= */
+    .slogan-section {
+      text-align: center;
+      margin-bottom: 80px;
+      padding: 20px;
+    }
+    .slogan-text {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent-dark);
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+    }
+    .slogan-sub {
+      font-size: 14px;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+
+    /* ================= 8. 頁尾 ================= */
+    footer {
+      text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px;
+      background: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(0,0,0,0.05);
+      width: 100%;
+      backdrop-filter: var(--glass-blur);
+      margin-top: auto;
+    }
+
+    /* RWD 響應式 */
+    @media (max-width: 768px) {
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.7); }
+      .nav-container { flex-direction: column; gap: 12px; justify-content: center; padding: 10px 20px; }
+      .header-left, .header-right { display: none; } /* 手機版簡化導覽列，只留Logo */
+      .header-center { flex: unset; justify-content: center; width: 100%; }
+
+      .page-hero { margin-top: 40px; margin-bottom: 30px; }
+      .page-hero h1 { font-size: 28px; }
+
+      .glass-panel { padding: 30px 20px; }
+      .about-intro { text-align: left; } /* 手機版靠左對齊較好閱讀 */
+
+      .roster-grid { grid-template-columns: 1fr; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 滑鼠星星粒子畫布 -->
+  <canvas id="cursor-canvas"></canvas>
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="vsinger.html">歌手資訊</a>
+        <a href="news.html">情報與消息</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo">
+          <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="about.html" class="active">關於我們</a>
+        <a href="history.html">歷史概要</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 頁面大標題 -->
+    <div class="page-hero">
+      <h1>About Us / 關於星樂之夢</h1>
+    </div>
+
+    <!-- 關於我們 內文介紹 -->
+    <div class="glass-panel about-intro">
+      <p>星樂之夢（Star Music Dream） 是一個以 <span class="highlight-text">「虛擬歌手 × 音樂創作」</span> 為核心的大學生創作團隊。✨</p>
+
+      <p>我們致力於創作與開發屬於自己的虛擬歌手，並透過音樂、角色與故事，建立獨特的創作世界。</p>
+
+      <p>目前團隊由 1 人獨立進行創作、製作與開發，未來預計逐步擴展為由 5 位喜愛虛擬歌手及音樂創作的成員共同參與的創作團隊。</p>
+
+      <p>我們不只是製作歌曲，也希望讓每一位虛擬歌手都能擁有屬於自己的聲音、個性與故事。</p>
+    </div>
+
+    <!-- 旗下歌手 & Coming Soon 網格 -->
+    <div class="roster-grid">
+
+      <!-- 卡片 1: 旗下歌手 -->
+      <div class="roster-card">
+        <h2>🎤 旗下歌手</h2>
+
+        <div class="series-group">
+          <div class="series-name">星幻之城 × StarLeo</div>
+          <div class="series-members">星希羽・星彗羽・星丞軒・星卉芯</div>
+        </div>
+
+        <div class="series-group">
+          <div class="series-name">Nova 系列</div>
+          <div class="series-members">祐恩</div>
+        </div>
+      </div>
+
+      <!-- 卡片 2: Coming Soon -->
+      <div class="roster-card">
+        <h2>🌱 Coming Soon</h2>
+
+        <div class="series-group">
+          <div class="series-name">STREETECHOES</div>
+          <div class="series-members">希恩・宇熙・程都・悠珊</div>
+        </div>
+
+        <div class="series-group">
+          <div class="series-name">森嶼之聲</div>
+          <div class="series-members">岳嵐・穗蓉・湛嶠・雉瑜</div>
+        </div>
+
+        <div class="series-group">
+          <div class="series-name">Nova 系列</div>
+          <div class="series-members">月城凌恩</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 結尾與展望 -->
+    <div class="slogan-section">
+      <p style="color: var(--text-muted); font-size: 16px; line-height: 1.8; font-weight: bold; margin-bottom: 30px;">
+        未來，我們也將持續開發更多虛擬歌手與原創音樂企劃，<br>探索聲音、角色與故事之間更多的可能性。
+      </p>
+      <div class="slogan-text">🌟 讓創作，從聲音開始。</div>
+      <div class="slogan-sub">Star Music Dream｜星樂之夢</div>
+    </div>
+
+  </main>
+
+  <footer>
+    <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
+  </footer>
+
+  <!-- 滑鼠星星粒子特效 -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('cursor-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+
+      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
+      window.addEventListener('resize', resize); resize();
+
+      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const particles = [];
+
+      function drawStar(ctx, x, y, radius, rot) {
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
+        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
+      }
+
+      function addParticle(x, y) {
+        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
+      }
+
+      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i]; p.life++;
+          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
+          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+          drawStar(ctx, p.x, p.y, p.size, p.rot);
+        }
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+</body>
+</html>

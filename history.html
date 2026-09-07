@@ -1,0 +1,486 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>歷史概要 | 星樂之夢 Star Music Dream</title>
+  <meta name="description" content="回顧星樂之夢 Star Music Dream 團隊的發展歷程與重要里程碑。">
+
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+
+  <style>
+    /* ================= 全域設定與重置 ================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* 變數 (星樂之夢：柔和藍白明亮風) */
+    :root {
+      --bg: #ffffff;
+      --text-main: #1e293b;
+      --text-title: #0f172a;
+      --text-muted: #64748b;
+      --accent-dark: #63a4ff; /* 主題藍 */
+      --timeline-color: rgba(99, 164, 255, 0.4); /* 時間軸線的顏色 */
+
+      /* 明亮霧面玻璃卡片變數 */
+      --card-bg: rgba(255, 255, 255, 0.65);
+      --card-border: rgba(255, 255, 255, 0.9);
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --card-shadow-hover: 0 12px 30px rgba(99, 164, 255, 0.15);
+      --glass-blur: blur(20px) saturate(120%);
+    }
+
+    body {
+      margin: 0;
+      padding-top: 80px;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      /* ================= 專屬背景 ================= */
+      background: url('img/星樂之夢官網首頁背景_1.png') no-repeat center center fixed;
+      background-color: #f0f8ff;
+      background-size: cover;
+    }
+
+    /* 滑鼠星星粒子畫布樣式 */
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90;
+    }
+
+    /* ================= 頂部導覽列 ================= */
+    header {
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 20px;
+    }
+
+    .header-left, .header-center, .header-right {
+      display: flex; align-items: center; flex: 1;
+    }
+    .header-left { justify-content: flex-start; gap: 20px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 20px; }
+
+    .logo { text-decoration: none; display: flex; align-items: center; }
+    .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
+
+    header a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    header a:hover { color: var(--accent-dark); }
+    header a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+
+    /* ================= 通用區塊設定 ================= */
+    main {
+      max-width: 900px; /* 歷史頁面稍微縮窄，閱讀體驗更好 */
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+    }
+
+    /* 頁面大標題 */
+    .page-hero {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 40px;
+      width: 100%;
+    }
+    .page-hero h1 {
+      margin: 0;
+      color: var(--accent-dark);
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 5px rgba(255,255,255,0.8);
+    }
+    .page-hero p {
+      margin: 10px 0 0 0;
+      color: var(--text-muted);
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    /* ================= 時間軸 (Timeline) 樣式 ================= */
+    .timeline {
+      position: relative;
+      width: 100%;
+      margin-bottom: 80px;
+      padding-left: 30px; /* 留空間給左側的線 */
+    }
+
+    /* 時間軸的主線 */
+    .timeline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15px; /* 線的位置 */
+      height: 100%;
+      width: 4px;
+      background: var(--timeline-color);
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 40px;
+    }
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* 時間軸上的圓點 */
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: -23px; /* 對齊主線 */
+      width: 16px;
+      height: 16px;
+      background: #ffffff;
+      border: 4px solid var(--accent-dark);
+      border-radius: 50%;
+      z-index: 1;
+      box-shadow: 0 0 10px rgba(99, 164, 255, 0.5);
+    }
+
+    /* 年份標題區塊 */
+    .timeline-year {
+      display: inline-block;
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent-dark);
+      background: rgba(255, 255, 255, 0.8);
+      padding: 5px 15px;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(99, 164, 255, 0.2);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    .timeline-subtitle {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    /* 歷史事件的玻璃卡片 */
+    .timeline-content {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .timeline-content:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    /* 歷史事件列表 */
+    .event-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .event-item {
+      display: flex;
+      flex-direction: column; /* 改為上下排版，日期在上方較好閱讀 */
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px dashed rgba(0,0,0,0.1);
+    }
+    .event-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .event-date {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--accent-dark);
+      margin-bottom: 5px;
+    }
+    .event-desc {
+      font-size: 15px;
+      line-height: 1.6;
+      color: var(--text-main);
+    }
+
+    /* 強調特規排版 (例如 2026 年的 Cute Voice / Lively Voice) */
+    .event-sub-desc {
+      margin-top: 5px;
+      padding-left: 10px;
+      border-left: 3px solid rgba(99, 164, 255, 0.4);
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+
+    /* ================= 8. 頁尾 ================= */
+    footer {
+      text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px;
+      background: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(0,0,0,0.05);
+      width: 100%;
+      backdrop-filter: var(--glass-blur);
+      margin-top: auto;
+    }
+
+    /* RWD 響應式 */
+    @media (max-width: 768px) {
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.7); }
+      .nav-container { flex-direction: column; gap: 12px; justify-content: center; padding: 10px 20px; }
+      .header-left, .header-right { display: none; } /* 手機版簡化導覽列，只留Logo */
+      .header-center { flex: unset; justify-content: center; width: 100%; }
+
+      .page-hero { margin-top: 40px; margin-bottom: 30px; }
+      .page-hero h1 { font-size: 28px; }
+
+      .timeline { padding-left: 20px; }
+      .timeline::before { left: 5px; }
+      .timeline-item::before { left: -23px; width: 14px; height: 14px; border-width: 3px; top: 22px;}
+      .timeline-year { font-size: 20px; padding: 4px 12px;}
+      .timeline-subtitle { display: block; margin-left: 0; margin-top: 5px; font-size: 14px;}
+      .timeline-content { padding: 20px 15px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 滑鼠星星粒子畫布 -->
+  <canvas id="cursor-canvas"></canvas>
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="vsinger.html">歌手資訊</a>
+        <a href="news.html">情報與消息</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo">
+          <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="about.html">關於我們</a>
+        <a href="history.html" class="active">歷史概要</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 頁面大標題 -->
+    <div class="page-hero">
+      <h1>⭐ 星樂之夢團隊｜歷史</h1>
+      <p>記錄星樂之夢從萌芽到茁壯的每一步</p>
+    </div>
+
+    <!-- ================= 時間軸區塊 ================= -->
+    <div class="timeline">
+
+      <!-- 2022 -->
+      <div class="timeline-item">
+        <div class="timeline-year">2022 <span class="timeline-subtitle">最初的起點</span></div>
+        <div class="timeline-content">
+          <ul class="event-list">
+            <li class="event-item">
+              <div class="event-desc">創作者 Kai 受到 DeepVocal 歌手「空詩音レミ」啟發，開始構思虛擬歌手角色。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">11月27日</div>
+              <div class="event-desc">最初角色「小希」誕生，後於2023年更名為「耀光」，成為後來星希羽的部分設定來源。</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2023 -->
+      <div class="timeline-item">
+        <div class="timeline-year">2023 <span class="timeline-subtitle">團隊成立・虛擬歌手計畫</span></div>
+        <div class="timeline-content">
+          <ul class="event-list">
+            <li class="event-item">
+              <div class="event-date">5月21日</div>
+              <div class="event-desc">自由之光子團隊「自由之光音樂社」成立，開始進行多媒體與音樂創作。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">12月</div>
+              <div class="event-desc">重新啟動虛擬歌手開發計畫，並正式確立星希羽與星彗羽兩位兒童聲虛擬歌手。</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2024 -->
+      <div class="timeline-item">
+        <div class="timeline-year">2024 <span class="timeline-subtitle">星樂之夢成立・星希羽出道</span></div>
+        <div class="timeline-content">
+          <ul class="event-list">
+            <li class="event-item">
+              <div class="event-date">2月22日</div>
+              <div class="event-desc">團隊正式更名為「星樂之夢」。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">4月21日</div>
+              <div class="event-desc">虛擬歌手開發由 DeepVocal 轉向 ACE Studio。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">8月14日</div>
+              <div class="event-desc">旗下首位正式歌手星希羽 V1.0 正式發佈，並推出首支原創曲《星の夜》。</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2025 -->
+      <div class="timeline-item">
+        <div class="timeline-year">2025 <span class="timeline-subtitle">工作室成立・星彗羽出道</span></div>
+        <div class="timeline-content">
+          <ul class="event-list">
+            <li class="event-item">
+              <div class="event-date">2月22日</div>
+              <div class="event-desc">組織架構調整，成立「星樂之夢工作室」，正式負責星希羽營運與星彗羽開發。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">4月9日</div>
+              <div class="event-desc">星彗羽 V1.0 正式發佈並開始活動。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">11月2日</div>
+              <div class="event-desc">星彗羽推出首張 EP《黎明》。</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 2026 -->
+      <div class="timeline-item">
+        <div class="timeline-year">2026 <span class="timeline-subtitle">新世代展開</span></div>
+        <div class="timeline-content">
+          <ul class="event-list">
+            <li class="event-item">
+              <div class="event-date">1月17日</div>
+              <div class="event-desc">公開全新虛擬歌手星丞軒、星卉芯的開發計畫。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">2月2日</div>
+              <div class="event-desc">星希羽 V1 停止官方活動與聲庫維護。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">3月1日</div>
+              <div class="event-desc">星希羽 V2 計畫啟動，開始進行新聲優徵選。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">4月9日</div>
+              <div class="event-desc">團隊正式更名為「星樂之夢團隊」，定位為虛擬歌手與數位內容創作團隊。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">4月30日</div>
+              <div class="event-desc">星希羽 V2 開始測試。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">5月27日</div>
+              <div class="event-desc">星丞軒、星卉芯正式啟動開發。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">6月1日</div>
+              <div class="event-desc">星丞軒、星卉芯進入封閉測試。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">6月11日</div>
+              <div class="event-desc">推出星希羽二週年紀念 EP《羽翼》，並展開 V2 封測。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">7月31日</div>
+              <div class="event-desc">星彗羽 V1.2 / 星希羽 V1.5.2 正式版推出，重新整理星希羽既有聲源定位：
+                <div class="event-sub-desc">
+                  <strong>Cute Voice｜萌音：</strong>Ian 錄製的原 V1 聲源<br>
+                  <strong>Lively Voice｜稚音：</strong>新聲優錄製的新聲源
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <footer>
+    <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
+  </footer>
+
+  <!-- 滑鼠星星粒子特效 -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('cursor-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+
+      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
+      window.addEventListener('resize', resize); resize();
+
+      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const particles = [];
+
+      function drawStar(ctx, x, y, radius, rot) {
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
+        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
+      }
+
+      function addParticle(x, y) {
+        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
+      }
+
+      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i]; p.life++;
+          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
+          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+          drawStar(ctx, p.x, p.y, p.size, p.rot);
+        }
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+</body>
+</html>

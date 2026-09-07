@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>情報與消息 | 星樂之夢 Star Music Dream</title>
+  <meta name="description" content="獲取星樂之夢 Star Music Dream 旗下虛擬歌手的最新情報、聲庫發布與音樂企劃消息。">
+
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+
+  <style>
+    /* ================= 全域設定與重置 ================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* 變數 (星樂之夢：柔和藍白明亮風) */
+    :root {
+      --bg: #ffffff;
+      --text-main: #1e293b;
+      --text-title: #0f172a;
+      --text-muted: #64748b;
+      --accent-dark: #63a4ff; /* 主題藍 */
+      --date-color: #94a3b8; /* 日期文字顏色 */
+
+      /* 明亮霧面玻璃卡片變數 */
+      --card-bg: rgba(255, 255, 255, 0.7);
+      --card-border: rgba(255, 255, 255, 0.9);
+      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      --card-shadow-hover: 0 12px 30px rgba(99, 164, 255, 0.15);
+      --glass-blur: blur(20px) saturate(120%);
+    }
+
+    body {
+      margin: 0;
+      padding-top: 80px;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column; /* 讓 footer 可以黏在底部 */
+      /* ================= 專屬背景 ================= */
+      background: url('img/星樂之夢官網首頁背景_1.png') no-repeat center center fixed;
+      background-color: #f0f8ff;
+      background-size: cover;
+    }
+
+    /* 滑鼠星星粒子畫布樣式 */
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90;
+    }
+
+    /* ================= 頂部導覽列 ================= */
+    header {
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.5);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 20px;
+    }
+
+    .header-left, .header-center, .header-right {
+      display: flex; align-items: center; flex: 1;
+    }
+    .header-left { justify-content: flex-start; gap: 20px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 20px; }
+
+    .logo { text-decoration: none; display: flex; align-items: center; }
+    .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
+
+    header a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    header a:hover { color: var(--accent-dark); }
+    header a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+
+    /* ================= 通用區塊設定 ================= */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1; /* 佔滿剩餘空間，把 footer 擠下去 */
+    }
+
+    /* 頁面大標題 */
+    .page-hero {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 60px;
+      width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px 20px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+    }
+    .page-hero h1 {
+      margin: 0 0 15px 0;
+      color: var(--accent-dark);
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 5px rgba(255,255,255,0.8);
+    }
+    .page-hero p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 16px;
+      line-height: 1.8;
+      font-weight: bold;
+    }
+
+    /* ================= 情報與消息 預留區塊 (Empty State) ================= */
+    .empty-state-panel {
+      width: 100%;
+      padding: 80px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.4);
+      border: 2px dashed rgba(255, 255, 255, 0.8);
+      border-radius: 20px;
+      backdrop-filter: var(--glass-blur);
+      margin-bottom: 80px;
+    }
+    .empty-state-panel svg {
+      width: 50px;
+      height: 50px;
+      color: var(--accent-dark);
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+    .empty-state-panel h2 {
+      color: var(--text-main);
+      font-size: 22px;
+      margin: 0 0 10px 0;
+    }
+    .empty-state-panel p {
+      color: var(--text-muted);
+      font-size: 16px;
+      margin: 0;
+    }
+
+    /* 未來有新聞時使用的 Grid (先隱藏保留樣式) */
+    .news-grid {
+      display: none; /* 目前隱藏 */
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 30px;
+      width: 100%;
+      margin-bottom: 80px;
+    }
+    .news-card {
+      background: #ffffff; border: 1px solid rgba(0,0,0,0.05); border-radius: 12px; overflow: hidden; text-decoration: none; box-shadow: var(--card-shadow); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column;
+    }
+    .news-card:hover {
+      transform: translateY(-8px); box-shadow: var(--card-shadow-hover); border-color: rgba(99, 164, 255, 0.3);
+    }
+    .news-img-box {
+      width: 100%; aspect-ratio: 16 / 9; background: #f1f5f9; overflow: hidden; position: relative;
+    }
+    .news-img-box img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .news-card:hover .news-img-box img { transform: scale(1.05); }
+    .news-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
+    .news-date { color: var(--date-color); font-size: 13px; font-weight: bold; margin-bottom: 10px; letter-spacing: 0.5px; }
+    .news-title { margin: 0 0 10px 0; color: var(--text-title); font-size: 18px; font-weight: 800; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .news-desc { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+    /* ================= 8. 頁尾 ================= */
+    footer {
+      text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px;
+      background: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(0,0,0,0.05);
+      width: 100%;
+      backdrop-filter: var(--glass-blur);
+      margin-top: auto; /* 確保內容不夠時 footer 在最下面 */
+    }
+
+    /* RWD 響應式 */
+    @media (max-width: 768px) {
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.7); }
+      .nav-container { flex-direction: column; gap: 12px; justify-content: center; padding: 10px 20px; }
+      .header-left, .header-right { display: none; } /* 手機版簡化導覽列，只留Logo */
+      .header-center { flex: unset; justify-content: center; width: 100%; }
+
+      .page-hero { padding: 30px 15px; }
+      .page-hero h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 滑鼠星星粒子畫布 -->
+  <canvas id="cursor-canvas"></canvas>
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="vsinger.html">歌手資訊</a>
+        <a href="news.html" class="active">情報與消息</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo">
+          <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
+        </a>
+      </div>
+      <div class="header-right">
+        <a href="about.html">關於我們</a>
+        <a href="history.html">歷史概要</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 頁面大標題 -->
+    <div class="page-hero">
+      <h1>News / 情報與消息</h1>
+      <p>關注星樂之夢最新動態。<br>這裡發布包含聲庫更新、原創音樂企劃及最新活動情報。</p>
+    </div>
+
+    <!-- ================= 情報與消息 預留區塊 ================= -->
+    <div class="empty-state-panel">
+      <!-- 一個小廣播的圖示 -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+      </svg>
+      <h2>目前尚無情報</h2>
+      <p>星樂之夢的最新企劃與情報正在準備中，敬請期待後續發布！</p>
+    </div>
+
+    <!-- ================= 情報與消息列表 (未來有資料時將此區塊 display 改為 grid) ================= -->
+    <div class="news-grid">
+      <!-- 範例結構保留在註解中，方便未來啟用 -->
+      <!--
+      <a href="#" class="news-card">
+        <div class="news-img-box">
+          <img src="img/news_1.jpg" alt="新聞圖片">
+        </div>
+        <div class="news-info">
+          <div class="news-date">YYYY.MM.DD</div>
+          <h3 class="news-title">這裡是新聞標題</h3>
+          <p class="news-desc">這裡是新聞的簡短描述內容，大約一到兩行字即可。</p>
+        </div>
+      </a>
+      -->
+    </div>
+
+  </main>
+
+  <footer>
+    <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
+  </footer>
+
+  <!-- 滑鼠星星粒子特效 -->
+  <script>
+    (function(){
+      const canvas = document.getElementById('cursor-canvas');
+      const ctx = canvas.getContext('2d');
+      let width, height;
+      const DPR = window.devicePixelRatio || 1;
+
+      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
+      window.addEventListener('resize', resize); resize();
+
+      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const particles = [];
+
+      function drawStar(ctx, x, y, radius, rot) {
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
+        ctx.moveTo(0, -outerRadius);
+        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
+        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
+      }
+
+      function addParticle(x, y) {
+        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
+      }
+
+      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
+
+      function animate() {
+        ctx.clearRect(0, 0, width, height);
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i]; p.life++;
+          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
+          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
+          drawStar(ctx, p.x, p.y, p.size, p.rot);
+        }
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+  </script>
+</body>
+</html>
