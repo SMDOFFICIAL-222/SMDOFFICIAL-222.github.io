@@ -80,10 +80,10 @@
     .header-center { justify-content: center; }
     .header-right { justify-content: flex-end; gap: 20px; }
 
-    .logo { text-decoration: none; display: flex; align-items: center; }
+    .logo { text-decoration: none; display: flex; align-items: center; z-index: 1001; position: relative;}
     .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
 
-    header a {
+    .nav-links a {
       color: var(--text-main);
       text-decoration: none;
       font-size: 15px;
@@ -91,8 +91,69 @@
       transition: color 0.3s;
       cursor: pointer;
     }
-    header a:hover { color: var(--accent-dark); }
-    header a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+    .nav-links a:hover { color: var(--accent-dark); }
+    .nav-links a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+
+    /* 漢堡選單按鈕 (電腦版隱藏) */
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 1001; /* 確保在展開選單的最上層 */
+      position: relative;
+    }
+    .menu-btn svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--text-main);
+      transition: stroke 0.3s;
+    }
+    .menu-btn:hover svg { stroke: var(--accent-dark); }
+
+    /* ================= 手機版全螢幕選單 (Mobile Overlay) ================= */
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      text-align: center;
+    }
+
+    .mobile-nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      transition: color 0.3s;
+    }
+    .mobile-nav-links a:hover, .mobile-nav-links a.active {
+      color: var(--accent-dark);
+    }
 
     /* ================= 通用區塊設定 ================= */
     main {
@@ -112,6 +173,13 @@
       margin-top: 60px;
       margin-bottom: 40px;
       width: 100%;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 40px 30px;
+      box-shadow: var(--card-shadow);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
     }
     .page-hero h1 {
       margin: 0;
@@ -122,10 +190,11 @@
       text-shadow: 0 2px 5px rgba(255,255,255,0.8);
     }
     .page-hero p {
-      margin: 10px 0 0 0;
-      color: var(--text-muted);
-      font-size: 16px;
-      font-weight: bold;
+      margin: 15px 0 0 0;
+      color: var(--text-main);
+      font-size: 15px;
+      line-height: 1.8;
+      text-align: left;
     }
 
     /* ================= 時間軸 (Timeline) 樣式 ================= */
@@ -215,9 +284,9 @@
     }
     .event-item {
       display: flex;
-      flex-direction: column; /* 改為上下排版，日期在上方較好閱讀 */
-      margin-bottom: 15px;
-      padding-bottom: 15px;
+      flex-direction: column;
+      margin-bottom: 18px;
+      padding-bottom: 18px;
       border-bottom: 1px dashed rgba(0,0,0,0.1);
     }
     .event-item:last-child {
@@ -229,21 +298,35 @@
       font-size: 14px;
       font-weight: 900;
       color: var(--accent-dark);
-      margin-bottom: 5px;
+      margin-bottom: 8px;
     }
     .event-desc {
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.7;
       color: var(--text-main);
     }
+    .event-desc ul {
+      margin: 8px 0 0 0;
+      padding-left: 20px;
+      color: var(--text-muted);
+    }
+    .event-desc li {
+      margin-bottom: 4px;
+    }
 
-    /* 強調特規排版 (例如 2026 年的 Cute Voice / Lively Voice) */
+    /* 強調特規排版 (例如聲線說明) */
     .event-sub-desc {
-      margin-top: 5px;
-      padding-left: 10px;
-      border-left: 3px solid rgba(99, 164, 255, 0.4);
+      margin-top: 10px;
+      padding: 12px 15px;
+      background: rgba(255, 255, 255, 0.5);
+      border-left: 4px solid var(--accent-dark);
+      border-radius: 0 8px 8px 0;
       color: var(--text-muted);
       font-size: 14px;
+      line-height: 1.6;
+    }
+    .event-sub-desc strong {
+      color: var(--text-main);
     }
 
     /* ================= 8. 頁尾 ================= */
@@ -257,15 +340,28 @@
 
     /* RWD 響應式 */
     @media (max-width: 768px) {
-      header { padding: 10px 0; background: rgba(255, 255, 255, 0.7); }
-      .nav-container { flex-direction: column; gap: 12px; justify-content: center; padding: 10px 20px; }
-      .header-left, .header-right { display: none; } /* 手機版簡化導覽列，只留Logo */
-      .header-center { flex: unset; justify-content: center; width: 100%; }
+      /* 導覽列：手機版 Logo 至左，漢堡選單至右 */
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.8); }
+      .nav-container {
+        flex-direction: row; /* 強制左右排列 */
+        justify-content: space-between;
+        padding: 10px 25px;
+      }
 
-      .page-hero { margin-top: 40px; margin-bottom: 30px; }
-      .page-hero h1 { font-size: 28px; }
+      /* 隱藏電腦版的文字連結區塊 */
+      .header-left, .header-right { display: none; }
 
-      .timeline { padding-left: 20px; }
+      /* Logo 改為靠左 */
+      .header-center { flex: unset; justify-content: flex-start; }
+
+      /* 顯示漢堡選單按鈕 */
+      .menu-btn { display: block; }
+
+      .page-hero { margin-top: 40px; margin-bottom: 30px; padding: 30px 20px;}
+      .page-hero h1 { font-size: 26px; }
+      .page-hero p { font-size: 14px; }
+
+      .timeline { padding-left: 20px; margin-bottom: 60px;}
       .timeline::before { left: 5px; }
       .timeline-item::before { left: -23px; width: 14px; height: 14px; border-width: 3px; top: 22px;}
       .timeline-year { font-size: 20px; padding: 4px 12px;}
@@ -280,27 +376,52 @@
 
   <header>
     <div class="nav-container">
-      <div class="header-left">
+      <!-- 電腦版：左側連結 -->
+      <div class="header-left nav-links">
         <a href="vsinger.html">歌手資訊</a>
         <a href="news.html">情報與消息</a>
       </div>
+
+      <!-- Logo (電腦版置中，手機版靠左) -->
       <div class="header-center">
         <a href="index.html" class="logo">
           <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
         </a>
       </div>
-      <div class="header-right">
+
+      <!-- 電腦版：右側連結 -->
+      <div class="header-right nav-links">
         <a href="about.html">關於我們</a>
         <a href="history.html" class="active">歷史概要</a>
       </div>
+
+      <!-- 手機版：漢堡選單按鈕 (電腦版隱藏) -->
+      <button class="menu-btn" id="mobileMenuBtn" aria-label="打開選單">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 預設顯示三條線 -->
+          <line x1="3" y1="12" x2="21" y2="12" class="line-mid"></line>
+          <line x1="3" y1="6" x2="21" y2="6" class="line-top"></line>
+          <line x1="3" y1="18" x2="21" y2="18" class="line-bot"></line>
+        </svg>
+      </button>
     </div>
   </header>
+
+  <!-- 手機版：全螢幕展開選單 -->
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-nav-links">
+      <a href="vsinger.html">歌手資訊</a>
+      <a href="news.html">情報與消息</a>
+      <a href="about.html">關於我們</a>
+      <a href="history.html" class="active">歷史概要</a>
+    </div>
+  </div>
 
   <main>
     <!-- 頁面大標題 -->
     <div class="page-hero">
       <h1>⭐ 星樂之夢團隊｜歷史</h1>
-      <p>記錄星樂之夢從萌芽到茁壯的每一步</p>
+      <p>星樂之夢（Star Music Dream）起源於 2023 年成立的「自由之光音樂社」，最初以虛擬歌手與音樂創作為主要發展方向。經過數次組織調整、歌手開發與聲音技術更新，逐步發展為以虛擬歌手、AI 歌聲與數位內容創作為核心的創作團隊。</p>
     </div>
 
     <!-- ================= 時間軸區塊 ================= -->
@@ -316,7 +437,7 @@
             </li>
             <li class="event-item">
               <div class="event-date">11月27日</div>
-              <div class="event-desc">最初角色「小希」誕生，後於2023年更名為「耀光」，成為後來星希羽的部分設定來源。</div>
+              <div class="event-desc">最初角色「小希」誕生，並於 2023 年 4 月更名為「耀光」，成為後來星希羽部分設定的來源。</div>
             </li>
           </ul>
         </div>
@@ -324,16 +445,26 @@
 
       <!-- 2023 -->
       <div class="timeline-item">
-        <div class="timeline-year">2023 <span class="timeline-subtitle">團隊成立・虛擬歌手計畫</span></div>
+        <div class="timeline-year">2023 <span class="timeline-subtitle">自由之光成立・虛擬歌手計畫</span></div>
         <div class="timeline-content">
           <ul class="event-list">
             <li class="event-item">
               <div class="event-date">5月21日</div>
-              <div class="event-desc">自由之光子團隊「自由之光音樂社」成立，開始進行多媒體與音樂創作。</div>
+              <div class="event-desc">「自由之光音樂社」成立，最初作為多媒體創作團隊「自由之光」旗下的音樂創作部門，開始進行虛擬歌手與原創音樂相關企劃。</div>
+            </li>
+            <li class="event-item">
+              <div class="event-desc">同年曾規劃虛擬歌手開發計畫，原先考慮使用 Synthesizer V，後因成本與技術因素轉向 DeepVocal；該計畫於 11 月暫停。</div>
             </li>
             <li class="event-item">
               <div class="event-date">12月</div>
-              <div class="event-desc">重新啟動虛擬歌手開發計畫，並正式確立星希羽與星彗羽兩位兒童聲虛擬歌手。</div>
+              <div class="event-desc">
+                團隊重新啟動虛擬歌手企劃，正式確立兒童聲虛擬歌手計畫，推出：
+                <ul>
+                  <li>星希羽</li>
+                  <li>星彗羽</li>
+                </ul>
+                <span style="font-size:14px; color:var(--text-muted); display:inline-block; margin-top:5px;">其中星希羽繼承部分「耀光」的角色設定。</span>
+              </div>
             </li>
           </ul>
         </div>
@@ -341,20 +472,20 @@
 
       <!-- 2024 -->
       <div class="timeline-item">
-        <div class="timeline-year">2024 <span class="timeline-subtitle">星樂之夢成立・星希羽出道</span></div>
+        <div class="timeline-year">2024 <span class="timeline-subtitle">星樂之夢成立・星希羽正式出道</span></div>
         <div class="timeline-content">
           <ul class="event-list">
             <li class="event-item">
               <div class="event-date">2月22日</div>
-              <div class="event-desc">團隊正式更名為「星樂之夢」。</div>
+              <div class="event-desc">團隊正式更名為「星樂之夢」，開始以新的品牌進行虛擬歌手與音樂創作。</div>
             </li>
             <li class="event-item">
               <div class="event-date">4月21日</div>
-              <div class="event-desc">虛擬歌手開發由 DeepVocal 轉向 ACE Studio。</div>
+              <div class="event-desc">虛擬歌手開發正式由 DeepVocal 轉向 ACE Studio。</div>
             </li>
             <li class="event-item">
               <div class="event-date">8月14日</div>
-              <div class="event-desc">旗下首位正式歌手星希羽 V1.0 正式發佈，並推出首支原創曲《星の夜》。</div>
+              <div class="event-desc">旗下首位正式虛擬歌手星希羽 1.0 正式發佈，並推出首支原創歌曲《星の夜》，正式展開活動。</div>
             </li>
           </ul>
         </div>
@@ -362,20 +493,36 @@
 
       <!-- 2025 -->
       <div class="timeline-item">
-        <div class="timeline-year">2025 <span class="timeline-subtitle">工作室成立・星彗羽出道</span></div>
+        <div class="timeline-year">2025 <span class="timeline-subtitle">工作室成立・多聲線與新世代形象</span></div>
         <div class="timeline-content">
           <ul class="event-list">
             <li class="event-item">
+              <div class="event-date">1月1日</div>
+              <div class="event-desc">
+                星希羽 V1.4.2 推出第二聲線系統 Mature（沉音）。<br>
+                <span style="font-size:14px; color:var(--text-muted); display:inline-block; margin-top:5px;">Mature 利用 ACE Studio 的 AI 技術，模擬中之人在變聲前較成熟的聲音表現，作為星希羽的第二聲線。</span>
+              </div>
+            </li>
+            <li class="event-item">
               <div class="event-date">2月22日</div>
-              <div class="event-desc">組織架構調整，成立「星樂之夢工作室」，正式負責星希羽營運與星彗羽開發。</div>
+              <div class="event-desc">團隊進行組織架構調整，成立「星樂之夢工作室」，正式接手星希羽營運與星彗羽開發工作。</div>
             </li>
             <li class="event-item">
               <div class="event-date">4月9日</div>
-              <div class="event-desc">星彗羽 V1.0 正式發佈並開始活動。</div>
+              <div class="event-desc">星彗羽 1.0 正式發佈，由星樂之夢全面營運。</div>
             </li>
             <li class="event-item">
               <div class="event-date">11月2日</div>
-              <div class="event-desc">星彗羽推出首張 EP《黎明》。</div>
+              <div class="event-desc">
+                星希羽 V1.5 發布，作為銜接 V2 的過渡版本。<br>
+                <div class="event-sub-desc">
+                  隨著 ACE 2 將導入 Vocal Mode 技術，未來不再需要透過獨立角色方式製作多聲線，因此取消 Mature 的角色定位。同時，V1.5 採用中之人 14 歲時重新錄製的聲音，並將角色名稱調整為：<strong>「星希羽 Teen」</strong>，象徵星希羽進入少年時期。
+                </div>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">11月2日</div>
+              <div class="event-desc">同日，星彗羽推出首張 EP《黎明》。</div>
             </li>
           </ul>
         </div>
@@ -383,47 +530,69 @@
 
       <!-- 2026 -->
       <div class="timeline-item">
-        <div class="timeline-year">2026 <span class="timeline-subtitle">新世代展開</span></div>
+        <div class="timeline-year">2026 <span class="timeline-subtitle">新世代歌手</span></div>
         <div class="timeline-content">
           <ul class="event-list">
             <li class="event-item">
               <div class="event-date">1月17日</div>
-              <div class="event-desc">公開全新虛擬歌手星丞軒、星卉芯的開發計畫。</div>
+              <div class="event-desc">
+                公開兩位全新虛擬歌手：
+                <ul>
+                  <li>星丞軒</li>
+                  <li>星卉芯</li>
+                </ul>
+                <span style="font-size:14px; color:var(--text-muted); display:inline-block; margin-top:5px;">正式啟動新歌手開發計畫。</span>
+              </div>
             </li>
             <li class="event-item">
               <div class="event-date">2月2日</div>
-              <div class="event-desc">星希羽 V1 停止官方活動與聲庫維護。</div>
+              <div class="event-desc">星希羽 V1 正式停止官方活動與聲庫維護，V1 世代進入階段性結束。</div>
             </li>
             <li class="event-item">
               <div class="event-date">3月1日</div>
-              <div class="event-desc">星希羽 V2 計畫啟動，開始進行新聲優徵選。</div>
+              <div class="event-desc">星希羽 V2 專案正式啟動，開始進行新聲優徵選。</div>
             </li>
             <li class="event-item">
               <div class="event-date">4月9日</div>
-              <div class="event-desc">團隊正式更名為「星樂之夢團隊」，定位為虛擬歌手與數位內容創作團隊。</div>
+              <div class="event-desc">
+                團隊正式更名為「星樂之夢團隊」，定位為虛擬歌手與數位內容創作團隊。<br>
+                <span style="font-size:14px; color:var(--text-muted); display:inline-block; margin-top:5px;">同時，自由之光退出星樂之夢相關營運，星樂之夢開始進入新的發展階段。</span>
+              </div>
             </li>
             <li class="event-item">
               <div class="event-date">4月30日</div>
-              <div class="event-desc">星希羽 V2 開始測試。</div>
+              <div class="event-desc">星希羽 V2 開始進行測試。</div>
             </li>
             <li class="event-item">
               <div class="event-date">5月27日</div>
-              <div class="event-desc">星丞軒、星卉芯正式啟動開發。</div>
+              <div class="event-desc">星丞軒與星卉芯正式啟動開發。</div>
             </li>
             <li class="event-item">
               <div class="event-date">6月1日</div>
-              <div class="event-desc">星丞軒、星卉芯進入封閉測試。</div>
+              <div class="event-desc">兩位新歌手開始進行封閉測試。</div>
             </li>
             <li class="event-item">
               <div class="event-date">6月11日</div>
-              <div class="event-desc">推出星希羽二週年紀念 EP《羽翼》，並展開 V2 封測。</div>
+              <div class="event-desc">
+                為了與星希羽的兒童時期形象做出更明確的區別，「星希羽 Teen」正式更名為：<strong>祐恩（Yuon）</strong>
+                <div class="event-sub-desc">
+                  祐恩與星希羽設定為同一位角色，並與 V1 星希羽使用同一位中之人的聲音，代表同一角色在不同年齡階段的形象。祐恩並非全新的角色，而是星希羽成長至少年時期後所使用的身份。<br>
+                  同日，祐恩正式加入 Nova 系列，展開新的發展階段。
+                </div>
+              </div>
+            </li>
+            <li class="event-item">
+              <div class="event-date">6月11日</div>
+              <div class="event-desc">同日，星樂之夢推出星希羽二週年紀念 EP《羽翼》，並展開星希羽 V2 封閉測試。</div>
             </li>
             <li class="event-item">
               <div class="event-date">7月31日</div>
-              <div class="event-desc">星彗羽 V1.2 / 星希羽 V1.5.2 正式版推出，重新整理星希羽既有聲源定位：
+              <div class="event-desc">
+                星希羽 V1.5.2 正式版推出，重新整理既有聲線定位：
                 <div class="event-sub-desc">
-                  <strong>Cute Voice｜萌音：</strong>Ian 錄製的原 V1 聲源<br>
-                  <strong>Lively Voice｜稚音：</strong>新聲優錄製的新聲源
+                  <strong>Cute Voice｜萌音：</strong><br>由 Ian 錄製的原 V1 聲源，保留原有兒童聲特色。<br><br>
+                  <strong>Lively Voice｜稚音：</strong><br>由新中之人重新錄製的新聲源，呈現更加活潑、明亮的兒童聲表現。<br><br>
+                  <span style="color:var(--accent-dark);">原先的 Mature Voice｜沉音 不再保留，正式由新的 Voice Style 架構取代。</span>
                 </div>
               </div>
             </li>
@@ -438,6 +607,37 @@
   <footer>
     <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
   </footer>
+
+  <!-- 手機版選單切換腳本 -->
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+    let isMenuOpen = false;
+
+    mobileMenuBtn.addEventListener('click', () => {
+      isMenuOpen = !isMenuOpen;
+      if(isMenuOpen) {
+        mobileMenuOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // 鎖定背景滾動
+        // 替換圖示為 'X' (關閉)
+        mobileMenuBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+      } else {
+        mobileMenuOverlay.classList.remove('active');
+        document.body.style.overflow = 'auto'; // 恢復背景滾動
+        // 替換回漢堡選單 (三條線)
+        mobileMenuBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
+      }
+    });
+
+    // 點擊選單內的連結後自動關閉選單
+    document.querySelectorAll('.mobile-nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        if(isMenuOpen) {
+          mobileMenuBtn.click(); // 模擬點擊按鈕來關閉
+        }
+      });
+    });
+  </script>
 
   <!-- 滑鼠星星粒子特效 -->
   <script>
