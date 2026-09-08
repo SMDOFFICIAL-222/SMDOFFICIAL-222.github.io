@@ -112,66 +112,25 @@
       to { opacity: 1; transform: translate(-50%, 0); }
     }
 
-    /* 漢堡選單按鈕 (電腦版隱藏) */
-    .menu-btn {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 5px;
-      z-index: 1001;
-      position: relative;
-    }
-    .menu-btn svg {
-      width: 32px;
-      height: 32px;
-      stroke: var(--text-main);
-      transition: stroke 0.3s;
-    }
-    .menu-btn:hover svg { stroke: var(--accent-dark); }
-
-    /* ================= 手機版全螢幕選單 (Mobile Overlay) ================= */
-    .mobile-menu-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100vh;
-      background: rgba(10, 14, 23, 0.95);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-    .mobile-menu-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .mobile-nav-links {
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
-      text-align: center;
-    }
-    .mobile-nav-links a {
-      color: var(--text-main);
-      text-decoration: none;
-      font-size: 22px;
-      font-weight: 900;
-      letter-spacing: 2px;
-      transition: color 0.3s;
-    }
-    .mobile-nav-links a:hover, .mobile-nav-links a.active { color: var(--accent-dark); }
-
     /* ================= 通用區塊設定 ================= */
-    main { max-width: 1100px; margin: 0 auto; padding: 0 20px; width: 100%; display: block; }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      display: block;
+    }
     section { width: 100%; margin-bottom: 60px; }
+
+    /* 段落標題 */
+    h2 {
+        border-left: 5px solid var(--accent-dark);
+        padding-left: 15px;
+        font-size: 26px;
+        margin-bottom: 30px;
+        color: var(--text-main);
+        font-weight: bold;
+    }
 
     /* ================= 科技藍霧面玻璃卡片 ================= */
     .glass-panel {
@@ -361,7 +320,7 @@
       right: 30px;
       width: 50px;
       height: 50px;
-      background: rgba(77, 168, 218, 0.2); /* 科技藍微透 */
+      background: rgba(77, 168, 218, 0.2);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(77, 168, 218, 0.5);
@@ -402,28 +361,24 @@
       width: 100%; border-top: 1px solid rgba(255,255,255,0.1);
     }
 
+    /* ================= RWD 響應式 ================= */
     @media (max-width: 900px) {
-      .profile-section { flex-direction: column; align-items: center; }
-      .left-column { flex: unset; width: 100%; max-width: 350px; }
-      .logo-card { height: 250px;}
-      .portrait-card { height: 350px; padding: 20px;}
+      .profile-section { flex-direction: column; gap: 30px;}
+      .left-column { flex: unset; width: 100%; max-width: 100%; gap: 20px; flex-direction: row;}
+      .logo-card { flex: 1; height: 250px;}
+      .portrait-card { flex: 2; height: 250px; padding: 20px;}
     }
     @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏左側連結，重新排列置中 */
-      header { padding: 15px 0; background: rgba(10, 14, 23, 0.85);}
-      .nav-container {
-        flex-direction: column;
-        gap: 12px;
-        justify-content: center;
-        padding: 0 20px;
-      }
-      .header-left { display: none; } /* 隱藏 ACE 連結 */
-      .header-center { width: 100%; display: flex; justify-content: center; }
-      .header-right { width: 100%; display: flex; justify-content: center; gap: 25px; }
+      /* 手機版導覽列：隱藏左側連結，置中對齊 */
+      header { padding: 10px 0; background: rgba(10, 14, 23, 0.85);}
+      .nav-container { flex-direction: column; gap: 10px; justify-content: center; padding: 10px 20px; }
+      .header-left { display: none; }
+      .header-center, .header-right { flex: unset; justify-content: center; width: 100%; gap: 15px; }
 
       body { padding-top: 130px; }
       .left-column { flex-direction: column; height: auto; }
       .logo-card { height: auto; padding: 20px;}
+      .portrait-card { height: 350px; }
       .profile-card { padding: 25px 20px; }
       .vb-header { flex-direction: column; text-align: center; }
       .info-btn-group { grid-template-columns: 1fr; }
@@ -462,33 +417,7 @@
         <a href="index.html">返回首頁</a>
       </div>
     </div>
-
-    <!-- 手機版：漢堡選單按鈕 -->
-    <button class="menu-btn" id="mobileMenuBtn" aria-label="打開選單">
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="3" y1="12" x2="21" y2="12" class="line-mid"></line>
-        <line x1="3" y1="6" x2="21" y2="6" class="line-top"></line>
-        <line x1="3" y1="18" x2="21" y2="18" class="line-bot"></line>
-      </svg>
-    </button>
   </header>
-
-  <!-- 手機版：全螢幕展開選單 -->
-  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
-    <div class="mobile-nav-links">
-      <a href="index.html">返回首頁</a>
-      <div class="dropdown" onclick="toggleDropdown(event, this)">
-        <span class="dropdown-btn" style="color: var(--text-main);">其他歌手 ▾</span>
-        <div class="dropdown-content">
-          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
-          <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
-          <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
-          <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
-          <a href="vsinger.html">查看全陣容</a>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <main>
     <section class="profile-section">
@@ -545,6 +474,7 @@
           </div>
         </div>
 
+        <!-- 只有一個 Voice Demo -->
         <div class="audio-grid">
           <div class="audio-player">
             <p>🎵 VOICE DEMO 試聽</p>
@@ -576,15 +506,14 @@
       <div class="close-modal" onclick="closeLoreModal('infoModal')">✕</div>
       <h2>🌟 祐恩｜人設設定</h2>
       <ul class="lore-list">
-        <li><strong>本名：</strong>武田祐恩(金祐恩)</li>
+        <li><strong>本名：</strong>武田祐恩</li>
         <li><strong>MBTI：</strong>ENFJ-A</li>
         <li><strong>星座：</strong>獅子座 ♌️</li>
         <li><strong>血型：</strong>AB型</li>
-        <li><strong>個性：</strong>隨著年紀的增長，他不僅在外貌上脫去了童稚，擁有了 173 公分的高挑身材，在心智與性格上也變得更加沉穩內斂。雖然褪去了小時候那種總是活蹦亂跳的稚氣，但他內心對於唱歌的熱愛，以及想要用聲音帶給別人力量的初衷，從未改變。</li>
-        <li><strong>喜歡：</strong>四處玩耍冒險、唱歌跳舞、創作音樂、電子音樂與合成器</li>
-        <li><strong>怪癖：</strong>喜歡被搔癢、把指甲稱呼為「爪爪」</li>
+        <li><strong>個性：</strong>隨著年紀的增長，在心智與性格上也變得更加沉穩內斂。雖然褪去了小時候那種總是活蹦亂跳的稚氣，但他內心對於唱歌的熱愛，以及想要用聲音帶給別人力量的初衷，從未改變。</li>
+        <li><strong>喜歡：</strong>創作音樂、唱歌跳舞、探索更多樂器</li>
         <li><strong>喜歡的食物：</strong>納豆</li>
-        <li><strong>討厭的食物：</strong>青椒、香菜</li>
+        <li><strong>討厭的食物：</strong>香菜</li>
         <li><strong>視力：</strong>遠視</li>
         <li><strong>出生日期：</strong>2017年8月14日 AM 4:09</li>
         <li><strong>出生地：</strong>日本・東京都</li>
@@ -677,7 +606,7 @@
             <li style="margin-bottom: 15px;"><strong>7歲｜2024年</strong><br>金祐恩 × 星希羽誕生<br>台上是星希羽，台下是武田祐恩／金祐恩</li>
             <li style="margin-bottom: 15px;"><strong>10歲｜2027年10月</strong><br>💭 爸爸詢問是否要回日本生活，祐恩決定返回日本</li>
             <li style="margin-bottom: 15px;"><strong>11歲｜2028年8月24日</strong><br>✈️ 離開台灣，返回日本，金祐恩與星希羽的台灣篇章告一段落</li>
-            <li><strong>14歲</strong><br>與日本朋友組樂團，以自己的名字「祐恩 (Yuon)」重新站上舞台，開啟全新篇章。</li>
+            <li><strong>14歲</strong><br>與朋友們組了樂團，重新以祐恩Yuon身份，踏上舞台，繼續寫下的新篇章。</li>
           </ul>
         </div>
       </div>
@@ -696,26 +625,6 @@
   </footer>
 
   <script>
-    // 手機版漢堡選單邏輯
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-    let isMenuOpen = false;
-
-    if(mobileMenuBtn) {
-        mobileMenuBtn.addEventListener('click', () => {
-          isMenuOpen = !isMenuOpen;
-          if(isMenuOpen) {
-            mobileMenuOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-            mobileMenuBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-          } else {
-            mobileMenuOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
-            mobileMenuBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>';
-          }
-        });
-    }
-
     // 處理下拉選單點擊
     function toggleDropdown(event, element) {
       event.stopPropagation();
