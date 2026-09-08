@@ -173,16 +173,6 @@
     main { max-width: 1100px; margin: 0 auto; padding: 0 20px; width: 100%; display: block; }
     section { width: 100%; margin-bottom: 60px; }
 
-    /* 段落標題 */
-    h2 {
-        border-left: 5px solid var(--accent-dark);
-        padding-left: 15px;
-        font-size: 26px;
-        margin-bottom: 30px;
-        color: var(--text-main);
-        font-weight: bold;
-    }
-
     /* ================= 科技藍霧面玻璃卡片 ================= */
     .glass-panel {
       background: var(--card-bg);
@@ -357,6 +347,8 @@
     .modal-card h2 { color: var(--accent-dark); font-size: 24px; margin-top: 0; border-left: 5px solid var(--accent-dark); padding-left: 15px; margin-bottom: 25px; text-shadow: none; }
 
     .modal-content-text { line-height: 1.8; font-size: 15px; color: var(--text-main); }
+
+    /* 調整列表樣式 */
     .lore-list { list-style: none; padding: 0; margin: 0; color: var(--text-main); line-height: 2; font-size: 15px; }
     .lore-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(255,255,255,0.1); }
     .lore-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
@@ -369,7 +361,7 @@
       right: 30px;
       width: 50px;
       height: 50px;
-      background: rgba(77, 168, 218, 0.2);
+      background: rgba(77, 168, 218, 0.2); /* 科技藍微透 */
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(77, 168, 218, 0.5);
@@ -417,11 +409,17 @@
       .portrait-card { height: 350px; padding: 20px;}
     }
     @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏左側連結，右側改為漢堡選單 */
-      header { padding: 15px 20px; flex-direction: row; justify-content: space-between;}
-      .header-left, .header-right { display: none; }
-      .menu-btn { display: block; }
-      .logo { margin: 0 auto; position: absolute; left: 50%; transform: translateX(-50%);}
+      /* 手機版導覽列：隱藏左側連結，重新排列置中 */
+      header { padding: 15px 0; background: rgba(10, 14, 23, 0.85);}
+      .nav-container {
+        flex-direction: column;
+        gap: 12px;
+        justify-content: center;
+        padding: 0 20px;
+      }
+      .header-left { display: none; } /* 隱藏 ACE 連結 */
+      .header-center { width: 100%; display: flex; justify-content: center; }
+      .header-right { width: 100%; display: flex; justify-content: center; gap: 25px; }
 
       body { padding-top: 130px; }
       .left-column { flex-direction: column; height: auto; }
@@ -522,7 +520,7 @@
           </tr>
           <tr><td>所屬企劃</td><td>Nova</td></tr>
           <tr><td>角色定位</td><td>星希羽長大後</td></tr>
-          <tr><td>相關親屬</td><td>陳彗羽(姊姊)</td></tr>
+          <tr><td>相關親屬</td><td>星彗羽(姊姊)</td></tr>
         </table>
 
         <!-- 按鈕群組 (祐恩只有人設與故事，沒有世界觀) -->
@@ -539,10 +537,10 @@
       <div class="glass-panel voicebank-panel">
         <div class="vb-header">
           <!-- 使用立繪作為頭像 -->
-          <img class="vb-avatar" src="img/祐恩頭像.png" alt="祐恩頭像" style="object-position: top;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/></svg>'">
+          <img class="vb-avatar" src="img/祐恩立繪.png" alt="祐恩頭像" style="object-position: top;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/></svg>'">
           <div class="vb-info">
-            <h3>祐恩 ACE Ai Voice System V1.5.2</h3>
-            <p>是由星樂之夢開發並營運的男性少年聲虛擬歌手，基於使用 ACE Studio 歌聲合成引擎製作，由星希羽中之人 14 歲後重新錄製。</p>
+            <h3>祐恩 ACE Ai Voice System</h3>
+            <p>是由星樂之夢開發並由 Nova Works 營運的男性少年聲虛擬歌手，基於使用 ACE Studio 歌聲合成引擎製作，由星希羽一代中之人 14 歲後重新錄製。</p>
             <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" class="beta-btn-small" style="margin-top: 10px;">前往ACE社群</a>
           </div>
         </div>
@@ -578,22 +576,23 @@
       <div class="close-modal" onclick="closeLoreModal('infoModal')">✕</div>
       <h2>🌟 祐恩｜人設設定</h2>
       <ul class="lore-list">
-        <li><strong>本名：</strong>武田祐恩</li>
+        <li><strong>本名：</strong>武田祐恩(金祐恩)</li>
         <li><strong>MBTI：</strong>ENFJ-A</li>
         <li><strong>星座：</strong>獅子座 ♌️</li>
         <li><strong>血型：</strong>AB型</li>
-        <li><strong>個性：</strong>待公開</li>
-        <li><strong>喜歡：</strong>創作音樂</li>
+        <li><strong>個性：</strong>隨著年紀的增長，他不僅在外貌上脫去了童稚，擁有了 173 公分的高挑身材，在心智與性格上也變得更加沉穩內斂。雖然褪去了小時候那種總是活蹦亂跳的稚氣，但他內心對於唱歌的熱愛，以及想要用聲音帶給別人力量的初衷，從未改變。</li>
+        <li><strong>喜歡：</strong>四處玩耍冒險、唱歌跳舞、創作音樂、電子音樂與合成器</li>
+        <li><strong>怪癖：</strong>喜歡被搔癢、把指甲稱呼為「爪爪」</li>
         <li><strong>喜歡的食物：</strong>納豆</li>
-        <li><strong>討厭的食物：</strong>香菜</li>
+        <li><strong>討厭的食物：</strong>青椒、香菜</li>
         <li><strong>視力：</strong>遠視</li>
         <li><strong>出生日期：</strong>2017年8月14日 AM 4:09</li>
         <li><strong>出生地：</strong>日本・東京都</li>
-      </div>
+      </ul>
     </div>
   </div>
 
-  <!-- ================= 彈出視窗：人設故事 (優化版) ================= -->
+  <!-- ================= 彈出視窗：人設故事 ================= -->
   <div class="modal-overlay" id="storyModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('storyModal')">✕</div>
@@ -617,10 +616,59 @@
         <strong>台上：星希羽</strong> —— 站在舞台上，以歌手的身分唱歌、活動。<br>
         <strong>台下：武田祐恩／金祐恩</strong> —— 回到日常生活後，他仍然是那個喜歡玩耍、唱歌、創作，也會與朋友一起度過日常生活的孩子。</p>
 
-        <h4 style="color: var(--accent-dark); margin-top: 25px; margin-bottom: 10px;">📌 14歲｜少年期的轉變與新生</h4>
-        <p>在另一個時空的節點上，那個曾經用盡全力唱著《星の夜》的金髮小男孩長大了。<br>
-        14歲的祐恩，迎來了男孩子無可避免的變聲期。一開始，他對於自己失去過去清脆的高音感到非常失落，甚至有段時間不願再開口唱歌。直到某天，他接觸到了全新的 AI 歌聲合成技術與電子音樂編曲，他才發現，原來聲音的表達方式不僅限於原來的樣子。</p>
-        <p>變聲後的嗓音，少了尖銳，卻多了一份溫潤與厚實的少年感。他開始學習用這種新的聲音去詮釋不同風格的歌曲，從輕快的 Pop 到節奏強烈的 EDM，他不斷地突破自己的極限。對他來說，「祐恩」這個名字不只是一個新的身分，更是一種對於「進化」與「重新出發」的期許。</p>
+        <h4 style="color: var(--accent-dark); margin-top: 25px; margin-bottom: 10px;">📌 10歲｜一個改變未來的提問</h4>
+        <p>2027年10月，10歲的祐恩迎來了一個重要的選擇。<br>
+        爸爸問了他：「要不要回日本生活？」<br>
+        聽到這個問題時，祐恩第一時間想到的，是自己在日本的好朋友們。<br>
+        那些曾經一起玩耍、一起度過童年的朋友們，再次出現在他的腦海裡。<br>
+        於是，他沒有猶豫太久。<br>
+        「好啊！」祐恩爽快地答應了。<br>
+        這個決定，也成為他人生下一個階段的起點。</p>
+
+        <h4 style="color: var(--accent-dark); margin-top: 25px; margin-bottom: 10px;">📌 11歲｜回到日本與「金祐恩」的句點</h4>
+        <p>決定回日本後，祐恩開始為離開台灣做準備。<br>
+        2028年8月24日，祐恩搭乘飛機離開台灣，返回日本。<br>
+        「金祐恩」這個名字誕生於7歲，陪伴著他度過了在台灣最重要的成長時期。但當他離開台灣的那一刻，這個名字也完成了它的使命。<br>
+        「金祐恩」留在了台灣的那段歲月裡。<br>
+        回到日本後，他將重新使用自己的本名：<strong>武田祐恩</strong></p>
+
+        <h4 style="color: var(--accent-dark); margin-top: 25px; margin-bottom: 10px;">📌 14歲｜祐恩與樂團</h4>
+        <p>回到日本3年後，祐恩逐漸適應了新的生活。<br>
+        曾經在台灣度過的童年，成為了他記憶裡重要的一部分；而離開「星希羽」這個名字之後，他也開始用自己的本名——祐恩（Yuon），迎接下一個階段的人生。<br>
+        14歲那年，他與三位好友因為共同喜歡音樂，決定組成一支樂團。<br>
+        一開始，他們沒有什麼遠大的目標。<br>
+        只是放學後聚在一起，討論喜歡的歌曲，練習樂器，偶爾一起唱歌。<br>
+        對祐恩而言，這是一段全新的音樂生活。</p>
+
+        <p>然而，就在這段時間裡，他的聲音也悄悄發生了變化。<br>
+        變聲期並沒有特別通知他。<br>
+        某一天開始，原本熟悉的高音變得不容易唱上去，說話的聲音也逐漸低沉。<br>
+        祐恩自己卻完全沒有察覺。<br>
+        直到某次樂團練習時，他唱完一段歌曲，朋友突然注意到了他的聲音。<br>
+        「祐恩，你的聲音……是不是變了？」<br>
+        祐恩愣了一下。<br>
+        他又試著唱了一次。<br>
+        低沉、穩定，與幾年前的自己截然不同。<br>
+        他沒有感到失落。<br>
+        相反地，他露出了興奮的笑容。<br>
+        「……這聲音超帥吧？」</p>
+
+        <p>對祐恩而言，這不是失去過去的聲音，而是發現了一個從未認識過的自己。<br>
+        既然以前的唱法已經不再適合現在的聲音，那就重新學習。<br>
+        他開始嘗試不同的發聲方式，重新摸索自己的音域、共鳴與唱法。<br>
+        從最開始的不習慣，到慢慢找到適合自己的方式，祐恩一點一點建立起屬於自己的歌聲。<br>
+        他沒有想著回到以前。<br>
+        而是選擇向前。<br>
+        「原來，我也可以用這個聲音唱歌。」</p>
+
+        <p>在一次次的練習中，祐恩逐漸找到了屬於自己的風格。<br>
+        那個曾經以「星希羽」之名唱歌的孩子，並沒有消失。<br>
+        只是，他已經長大了。<br>
+        如今站在樂團裡的，是名為 <strong>祐恩（Yuon）</strong>的少年。<br>
+        四個人一起練習、一起創作，也一起度過了14歲最珍貴的青春時光。<br>
+        對祐恩而言，組成樂團並不只是開始一段音樂活動。<br>
+        那是他第一次真正用自己的名字、自己的聲音，以及自己的選擇，走向未來。<br>
+        而這，也成為了「祐恩」真正誕生的時刻。</p>
 
         <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; margin-top: 30px; border: 1px solid var(--card-border);">
           <h3 style="color: var(--accent-dark); margin-top: 0; margin-bottom: 15px; font-size: 18px; text-align: center;">⏳ 人生時間線</h3>
@@ -629,7 +677,7 @@
             <li style="margin-bottom: 15px;"><strong>7歲｜2024年</strong><br>金祐恩 × 星希羽誕生<br>台上是星希羽，台下是武田祐恩／金祐恩</li>
             <li style="margin-bottom: 15px;"><strong>10歲｜2027年10月</strong><br>💭 爸爸詢問是否要回日本生活，祐恩決定返回日本</li>
             <li style="margin-bottom: 15px;"><strong>11歲｜2028年8月24日</strong><br>✈️ 離開台灣，返回日本，金祐恩與星希羽的台灣篇章告一段落</li>
-            <li><strong>14歲</strong><br>與朋友們組了樂團，重新以祐恩Yuon身份，踏上舞台，繼續寫下的新篇章。</li>
+            <li><strong>14歲</strong><br>與日本朋友組樂團，以自己的名字「祐恩 (Yuon)」重新站上舞台，開啟全新篇章。</li>
           </ul>
         </div>
       </div>
