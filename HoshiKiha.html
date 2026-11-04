@@ -140,7 +140,7 @@
       display: flex; align-items: center; flex: 1;
     }
     .header-left { justify-content: flex-start; gap: 25px; }
-    .header-center { justify-content: center; } /* 讓 Logo 完美置中 */
+    .header-center { justify-content: center; }
     .header-right { justify-content: flex-end; gap: 25px; }
 
     .logo { text-decoration: none; display: flex; align-items: center; }
@@ -167,11 +167,6 @@
     .dropdown-content.show { display: block; animation: fadeIn 0.2s ease-in-out; }
     .dropdown-content a { color: var(--text-main); padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; font-weight: normal;}
     .dropdown-content a:hover { background: rgba(255, 255, 255, 0.5); color: var(--accent-dark); }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translate(-50%, -5px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
-    }
 
     /* 漢堡選單按鈕 (電腦版隱藏) */
     .menu-btn {
@@ -259,7 +254,7 @@
     .glass-panel {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 24px; /* 稍微加大圓角更符合液態感 */
+      border-radius: 24px;
       box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -321,17 +316,9 @@
       vertical-align: top;
     }
 
-    .color-indicator {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .color-indicator { display: flex; align-items: center; gap: 8px; }
 
-    .voice-provider {
-        line-height: 1.6;
-    }
-
-    /* 人設/故事資訊按鈕群組 (等分三欄，底部對齊) */
+    /* 人設按鈕群組 */
     .info-btn-group {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -404,14 +391,16 @@
 
     .vb-video-container {
       position: relative; border-radius: 16px; overflow: hidden;
-      background: #000; aspect-ratio: 16/9; cursor: pointer; border: 1px solid var(--glass-border);
+      background: #e5e5e5; aspect-ratio: 16/9; cursor: default; border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
       max-width: 600px;
     }
-    .vb-video-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.5s ease; display: block;}
-    .vb-video-container:hover img { transform: scale(1.05); opacity: 1; }
+    .vb-video-container img, .vb-video-container svg.placeholder {
+        width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.5s ease; display: block;
+    }
+
     .play-btn {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none;
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.5); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); pointer-events: none;
     }
     .play-btn::before { content: ''; border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent #fff; margin-left: 4px; }
 
@@ -426,16 +415,22 @@
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
 
-    /* ================= 5. 中之人與形象 (改為上下排版) ================= */
+    /* ================= 3. 形象3視圖展示 ================= */
+    .reference-sheet-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 24px; border: 1px solid var(--glass-border); padding: 0;}
+    .reference-sheet { width: 100%; display: block; background: rgba(255, 255, 255, 0.2); }
+    .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+
+    /* ================= 4. 中之人與形象 (單欄上下排列) ================= */
     .vp-grid {
       display: grid;
-      grid-template-columns: 1fr; /* 改為單欄，上下排列 */
+      grid-template-columns: 1fr;
       gap: 30px;
     }
     .vp-card {
       padding: 35px;
       display: flex;
       flex-direction: column;
+      justify-content: flex-start;
       gap: 20px;
     }
     .vp-info { flex: 1; }
@@ -444,35 +439,24 @@
       font-size: 20px;
       margin-top: 0;
       margin-bottom: 20px;
-      border-bottom: 1px dashed rgba(0,0,0,0.1);
+      border-bottom: 1px dashed rgba(2, 132, 199, 0.2);
       padding-bottom: 10px;
     }
     .vp-list { list-style: none; padding: 0; margin: 0 0 25px 0; color: var(--text-muted); font-size: 15px; line-height: 2.2; font-weight: 500;}
-    .vp-list li { border-bottom: 1px dashed rgba(0,0,0,0.06); padding-bottom: 8px; margin-bottom: 8px;}
+    .vp-list li { border-bottom: 1px dashed rgba(2, 132, 199, 0.1); padding-bottom: 8px; margin-bottom: 8px;}
     .vp-list li:last-child { border-bottom: none; }
     .vp-list li strong { color: var(--accent-dark); display: inline-block; width: 140px; font-weight: bold; flex-shrink: 0;}
 
     .vp-desc {
       color: var(--text-muted); line-height: 1.8; font-size: 15px; margin: 0;
-      background: rgba(255,255,255,0.4); padding: 20px 25px; border-left: 4px solid var(--accent-dark); border-radius: 0 8px 8px 0;
+      background: rgba(255,255,255,0.4); padding: 20px 25px; border-left: 4px solid var(--accent-dark); border-radius: 0 12px 12px 0;
       font-weight: 500;
     }
-    .vp-img-placeholder {
-      width: 100%;
-      background: rgba(255,255,255,0.5); border-radius: 12px; padding-top: 20px; min-height: 350px; overflow: hidden; border: 1px solid var(--card-border);
-      display: flex; justify-content: center; align-items: flex-end;
-    }
-    .vp-img-placeholder img { width: 100%; height: 100%; max-height: 350px; object-fit: contain; display: block; }
 
-    /* ================= 6. 形象3視圖展示 ================= */
-    .reference-sheet-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 24px; border: 1px solid var(--glass-border); padding: 0;}
-    .reference-sheet { width: 100%; display: block; background: rgba(255, 255, 255, 0.2); }
-    .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
-
-    /* ================= 圖繪專區 (Masonry Grid) ================= */
+    /* ================= 5. 圖繪專區 (Masonry Grid) ================= */
     .gallery-masonry {
       display: grid;
-      grid-template-columns: repeat(4, 1fr); /* 強制均分4欄 */
+      grid-template-columns: repeat(4, 1fr);
       gap: 15px;
     }
     .gallery-item {
@@ -504,18 +488,16 @@
       transform: scale(1.05);
     }
 
-    /* 桌布卡片特別處理 (跨滿4欄) */
     .gallery-item.wide {
       grid-column: span 4;
       aspect-ratio: auto;
       height: 350px;
     }
     .gallery-item.wide img {
-      object-fit: cover; /* 桌布還是維持填滿比較好看 */
-      padding: 0; /* 移除留白 */
+      object-fit: cover;
+      padding: 0;
     }
 
-    /* 懸停浮水印層 */
     .gallery-item-overlay {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -527,7 +509,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      pointer-events: none; /* 避免干擾點擊 */
+      pointer-events: none;
     }
     .gallery-item:hover .gallery-item-overlay {
       opacity: 1;
@@ -550,7 +532,7 @@
     }
     #lightbox.active { display: flex; }
 
-    /* ================= 7. 主題曲專區 ================= */
+    /* ================= 6. 主題曲專區 ================= */
     .theme-song-panel {
       padding: 40px;
       position: relative;
@@ -564,7 +546,6 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
-      align-items: flex-start; /* 讓內容靠左對齊 */
     }
 
     .mv-card-link { width: 100%; padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease; display: flex; flex-direction: column; text-decoration: none; cursor: pointer; justify-content: flex-start; background: rgba(255,255,255,0.4); border-radius: 16px; border: 1px solid var(--glass-border);}
@@ -602,29 +583,6 @@
       color: #ffffff;
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3);
-    }
-
-    /* 歌詞 Modal 特別樣式 */
-    .lyrics-container {
-      text-align: center;
-      line-height: 2;
-      font-size: 16px;
-      color: var(--text-main);
-      padding: 30px 20px;
-      background: rgba(255,255,255,0.5);
-      border-radius: 16px;
-      white-space: pre-line; /* 保持歌詞換行 */
-      font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.8);
-    }
-    .lyrics-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--accent-dark);
-      margin-bottom: 15px;
-      border-bottom: 2px dashed rgba(2, 132, 199, 0.3);
-      padding-bottom: 10px;
-      display: inline-block;
     }
 
     /* 飛鳥裝飾圖樣式 */
@@ -691,6 +649,35 @@
     .lore-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); }
     .lore-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .lore-list strong { color: var(--accent-dark); display: inline-block; min-width: 100px; }
+    .lore-poem {
+      text-align: center; margin: 20px 0; padding: 25px 20px;
+      background: rgba(255,255,255,0.6); border-radius: 12px; border: 1px solid rgba(255,255,255,0.8);
+      color: var(--accent-dark); font-size: 15px; letter-spacing: 1px; font-weight: bold;
+    }
+    .lore-poem p { margin: 8px 0; }
+
+    /* 歌詞 Modal 特別樣式 */
+    .lyrics-container {
+      text-align: center;
+      line-height: 2;
+      font-size: 16px;
+      color: var(--text-main);
+      padding: 30px 20px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 16px;
+      white-space: pre-line; /* 保持歌詞換行 */
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+    .lyrics-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent-dark);
+      margin-bottom: 15px;
+      border-bottom: 2px dashed rgba(2, 132, 199, 0.3);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
 
     /* ================= 8. 頁尾 ================= */
     footer {
@@ -716,30 +703,37 @@
       .portrait-card { flex: 2; height: 250px; padding: 20px;}
       .audio-grid { grid-template-columns: 1fr; }
 
-      .gallery-masonry { grid-template-columns: repeat(2, 1fr); }
-      .gallery-item.wide { grid-column: span 2; height: 250px; }
-      .theme-song-grid { grid-template-columns: 1fr; } /* 平板也改為上下排 */
-    }
-    @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏左側連結，置中排列 */
-      header { padding: 10px 0; background: rgba(255, 255, 255, 0.6);}
-      .nav-container { flex-direction: column; gap: 10px; justify-content: center; padding: 10px 20px; }
-      .header-left { display: none; }
-      .header-center, .header-right { flex: unset; justify-content: center; width: 100%; gap: 15px; }
+      .gallery-masonry { grid-template-columns: repeat(2, 1fr); gap: 15px;}
+      .gallery-item.wide { grid-column: span 2; height: auto; aspect-ratio: 16/9; }
 
-      body { padding-top: 130px; }
+      .theme-song-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      /* 手機版導覽列：隱藏左側連結，重新排列 */
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.6);}
+      .nav-container { flex-direction: row; justify-content: space-between; padding: 10px 25px; }
+      .header-left, .header-right { display: none; }
+      .header-center { flex: unset; justify-content: flex-start; }
+      .menu-btn { display: block; }
+
+      body { padding-top: 100px; }
+
       .left-column { flex-direction: column; height: auto; }
       .logo-card { height: auto; padding: 20px;}
       .portrait-card { height: 350px; }
       .profile-card { padding: 25px 20px; }
 
+      .vp-card { padding: 25px 20px; }
       .vp-list li { display: flex; flex-direction: row; flex-wrap: wrap; }
       .vp-list li strong { width: auto; margin-right: 15px; flex-shrink: 0;}
 
+      .vp-grid { grid-template-columns: 1fr; gap: 20px; }
       .vb-header { flex-direction: column; text-align: center; }
       .info-btn-group { grid-template-columns: 1fr; }
 
-      .gallery-masonry { grid-template-columns: 1fr; }
+      .theme-song-panel { padding: 25px 20px; }
+      .theme-song-grid { gap: 20px; }
 
       .back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; }
       .back-to-top svg { width: 20px; height: 20px; }
@@ -895,7 +889,7 @@
             聲庫示範影片 (準備中)
           </div>
           <div class="vb-video-container">
-            <img src="img/聲庫示範預留.jpg" alt="聲庫示範影片預留" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230284c7\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>聲庫示範影片預留位置</text></svg>'">
+            <svg class="placeholder" xmlns='http://www.w3.org/2000/svg' viewBox="0 0 16 9" preserveAspectRatio="xMidYMid slice"><rect fill='%23e5e5e5' width='100%' height='100%'/><text x='50%' y='50%' fill='%230284c7' font-family='sans-serif' font-size='0.8' font-weight='bold' text-anchor='middle' alignment-baseline='middle'>聲庫示範影片預留</text></svg>
             <div class="play-btn"></div>
           </div>
         </div>
@@ -947,7 +941,7 @@
 
     <section>
       <h2>形象3視圖展示</h2>
-      <div class="reference-sheet-wrapper glass-panel" style="padding:0; overflow:hidden;">
+      <div class="reference-sheet-wrapper glass-panel">
           <img class="reference-sheet" src="img/星希羽三視圖.png" alt="星希羽三視圖" style="width:100%; display:block;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230284c7\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>三視圖預留位置</text></svg>'">
 
           <img class="tinka-star" src="img/霆卡提示.png" alt="霆卡" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>霆卡預留</text></svg>'">
@@ -1271,7 +1265,7 @@
       <a href="https://music.youtube.com/@SMD_Kiha" target="_blank" aria-label="YouTube Music" style="background: none; box-shadow: none; width: auto; height: auto;">
         <svg viewBox="0 0 24 24" width="30" height="30"><circle cx="12" cy="12" r="11.5" fill="#FF0000"/><circle cx="12" cy="12" r="6" fill="#FFFFFF"/><polygon points="10,9 15.5,12 10,15" fill="#FF0000"/></svg>
       </a>
-      <a href="https://open.spotify.com/embed/album/27AunbusbqI1HIWCaPyWMx?utm_source=generator&si=60d56d11f3fe41a7" target="_blank" aria-label="Spotify" style="background: none; box-shadow: none; width: auto; height: auto;">
+      <a href="https://open.spotify.com/artist/79GjJBcPcD7dFuWA3GWo50" target="_blank" aria-label="Spotify" style="background: none; box-shadow: none; width: auto; height: auto;">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="#1ED760"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.84.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.781s.18-1.2.78-1.381c4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.56.3z"/></svg>
       </a>
       <a href="https://x.com/SMD_Kiha" target="_blank" aria-label="X (Twitter)" style="background: none; box-shadow: none; width: auto; height: auto;">
@@ -1405,30 +1399,14 @@
       function animate() {
         ctx.clearRect(0, 0, width, height);
         for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.life++;
+          const p = particles[i]; p.life++;
+          if (p.life >= p.maxLife) { particles.splice(i, 1); continue; }
+          p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.rot += p.rotSpeed; p.alpha = 0.8 * (1 - p.life / p.maxLife);
 
-          if (p.life >= p.maxLife) {
-              particles.splice(i, 1);
-              continue;
-          }
-
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.05;
-          p.rot += p.rotSpeed;
-          p.alpha = 0.8 * (1 - p.life / p.maxLife);
-
-          ctx.fillStyle = p.color;
-          ctx.globalAlpha = p.alpha;
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = p.color;
-
+          ctx.fillStyle = p.color; ctx.globalAlpha = p.alpha; ctx.shadowBlur = 10; ctx.shadowColor = p.color;
           drawStar(ctx, p.x, p.y, p.size, p.rot);
         }
-        ctx.shadowBlur = 0;
-        ctx.globalAlpha = 1;
-        requestAnimationFrame(animate);
+        ctx.shadowBlur = 0; ctx.globalAlpha = 1; requestAnimationFrame(animate);
       }
       animate();
     })();
