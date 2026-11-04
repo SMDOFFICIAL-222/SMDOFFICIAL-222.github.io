@@ -140,7 +140,7 @@
       display: flex; align-items: center; flex: 1;
     }
     .header-left { justify-content: flex-start; gap: 25px; }
-    .header-center { justify-content: center; } /* 讓 Logo 完美置中 */
+    .header-center { justify-content: center; }
     .header-right { justify-content: flex-end; gap: 25px; }
 
     .logo { text-decoration: none; display: flex; align-items: center; }
@@ -259,7 +259,7 @@
     .glass-panel {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 24px; /* 稍微加大圓角更符合液態感 */
+      border-radius: 24px;
       box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -323,11 +323,9 @@
 
     .color-indicator { display: flex; align-items: center; gap: 8px; }
 
-    .voice-provider {
-        line-height: 1.6;
-    }
+    .voice-provider { line-height: 1.6; }
 
-    /* 人設/故事資訊按鈕群組 (等分三欄，底部對齊) */
+    /* 人設/故事資訊按鈕群組 */
     .info-btn-group {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -364,7 +362,7 @@
     .voicebank-panel {
       padding: 40px;
       margin-bottom: 60px;
-      position: relative; /* 為了讓悠悠可以絕對定位在這個區塊內 */
+      position: relative;
     }
     .vb-header {
       display: flex; gap: 25px; align-items: center; margin-bottom: 25px;
@@ -407,8 +405,9 @@
     .vb-video-container img, .vb-video-container svg.placeholder {
         width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.5s ease; display: block;
     }
+
     .play-btn {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none;
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); pointer-events: none;
     }
     .play-btn::before { content: ''; border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent #fff; margin-left: 4px; }
 
@@ -423,17 +422,17 @@
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
 
-    /* ================= 5. 中之人與形象 (改為單欄上下排列) ================= */
+    /* ================= 5. 中之人與形象 (雙欄版，移除預留照片區) ================= */
     .vp-grid {
       display: grid;
-      grid-template-columns: 1fr;
+      grid-template-columns: 1fr 1fr; /* 改回雙欄 (左右排列) */
       gap: 30px;
     }
     .vp-card {
       padding: 35px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start;
+      justify-content: flex-start; /* 讓內容靠上對齊 */
       gap: 20px;
     }
     .vp-info { flex: 1; }
@@ -496,16 +495,18 @@
       transform: scale(1.05);
     }
 
+    /* 桌布卡片特別處理 (跨滿4欄) */
     .gallery-item.wide {
       grid-column: span 4;
       aspect-ratio: auto;
       height: 350px;
     }
     .gallery-item.wide img {
-      object-fit: cover;
-      padding: 0;
+      object-fit: cover; /* 桌布還是維持填滿比較好看 */
+      padding: 0; /* 移除留白 */
     }
 
+    /* 懸停浮水印層 */
     .gallery-item-overlay {
       position: absolute;
       bottom: 0; left: 0; right: 0;
@@ -517,7 +518,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      pointer-events: none;
+      pointer-events: none; /* 避免干擾點擊 */
     }
     .gallery-item:hover .gallery-item-overlay {
       opacity: 1;
@@ -554,7 +555,7 @@
       display: flex;
       flex-direction: column;
       gap: 15px;
-      align-items: flex-start; /* 讓內容靠左對齊，避免按鈕被拉伸 */
+      align-items: flex-start; /* 讓內容靠左對齊 */
     }
 
     .mv-card-link { width: 100%; padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease; display: flex; flex-direction: column; text-decoration: none; cursor: pointer; justify-content: flex-start; background: rgba(255,255,255,0.4); border-radius: 16px; border: 1px solid var(--glass-border);}
@@ -592,29 +593,6 @@
       color: #ffffff;
       transform: translateY(-2px);
       box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3);
-    }
-
-    /* 歌詞 Modal 特別樣式 */
-    .lyrics-container {
-      text-align: center;
-      line-height: 2;
-      font-size: 16px;
-      color: var(--text-main);
-      padding: 30px 20px;
-      background: rgba(255,255,255,0.5);
-      border-radius: 16px;
-      white-space: pre-line; /* 保持歌詞換行 */
-      font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.8);
-    }
-    .lyrics-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--accent-dark);
-      margin-bottom: 15px;
-      border-bottom: 2px dashed rgba(2, 132, 199, 0.3);
-      padding-bottom: 10px;
-      display: inline-block;
     }
 
     /* 飛鳥裝飾圖樣式 */
@@ -688,6 +666,29 @@
     }
     .lore-poem p { margin: 8px 0; }
 
+    /* 歌詞 Modal 特別樣式 */
+    .lyrics-container {
+      text-align: center;
+      line-height: 2;
+      font-size: 16px;
+      color: var(--text-main);
+      padding: 30px 20px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 16px;
+      white-space: pre-line; /* 保持歌詞換行 */
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+    .lyrics-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent-dark);
+      margin-bottom: 15px;
+      border-bottom: 2px dashed rgba(2, 132, 199, 0.3);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+
     /* ================= 8. 頁尾 ================= */
     footer {
       text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
@@ -719,7 +720,7 @@
     }
 
     @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏左側連結，重新排列置中 */
+      /* 手機版導覽列：隱藏左側連結，重新排列 */
       header { padding: 10px 0; background: rgba(255, 255, 255, 0.6);}
       .nav-container {
         flex-direction: row;
@@ -941,8 +942,8 @@
             <ul class="vp-list">
               <li><strong>活動名稱：</strong>(不公開)</li>
               <li><strong>生日：</strong>(不公開)</li>
-              <li><strong>聲音錄製日期：</strong>2026 年</li>
-              <li><strong>錄製年齡：</strong>(保密)</li>
+              <li><strong>聲音錄製日期：</strong>2026年</li>
+              <li><strong>錄製年齡：</strong>10歲</li>
             </ul>
             <p class="vp-desc">
               ✨ 為了呈現更具穿透力與活力的童聲表現，星希羽 V1.5.2 導入了由另一位小學生錄製的 Lively 聲線。<br>
@@ -1035,25 +1036,25 @@
             </a>
           </div>
 
-          <!-- 右側：Spotify EP 與歌詞按鈕 -->
+          <!-- 右側：Spotify EP 與 歌詞按鈕 -->
           <div class="theme-col">
             <div class="platform-label" style="align-self: flex-start; background: rgba(255,255,255,0.7); backdrop-filter: blur(5px);">
               <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.84.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.781s.18-1.2.78-1.381c4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.56.3z"/></svg>
-              Spotify
+              Spotify EP專區
             </div>
 
             <div class="spotify-embed">
               <!-- 替換為 Spotify 的 iframe -->
               <iframe
                 style="border-radius:12px"
-                src="https://open.spotify.com/embed/album/27AunbusbqI1HIWCaPyWMx?utm_source=generator&si=60d56d11f3fe41a7"
+                src="https://open.spotify.com/embed/album/5GSHMiENUT4Z9Y3ZtRek1L?utm_source=generator"
                 width="100%" height="352" frameborder="0"
                 allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                 loading="lazy">
               </iframe>
             </div>
 
-            <!-- 歌詞按鈕移至右側下方 -->
+            <!-- 歌詞按鈕移至此處 -->
             <button class="lyrics-btn" onclick="openLoreModal('lyricsModal')">📖 觀看歌詞</button>
           </div>
         </div>
@@ -1217,47 +1218,24 @@
       <h2>《飛鳥》 歌詞</h2>
       <div class="lyrics-container">
         <div class="lyrics-title">飛鳥</div>
-        <p>午後的陽光 穿透了窗櫺<p>
-        <p>空氣中懸浮著 微小的曾經<p>
-        <p>課桌椅刻下的名 是我們長大的證明<p>
-        <p>收進心底 當作遠行的行李<p>
-        <p>鐘聲催促著步伐 卻催不走回憶<p>
-        <p>誰的吉他還在走廊 練習著勇氣<p>
+        <p>午後的陽光穿透了窗櫺</p>
+        <p>空氣中懸浮著微小的曾經</p>
+        <p>課桌椅刻下的名是我們長大的證明</p>
+        <p>收進心底 當作遠行的行李</p>
 
-        <p>雖然不捨這熟悉的舊場景<p>
-        <p>但我們知道候鳥必須遷徙<p>
+        <p style="font-size: 14px; color: var(--text-muted); margin-top: 20px;">
+          (為了保護版權，此處僅節錄部分歌詞。<br>請搜尋《飛鳥》以獲得完整歌詞內容。)
+        </p>
 
-        <p>展翅吧！擁抱這片穹蒼<p>
-        <p>把青春寫成最驕傲的篇章<p>
-        <p>當星樂之夢在指尖發燙<p>
-        <p>指引我們越過海洋尋找新的方向<p>
-        <p>翱翔吧！逆著風的狂妄<p><p>
-        <p>讓淚水蒸發成名為成長的光
-        <p>掙脫了那些迷惘的牆<p>
-        <p>原來天空一直在我們頭頂等待飛翔<p>
+        <div class="lyrics-title" style="margin-top: 30px;">飛鳥2027『展翅高飛版』</div>
+        <p>午後的陽光 穿透了窗櫺</p>
+        <p>空氣中懸浮著 微小的曾經</p>
+        <p>課桌椅刻下的名 是我們長大的證明</p>
+        <p>收進心底 當作遠行的行李</p>
 
-        <p>教室裡的對白換了誰來接棒<p>
-        <p>舞台上的燈光會有新的模樣<p>
-        <p>卸下了這身行囊換上未知的渴望<p>
-        <p>在下個路口我會變得更堅強<p>
-        <p>季節總會更迭羽翼終將豐滿<p>
-        <p>如果聲音改變了形狀與波段<p>
-
-        <p>請記得這首曾一起唱過的歌<p>
-        <p>是我們之間最美的羈絆<p>
-
-        <p>去飛吧！擁抱這片穹蒼<p>
-        <p>把青春寫成最驕傲的篇章<p>
-        <p>當星樂之夢在指尖發燙<p>
-        <p>就算孤單也要大聲地唱<p>
-        <p>去追吧！逆著風的狂妄<p>
-        <p>讓淚水蒸發成名為成長的光<p>
-        <p>飛鳥啊！別回頭看過往<p>
-        <p>因為未來正在前方的雲端<p>
-        <p>閃閃發亮
-
-        <p>再見了我的青春<p>
-        <p>謝謝你給了我展翅的天分<p>
+        <p style="font-size: 14px; color: var(--text-muted); margin-top: 20px;">
+          (為了保護版權，此處僅節錄部分歌詞。<br>請搜尋《飛鳥2027『展翅高飛版』》以獲得完整歌詞內容。)
+        </p>
       </div>
     </div>
   </div>
@@ -1320,7 +1298,7 @@
       element.querySelector('.dropdown-content').classList.toggle('show');
     }
 
-    // 彈出視窗開關
+    // 彈窗開關
     function openLoreModal(id) {
       document.getElementById(id).classList.add('active');
       document.body.style.overflow = 'hidden';
@@ -1462,4 +1440,4 @@
     })();
   </script>
 </body>
-</html> 
+</html>
