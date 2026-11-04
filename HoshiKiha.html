@@ -50,19 +50,19 @@
       box-sizing: border-box;
     }
 
-    /* 變數 (明亮馬卡龍藍 + 白底風格) */
+    /* 變數 (Liquid Glass 風格 + 星希羽專屬馬卡龍藍) */
     :root {
-      --bg: #ffffff;
-      --text-main: #1e293b;
+      --bg-color: #e0f2fe; /* 極淺藍底色 */
+      --text-main: #0f172a;
       --text-muted: #475569;
-      --accent-dark: #0369a1;
+      --accent-dark: #0284c7; /* 星希羽主色 (較深的馬卡龍藍以便在亮底閱讀) */
 
-      /* 馬卡龍藍霧面玻璃卡片變數 */
-      --card-bg: rgba(199, 238, 251, 0.85);
-      --card-border: rgba(255, 255, 255, 0.6);
-      --card-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-      --card-shadow-hover: 0 12px 35px rgba(0, 0, 0, 0.12);
-      --glass-blur: blur(12px) saturate(110%);
+      /* Liquid Glass 核心變數 */
+      --glass-bg: rgba(255, 255, 255, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.7);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+      --glass-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.9), inset 0 -2px 4px 0 rgba(255, 255, 255, 0.2);
+      --glass-blur: blur(12px) saturate(160%);
     }
 
     body {
@@ -71,9 +71,43 @@
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       color: var(--text-main);
       min-height: 100vh;
-      /* ================= 官網背景 ================= */
-      background: url('img/星希羽官網背景.png') no-repeat center center fixed;
-      background-size: cover;
+      background-color: var(--bg-color);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ================= Liquid Blobs (流動背景色塊) ================= */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: -1;
+      opacity: 0.6;
+      animation: float 15s infinite ease-in-out alternate;
+    }
+    .blob-1 {
+      width: 400px; height: 400px;
+      background: #7dd3fc; /* 偏星希羽的藍色 */
+      top: -100px; left: -100px;
+    }
+    .blob-2 {
+      width: 500px; height: 500px;
+      background: #bae6fd; /* 淺藍 */
+      bottom: -150px; right: -100px;
+      animation-delay: -5s;
+    }
+    .blob-3 {
+      width: 350px; height: 350px;
+      background: #e0f2fe; /* 更淺的藍 */
+      top: 40%; left: 30%;
+      animation-delay: -10s;
+      animation-duration: 20s;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0, 0) scale(1); }
     }
 
     /* 滑鼠星星粒子畫布樣式 */
@@ -82,20 +116,19 @@
       pointer-events: none !important; z-index: 90;
     }
 
-    /* ================= 頂部導覽列 (霧面透明玻璃風) ================= */
+    /* ================= 頂部導覽列 (Liquid Glass) ================= */
     header {
       padding: 10px 0;
       display: flex;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.4);
-      backdrop-filter: blur(16px) saturate(120%);
-      -webkit-backdrop-filter: blur(16px) saturate(120%);
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
-    /* 限制導覽列寬度與內容一致，並將子元素推到兩側 */
     .nav-container {
       display: flex;
       justify-content: space-between;
@@ -126,15 +159,16 @@
     .dropdown::after { content: ''; position: absolute; top: 100%; left: 0; width: 100%; height: 15px; }
     .dropdown-content {
       display: none; position: absolute; top: calc(100% + 10px); left: 50%; transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.6);
       backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       min-width: 160px;
-      box-shadow: var(--card-shadow); border-radius: 12px; border: 1px solid var(--card-border);
+      box-shadow: var(--glass-shadow); border-radius: 12px; border: 1px solid var(--glass-border);
       z-index: 101; padding: 8px 0;
     }
     .dropdown-content.show { display: block; animation: fadeIn 0.2s ease-in-out; }
-    .dropdown-content a { color: var(--text-main); padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; }
-    .dropdown-content a:hover { background: rgba(199, 238, 251, 0.5); color: var(--accent-dark); }
+    .dropdown-content a { color: var(--text-main); padding: 12px 20px; text-decoration: none; display: block; margin-left: 0; font-size: 14px; text-align: center; transition: background 0.3s, color 0.3s; font-weight: normal;}
+    .dropdown-content a:hover { background: rgba(255, 255, 255, 0.5); color: var(--accent-dark); }
 
     @keyframes fadeIn {
       from { opacity: 0; transform: translate(-50%, -5px); }
@@ -166,7 +200,7 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.8);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
       z-index: 999;
@@ -207,6 +241,8 @@
       padding: 0 20px;
       width: 100%;
       display: block;
+      position: relative;
+      z-index: 1;
     }
     section { width: 100%; margin-bottom: 60px; }
 
@@ -218,14 +254,15 @@
         margin-bottom: 30px;
         color: var(--text-main);
         font-weight: bold;
+        text-shadow: 0 1px 2px rgba(255,255,255,0.8);
     }
 
-    /* ================= 馬卡龍藍霧面玻璃卡片 ================= */
-    .macaron-glass-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      box-shadow: var(--card-shadow);
+    /* ================= Liquid Glass 卡片共用樣式 ================= */
+    .glass-panel {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px; /* 稍微加大圓角更符合液態感 */
+      box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
     }
@@ -243,7 +280,7 @@
     .left-column { flex: 0 0 350px; display: flex; flex-direction: column; gap: 30px; }
 
     .logo-card { padding: 30px; display: flex; justify-content: center; align-items: center; }
-    .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.1)); }
+    .profile-logo-top { max-width: 200px; height: auto; filter: drop-shadow(0 2px 5px rgba(255,255,255,0.8)); }
 
     /* 立繪卡片 - 水平垂直完美置中 */
     .portrait-card {
@@ -274,6 +311,7 @@
       font-size: 16px;
       vertical-align: middle;
       color: var(--text-main);
+      font-weight: 500;
     }
     .char-table tr:last-child td { border-bottom: none; }
 
@@ -305,11 +343,11 @@
       border-top: 1px solid rgba(0,0,0,0.06);
     }
     .info-btn-small {
-      background: #ffffff;
+      background: rgba(255, 255, 255, 0.6);
       color: var(--accent-dark);
       border: 1px solid var(--accent-dark);
       padding: 10px 5px;
-      border-radius: 8px;
+      border-radius: 12px;
       font-size: 14px;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -318,13 +356,14 @@
       align-items: center;
       justify-content: center;
       gap: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      backdrop-filter: var(--glass-blur);
     }
     .info-btn-small:hover {
       background: var(--accent-dark);
       color: #ffffff;
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3);
     }
 
     /* ================= 2. 聲庫資訊區塊 ================= */
@@ -339,16 +378,17 @@
     }
     .vb-avatar {
       width: 90px; height: 90px; border-radius: 50%; object-fit: cover;
-      border: 3px solid #ffffff; flex-shrink: 0; background: #fff;
+      border: 3px solid #ffffff; flex-shrink: 0; background: rgba(255,255,255,0.5);
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .vb-info { flex: 1; }
     .vb-info h3 { margin: 0 0 10px 0; color: var(--accent-dark); font-size: 20px; line-height: 1.3;}
-    .vb-info p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.6; }
+    .vb-info p { margin: 0; color: var(--text-muted); font-size: 14px; line-height: 1.6; font-weight: 500;}
 
     .audio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .audio-player {
-      background: rgba(255,255,255,0.7); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.5); padding: 15px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.8);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.5);
     }
     .audio-player p { margin: 0 0 10px 0; font-size: 14px; font-weight: bold; color: var(--accent-dark); }
     .audio-player audio { width: 100%; height: 40px; outline: none; }
@@ -356,17 +396,18 @@
     /* YouTube 聲庫示範預留版位 */
     .platform-label {
       display: inline-flex; align-items: center; gap: 8px;
-      background: #ffffff;
+      background: rgba(255,255,255,0.6);
       border: 1px solid var(--accent-dark);
       color: var(--accent-dark);
       padding: 8px 18px; border-radius: 30px; font-size: 14px; font-weight: bold; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(5px);
     }
     .platform-label svg { width: 18px; height: 18px; fill: var(--accent-dark); }
 
     .vb-video-container {
-      position: relative; border-radius: 12px; overflow: hidden;
-      background: #000; aspect-ratio: 16/9; cursor: pointer; border: 1px solid var(--card-border);
-      box-shadow: var(--card-shadow);
+      position: relative; border-radius: 16px; overflow: hidden;
+      background: #000; aspect-ratio: 16/9; cursor: pointer; border: 1px solid var(--glass-border);
+      box-shadow: var(--glass-shadow);
       max-width: 600px;
     }
     .vb-video-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.5s ease; display: block;}
@@ -387,7 +428,7 @@
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
 
-    /* ================= 5. 中之人與形象 (雙欄版，移除預留照片區) ================= */
+    /* ================= 5. 中之人與形象 ================= */
     .vp-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -397,7 +438,7 @@
       padding: 35px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* 讓內容靠上對齊 */
+      justify-content: flex-start;
       gap: 20px;
     }
     .vp-info { flex: 1; }
@@ -409,41 +450,50 @@
       border-bottom: 1px dashed rgba(0,0,0,0.1);
       padding-bottom: 10px;
     }
-    .vp-list { list-style: none; padding: 0; margin: 0 0 25px 0; color: var(--text-muted); font-size: 15px; line-height: 2.2; }
+    .vp-list { list-style: none; padding: 0; margin: 0 0 25px 0; color: var(--text-muted); font-size: 15px; line-height: 2.2; font-weight: 500;}
     .vp-list li { border-bottom: 1px dashed rgba(0,0,0,0.06); padding-bottom: 8px; margin-bottom: 8px;}
     .vp-list li:last-child { border-bottom: none; }
     .vp-list li strong { color: var(--accent-dark); display: inline-block; width: 140px; font-weight: bold; flex-shrink: 0;}
 
     .vp-desc {
       color: var(--text-muted); line-height: 1.8; font-size: 15px; margin: 0;
-      background: rgba(255,255,255,0.6); padding: 20px 25px; border-left: 4px solid var(--accent-dark); border-radius: 0 8px 8px 0;
+      background: rgba(255,255,255,0.4); padding: 20px 25px; border-left: 4px solid var(--accent-dark); border-radius: 0 12px 12px 0;
+      font-weight: 500;
     }
 
     /* ================= 6. 形象3視圖展示 ================= */
-    .reference-sheet-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 18px; border: 1px solid var(--card-border);}
-    .reference-sheet { width: 100%; display: block; background: rgba(255,255,255,0.5); }
+    .reference-sheet-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 24px; border: 1px solid var(--glass-border);}
+    .reference-sheet { width: 100%; display: block; background: rgba(255,255,255,0.2); }
     .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
 
     /* ================= 圖繪專區 (Masonry Grid) ================= */
     .gallery-masonry {
       display: grid;
-      grid-template-columns: repeat(4, 1fr); /* 強制均分4欄 */
-      gap: 15px;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
     }
     .gallery-item {
       position: relative;
       overflow: hidden;
-      border-radius: 12px;
+      border-radius: 16px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-      background: #ffffff; /* 純白底色，避免透明圖層透色 */
-      aspect-ratio: 3 / 4; /* 給定一個統一的長寬比例 */
+      box-shadow: var(--glass-shadow);
+      background: rgba(255,255,255,0.5);
+      backdrop-filter: var(--glass-blur);
+      border: 1px solid var(--glass-border);
+      aspect-ratio: 3 / 4;
+      transition: all 0.3s ease;
+    }
+    .gallery-item:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 30px rgba(31, 38, 135, 0.15);
+      border-color: #fff;
     }
     .gallery-item img {
       width: 100%;
       height: 100%;
-      object-fit: contain; /* 確保圖片完整顯示，不被裁切 */
-      padding: 10px; /* 加上內縮的留白空間 */
+      object-fit: contain;
+      padding: 10px;
       box-sizing: border-box;
       transition: transform 0.4s ease;
     }
@@ -451,22 +501,20 @@
       transform: scale(1.05);
     }
 
-    /* 桌布卡片特別處理 (跨滿4欄) */
     .gallery-item.wide {
       grid-column: span 4;
       aspect-ratio: auto;
       height: 350px;
     }
     .gallery-item.wide img {
-      object-fit: cover; /* 桌布還是維持填滿比較好看 */
-      padding: 0; /* 移除留白 */
+      object-fit: cover;
+      padding: 0;
     }
 
-    /* 懸停浮水印層 */
     .gallery-item-overlay {
       position: absolute;
       bottom: 0; left: 0; right: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
       padding: 20px 15px 15px;
       color: #fff;
       opacity: 0;
@@ -474,7 +522,7 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      pointer-events: none; /* 避免干擾點擊 */
+      pointer-events: none;
     }
     .gallery-item:hover .gallery-item-overlay {
       opacity: 1;
@@ -486,20 +534,21 @@
       margin: 0; font-size: 12px; color: #ddd; text-shadow: 0 1px 3px rgba(0,0,0,0.8);
     }
 
-    /* Lightbox (圖片放大檢視) */
+    /* Lightbox */
     #lightbox {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9); z-index: 3000; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 3000; align-items: center; justify-content: center;
     }
     #lightbox img {
       max-width: 90%; max-height: 90vh; object-fit: contain; border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
     }
     #lightbox.active { display: flex; }
 
     /* ================= 7. 主題曲展示區 ================= */
     .theme-song-panel {
       padding: 40px;
-      position: relative; /* 為了讓飛鳥可以絕對定位在這個區塊內 */
+      position: relative;
     }
     .theme-song-grid {
       display: grid;
@@ -512,8 +561,8 @@
       gap: 15px;
     }
 
-    .mv-card-link { padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease; display: flex; flex-direction: column; text-decoration: none; cursor: pointer; height: 100%; justify-content: flex-start; background: rgba(255,255,255,0.5); border-radius: 14px;}
-    .mv-card-link:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+    .mv-card-link { padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease; display: flex; flex-direction: column; text-decoration: none; cursor: pointer; height: 100%; justify-content: flex-start; background: rgba(255,255,255,0.4); border-radius: 16px; border: 1px solid var(--glass-border);}
+    .mv-card-link:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15); border-color: #fff;}
     .mv-card-link:hover .play-btn { background: #ff0000; transform: translate(-50%, -50%) scale(1.1); }
 
     .mv-title { color: var(--text-main); font-size: 16px; font-weight: bold; margin: 5px 0 12px 5px; display: flex; align-items: center; gap: 10px; }
@@ -522,50 +571,31 @@
     .mv-thumbnail img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease; opacity: 0.9; }
     .mv-card-link:hover .mv-thumbnail img { transform: scale(1.05); opacity: 1; }
 
-    .spotify-embed { padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease; height: 100%; display: flex; flex-direction: column; background: rgba(255,255,255,0.5); border-radius: 14px;}
-    .spotify-embed:hover { transform: translateY(-5px); box-shadow: var(--card-shadow-hover); }
+    .spotify-embed { padding: 15px; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.3s ease; height: 100%; display: flex; flex-direction: column; background: rgba(255,255,255,0.4); border-radius: 16px; border: 1px solid var(--glass-border);}
+    .spotify-embed:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(2, 132, 199, 0.15); border-color: #fff;}
     .spotify-embed iframe { display: block; border: none; width: 100%; flex-grow: 1;}
 
     /* 歌詞按鈕 */
     .lyrics-btn {
       align-self: center;
       margin-top: 15px;
-      padding: 8px 24px;
-      background: #ffffff;
+      padding: 10px 28px;
+      background: rgba(255,255,255,0.8);
       color: var(--accent-dark);
       border: 1px solid var(--accent-dark);
-      border-radius: 20px;
+      border-radius: 25px;
       font-size: 14px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      backdrop-filter: blur(5px);
     }
     .lyrics-btn:hover {
       background: var(--accent-dark);
       color: #ffffff;
       transform: translateY(-2px);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-
-    /* 歌詞 Modal 特別樣式 */
-    .lyrics-container {
-      text-align: center;
-      line-height: 2;
-      font-size: 16px;
-      color: var(--text-main);
-      padding: 20px;
-      background: rgba(255,255,255,0.5);
-      border-radius: 12px;
-      white-space: pre-line; /* 保持歌詞換行 */
-    }
-    .lyrics-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--accent-dark);
-      margin-bottom: 15px;
-      border-bottom: 1px dashed rgba(0,0,0,0.1);
-      padding-bottom: 10px;
+      box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3);
     }
 
     /* 飛鳥裝飾圖樣式 */
@@ -588,10 +618,10 @@
       right: 30px;
       width: 50px;
       height: 50px;
-      background: rgba(99, 164, 255, 0.2);
+      background: rgba(255, 255, 255, 0.6);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(99, 164, 255, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.9);
       border-radius: 50%;
       display: flex;
       justify-content: center;
@@ -604,52 +634,79 @@
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     }
     .back-to-top.show { opacity: 1; visibility: visible; }
-    .back-to-top:hover { background: #63a4ff; transform: translateY(-5px); box-shadow: 0 6px 20px rgba(99, 164, 255, 0.4); }
-    .back-to-top svg { width: 24px; height: 24px; stroke: #fff; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .back-to-top:hover { background: var(--accent-dark); border-color: var(--accent-dark); transform: translateY(-5px); box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4); }
+    .back-to-top svg { width: 24px; height: 24px; stroke: var(--accent-dark); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: stroke 0.3s;}
+    .back-to-top:hover svg { stroke: #fff; }
 
-    /* ================= 彈出視窗 (Modal) 樣式 ================= */
+    /* ================= 彈出視窗 (Liquid Modal) ================= */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(5px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
+      position: fixed; inset: 0; background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 2000; padding: 20px;
     }
     .modal-overlay.active { display: flex; }
     .modal-card {
-      background: rgba(199, 238, 251, 0.98);
-      border: 1px solid var(--card-border);
-      width: 100%; max-width: 700px; max-height: 90vh; border-radius: 18px; overflow-y: auto; position: relative;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.2); padding: 40px; box-sizing: border-box;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--glass-border);
+      width: 100%; max-width: 700px; max-height: 85vh; border-radius: 24px; overflow-y: auto; position: relative;
+      box-shadow: 0 25px 60px rgba(31, 38, 135, 0.2), var(--glass-inner); padding: 40px; box-sizing: border-box;
     }
     .close-modal {
-      position: absolute; right: 20px; top: 20px; width: 35px; height: 35px; background: #ffffff;
-      border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--accent-dark); font-size: 18px; transition: background 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: absolute; right: 20px; top: 20px; width: 36px; height: 36px; background: rgba(255,255,255,0.5);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-muted); font-size: 20px; transition: all 0.3s; border: 1px solid rgba(255,255,255,0.8);
     }
-    .close-modal:hover { background: #e0f2fe; }
-    .modal-card h2 { color: var(--accent-dark); font-size: 24px; margin-top: 0; border-left: 5px solid var(--accent-dark); padding-left: 15px; margin-bottom: 25px; text-shadow: none; }
+    .close-modal:hover { background: #fff; color: var(--text-main); box-shadow: 0 4px 10px rgba(0,0,0,0.1);}
+    .modal-card h2 { color: var(--accent-dark); font-size: 24px; margin-top: 0; border-left: 5px solid var(--accent-dark); padding-left: 15px; margin-bottom: 25px; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
-    .modal-content-text { line-height: 1.8; font-size: 15px; color: var(--text-main); }
-    .lore-list { list-style: none; padding: 0; margin: 0; color: var(--text-main); line-height: 2; font-size: 15px; }
-    .lore-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(0,0,0,0.1); }
+    .modal-content-text { line-height: 1.8; font-size: 15px; color: var(--text-main); font-weight: 500;}
+    .lore-list { list-style: none; padding: 0; margin: 0; color: var(--text-main); line-height: 2; font-size: 15px; font-weight: 500;}
+    .lore-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); }
     .lore-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .lore-list strong { color: var(--accent-dark); display: inline-block; min-width: 100px; }
     .lore-poem {
       text-align: center; margin: 20px 0; padding: 25px 20px;
-      background: rgba(255,255,255,0.6); border-radius: 12px; border: 1px solid rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.6); border-radius: 16px; border: 1px solid rgba(255,255,255,0.8);
       color: var(--accent-dark); font-size: 15px; letter-spacing: 1px; font-weight: bold;
     }
     .lore-poem p { margin: 8px 0; }
 
+    /* 歌詞 Modal 特別樣式 */
+    .lyrics-container {
+      text-align: center;
+      line-height: 2;
+      font-size: 16px;
+      color: var(--text-main);
+      padding: 30px 20px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 16px;
+      white-space: pre-line;
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+    .lyrics-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent-dark);
+      margin-bottom: 15px;
+      border-bottom: 2px dashed rgba(2, 132, 199, 0.3);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+
     /* ================= 8. 頁尾 ================= */
     footer {
       text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
-      background: rgba(255, 255, 255, 0.6); margin-top: 60px;
-      width: 100%; border-top: 1px solid rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.3); margin-top: 60px;
+      width: 100%; border-top: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur);
+      position: relative; z-index: 1;
     }
     .social-links { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; padding: 20px 10px; margin-bottom: 10px; }
     .social-links a {
-      display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: #ffffff;
+      display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: rgba(255,255,255,0.8);
       border-radius: 14px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease; flex-shrink: 0;
+      border: 1px solid rgba(255,255,255,0.8);
     }
-    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 20px rgba(199, 238, 251, 0.3); }
+    .social-links a:hover { transform: translateY(-5px) scale(1.05); box-shadow: 0 8px 20px rgba(2, 132, 199, 0.2); background: #fff;}
 
     /* RWD 響應式 */
     @media (max-width: 900px) {
@@ -658,14 +715,14 @@
       .logo-card { flex: 1; height: 250px;}
       .portrait-card { flex: 2; height: 250px; padding: 20px;}
       .audio-grid { grid-template-columns: 1fr; }
-      /* 移除 .vp-grid 的寬度限制，在平板也保持雙欄 */
+
       .gallery-masonry { grid-template-columns: repeat(2, 1fr); }
       .gallery-item.wide { grid-column: span 2; height: 250px; }
       .theme-song-grid { grid-template-columns: 1fr; } /* 平板也改為上下排 */
     }
     @media (max-width: 768px) {
       /* 手機版導覽列：隱藏左側連結，置中排列 */
-      header { padding: 10px 0; background: rgba(255, 255, 255, 0.85);}
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.6);}
       .nav-container { flex-direction: column; gap: 10px; justify-content: center; padding: 10px 20px; }
       .header-left { display: none; }
       .header-center, .header-right { flex: unset; justify-content: center; width: 100%; gap: 15px; }
@@ -680,7 +737,6 @@
       .vp-list li { display: flex; flex-direction: row; flex-wrap: wrap; }
       .vp-list li strong { width: auto; margin-right: 15px; flex-shrink: 0;}
 
-      /* 手機版才將中之人卡片改為上下排列 */
       .vp-grid { grid-template-columns: 1fr; gap: 20px; }
 
       .vb-header { flex-direction: column; text-align: center; }
@@ -688,10 +744,19 @@
 
       .back-to-top { bottom: 20px; right: 20px; width: 40px; height: 40px; }
       .back-to-top svg { width: 20px; height: 20px; }
+
+      .blob-1 { width: 300px; height: 300px; }
+      .blob-2 { width: 350px; height: 350px; }
+      .blob-3 { width: 250px; height: 250px; }
     }
   </style>
 </head>
 <body>
+  <!-- Liquid Background Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
   <!-- 滑鼠星星粒子畫布 -->
   <canvas id="cursor-canvas"></canvas>
 
@@ -742,7 +807,6 @@
           <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
-          <a href="Yuon.html">祐恩 (Yuon)</a>
           <a href="index.html#singers">查看全陣容</a>
         </div>
       </div>
@@ -752,15 +816,15 @@
   <main>
     <section class="profile-section">
       <div class="left-column">
-        <div class="img-card macaron-glass-panel logo-card">
-          <img class="profile-logo-top" src="img/星希羽Logo.png" alt="星希羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230369a1\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽Logo</text></svg>'">
+        <div class="img-card glass-panel logo-card">
+          <img class="profile-logo-top" src="img/星希羽Logo.png" alt="星希羽 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'200\' height=\'60\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230284c7\' font-family=\'sans-serif\' font-size=\'32\' font-weight=\'bold\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽Logo</text></svg>'">
         </div>
-        <div class="img-card macaron-glass-panel portrait-card">
+        <div class="img-card glass-panel portrait-card">
           <img id="profile-portrait" src="img/星希羽(羽翼).png" alt="星希羽全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'400\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>星希羽立繪預留位置</text></svg>'">
         </div>
       </div>
 
-      <div class="profile-card macaron-glass-panel">
+      <div class="profile-card glass-panel">
         <table class="char-table">
           <tr><td>性別</td><td>男生</td></tr>
           <tr><td>年齡</td><td>7歲</td></tr>
@@ -800,7 +864,7 @@
 
     <!-- ================= 專屬聲庫資訊區塊 ================= -->
     <section>
-      <div class="macaron-glass-panel voicebank-panel">
+      <div class="glass-panel voicebank-panel">
         <div class="vb-header">
           <img class="vb-avatar" src="img/星希羽頭像ACE2.png" alt="星希羽頭像" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/></svg>'">
           <div class="vb-info">
@@ -831,7 +895,7 @@
             聲庫示範影片 (準備中)
           </div>
           <div class="vb-video-container">
-            <img src="img/聲庫示範預留.jpg" alt="聲庫示範影片預留" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230369a1\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>聲庫示範影片預留位置</text></svg>'">
+            <img src="img/聲庫示範預留.jpg" alt="聲庫示範影片預留" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230284c7\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>聲庫示範影片預留位置</text></svg>'">
             <div class="play-btn"></div>
           </div>
         </div>
@@ -846,31 +910,31 @@
       <h2>中之人與形象設計來源</h2>
       <div class="vp-grid">
         <!-- Cute Voice 區塊 -->
-        <div class="vp-card macaron-glass-panel">
+        <div class="vp-card glass-panel">
           <div class="vp-info">
-            <h3 style="color: var(--accent-dark); font-size: 20px; margin-top: 0; margin-bottom: 20px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 10px;">Cute Voice (萌音)</h3>
+            <h3 style="color: var(--accent-dark); font-size: 20px; margin-top: 0; margin-bottom: 20px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 10px;">Cute Voice (萌音)</h3>
             <ul class="vp-list">
               <li><strong>活動名稱：</strong>Ian</li>
               <li><strong>生日：</strong>4 月 9 日</li>
+              <li><strong>聲音錄製日期：</strong>2023 年 1 月 21 日</li>
               <li><strong>錄製年齡：</strong>11 歲</li>
-              <li><strong>登場版本：</strong>V1.0</li>
             </ul>
             <p class="vp-desc">
               💫 星希羽的角色形象設計靈感源自於 Cute Voice 聲音提供者 Ian。<br>
-              在角色塑造初期，參考了其調皮的個性特質作為創作靈感。
+              在角色塑造初期，參考了其活潑、開朗、調皮的個性特質作為創作靈感。
             </p>
           </div>
       </div>
 
         <!-- Lively Voice 區塊 -->
-        <div class="vp-card macaron-glass-panel">
+        <div class="vp-card glass-panel">
           <div class="vp-info">
-            <h3 style="color: var(--accent-dark); font-size: 20px; margin-top: 0; margin-bottom: 20px; border-bottom: 1px dashed rgba(0,0,0,0.1); padding-bottom: 10px;">Lively Voice (稚音)</h3>
+            <h3 style="color: var(--accent-dark); font-size: 20px; margin-top: 0; margin-bottom: 20px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 10px;">Lively Voice (稚音)</h3>
             <ul class="vp-list">
-              <li><strong>活動名稱：</strong>不公開</li>
-              <li><strong>生日：</strong>不公開</li>
-              <li><strong>錄製年齡：</strong>10歲</li>
-              <li><strong>登場版本：</strong>V1.5.2</li>
+              <li><strong>活動名稱：</strong>(不公開)</li>
+              <li><strong>生日：</strong>(不公開)</li>
+              <li><strong>聲音錄製日期：</strong>2026 年</li>
+              <li><strong>錄製年齡：</strong>(保密)</li>
             </ul>
             <p class="vp-desc">
               ✨ 為了呈現更具穿透力與活力的童聲表現，星希羽 V1.5.2 導入了由另一位小學生錄製的 Lively 聲線。<br>
@@ -883,8 +947,8 @@
 
     <section>
       <h2>形象3視圖展示</h2>
-      <div class="reference-sheet-wrapper macaron-glass-panel">
-          <img class="reference-sheet" src="img/星希羽三視圖.png" alt="星希羽三視圖" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230369a1\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>三視圖預留位置</text></svg>'">
+      <div class="reference-sheet-wrapper glass-panel" style="padding:0; overflow:hidden;">
+          <img class="reference-sheet" src="img/星希羽三視圖.png" alt="星希羽三視圖" style="width:100%; display:block;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'300\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230284c7\' font-family=\'sans-serif\' font-size=\'16\' text-anchor=\'middle\' alignment-baseline=\'middle\'>三視圖預留位置</text></svg>'">
 
           <img class="tinka-star" src="img/霆卡提示.png" alt="霆卡" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'80\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23555\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>霆卡預留</text></svg>'">
       </div>
@@ -943,13 +1007,13 @@
     <section>
       <h2>主題曲展示區</h2>
 
-      <div class="macaron-glass-panel theme-song-panel">
-        <img class="bird-img" src="img/飛鳥.png" alt="飛鳥裝飾" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230369a1\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>飛鳥預留</text></svg>'">
+      <div class="glass-panel theme-song-panel">
+        <img class="bird-img" src="img/飛鳥.png" alt="飛鳥裝飾" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100\' height=\'100\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%230284c7\' font-family=\'sans-serif\' font-size=\'12\' text-anchor=\'middle\' alignment-baseline=\'middle\'>飛鳥預留</text></svg>'">
 
         <div class="theme-song-grid">
           <!-- 左側：YouTube MV -->
           <div class="theme-col">
-            <div class="platform-label" style="align-self: flex-start;">
+            <div class="platform-label" style="align-self: flex-start; background: rgba(255,255,255,0.7); backdrop-filter: blur(5px);">
               <svg viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
               YouTube MV
             </div>
@@ -968,7 +1032,7 @@
 
           <!-- 右側：Spotify EP -->
           <div class="theme-col">
-            <div class="platform-label" style="align-self: flex-start;">
+            <div class="platform-label" style="align-self: flex-start; background: rgba(255,255,255,0.7); backdrop-filter: blur(5px);">
               <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.84.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.781s.18-1.2.78-1.381c4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.56.3z"/></svg>
               Spotify
             </div>
@@ -1015,20 +1079,20 @@
         <p style="margin: 5px 0;"><strong>星｜</strong> 星星、星官、流星，象徵星辰與閃耀。</p>
         <p style="margin: 5px 0;"><strong>希｜</strong> 人們向星空許下的願望與希望。</p>
         <p style="margin: 5px 0;"><strong>羽｜</strong> 羽毛的輕盈、活潑與可愛，象徵自由飛翔。</p>
-        <hr style="border: 0; border-top: 1px dashed rgba(0,0,0,0.1); margin: 15px 0;">
+        <hr style="border: 0; border-top: 1px dashed rgba(2, 132, 199, 0.2); margin: 15px 0;">
         <p style="margin: 0;"><strong>🌠 8月14日｜</strong>「14」取自軒轅十四（Regulus），呼應獅子座與星辰意象。</p>
       </div>
 
       <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.7); border-radius: 12px; border: 1px solid var(--card-border);">
         <h3 style="color: var(--accent-dark); margin-top: 0; margin-bottom: 15px; font-size: 18px;">🌱 頭髮呆毛設定</h3>
         <ul style="list-style: none; padding-left: 0; margin: 0; color: var(--text-main); line-height: 1.8; font-size: 15px;">
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😊 開心：</strong>呆毛會挺直並搖晃</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>🤔 好奇：</strong>一直隨意晃動</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😠 生氣：</strong>依照性別垂下呆毛顏色，男垂黃／女垂橘</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😢 難過：</strong>呆毛會變得相當無力或垂下</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😳 害羞：</strong>呆毛左右小幅度晃動</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😶 發呆：</strong>呆毛會節奏擺動</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😲 驚訝：</strong>兩根束直</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 8px;"><strong>😊 開心：</strong>呆毛會挺直並搖晃</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 8px;"><strong>🤔 好奇：</strong>一直隨意晃動</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 8px;"><strong>😠 生氣：</strong>依照性別垂下呆毛顏色，男垂黃／女垂橘</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 8px;"><strong>😢 難過：</strong>呆毛會變得相當無力或垂下</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 8px;"><strong>😳 害羞：</strong>呆毛左右小幅度晃動</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 8px;"><strong>😶 發呆：</strong>呆毛會節奏擺動</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); padding-bottom: 8px;"><strong>😲 驚訝：</strong>兩根束直</li>
           <li><strong>💤 睡覺：</strong>呆毛完全關機垂下</li>
         </ul>
       </div>
@@ -1145,12 +1209,12 @@
       <h2>《飛鳥》 歌詞</h2>
       <div class="lyrics-container">
         <div class="lyrics-title">飛鳥</div>
-        <p>午後的陽光　穿透了窗櫺<p>
-        <p>空氣中懸浮著　微小的曾經<p>
-        <p>課桌椅刻下的名　是我們長大的證明<p>
-        <p>收進心底　當作遠行的行李<p>
-        <p>鐘聲催促著步伐　卻催不走回憶<p>
-        <p>誰的吉他還在走廊　練習著勇氣<p>
+        <p>午後的陽光 穿透了窗櫺<p>
+        <p>空氣中懸浮著 微小的曾經<p>
+        <p>課桌椅刻下的名 是我們長大的證明<p>
+        <p>收進心底 當作遠行的行李<p>
+        <p>鐘聲催促著步伐 卻催不走回憶<p>
+        <p>誰的吉他還在走廊 練習著勇氣<p>
 
         <p>雖然不捨這熟悉的舊場景<p>
         <p>但我們知道候鳥必須遷徙<p>
