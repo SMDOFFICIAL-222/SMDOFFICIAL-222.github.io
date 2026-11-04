@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>歷史概要 | 星樂之夢</title>
+  <title>歷史概要 | 星樂之夢 Star Music Dream</title>
   <meta name="description" content="回顧星樂之夢 Star Music Dream 團隊的發展歷程與重要里程碑。">
 
   <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
@@ -14,21 +14,21 @@
       box-sizing: border-box;
     }
 
-    /* 變數 (星樂之夢：柔和藍白明亮風) */
+    /* 變數 (Liquid Glass 風格配色) */
     :root {
-      --bg: #ffffff;
-      --text-main: #1e293b;
+      --bg-color: #e0f2fe; /* 極淺藍底色 */
+      --text-main: #0f172a;
       --text-title: #0f172a;
-      --text-muted: #64748b;
-      --accent-dark: #63a4ff; /* 主題藍 */
-      --timeline-color: rgba(99, 164, 255, 0.4); /* 時間軸線的顏色 */
+      --text-muted: #475569;
+      --accent-dark: #3b82f6;
+      --timeline-color: rgba(59, 130, 246, 0.4); /* 時間軸線的顏色 */
 
-      /* 明亮霧面玻璃卡片變數 */
-      --card-bg: rgba(255, 255, 255, 0.65);
-      --card-border: rgba(255, 255, 255, 0.9);
-      --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-      --card-shadow-hover: 0 12px 30px rgba(99, 164, 255, 0.15);
-      --glass-blur: blur(20px) saturate(120%);
+      /* Liquid Glass 核心變數 */
+      --glass-bg: rgba(255, 255, 255, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.7);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+      --glass-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.9), inset 0 -2px 4px 0 rgba(255, 255, 255, 0.2);
+      --glass-blur: blur(12px) saturate(160%);
     }
 
     body {
@@ -39,10 +39,43 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      /* ================= 專屬背景 ================= */
-      background: url('img/星樂之夢官網首頁背景_1.png') no-repeat center center fixed;
-      background-color: #f0f8ff;
-      background-size: cover;
+      background-color: var(--bg-color);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ================= Liquid Blobs (流動背景色塊) ================= */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: -1;
+      opacity: 0.6;
+      animation: float 15s infinite ease-in-out alternate;
+    }
+    .blob-1 {
+      width: 400px; height: 400px;
+      background: #93c5fd; /* 淺藍 */
+      top: -100px; left: -100px;
+    }
+    .blob-2 {
+      width: 500px; height: 500px;
+      background: #fbcfe8; /* 淺粉 */
+      bottom: -150px; right: -100px;
+      animation-delay: -5s;
+    }
+    .blob-3 {
+      width: 350px; height: 350px;
+      background: #fde047; /* 淺黃 */
+      top: 40%; left: 30%;
+      animation-delay: -10s;
+      animation-duration: 20s;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0, 0) scale(1); }
     }
 
     /* 滑鼠星星粒子畫布樣式 */
@@ -51,17 +84,17 @@
       pointer-events: none !important; z-index: 90;
     }
 
-    /* ================= 頂部導覽列 ================= */
+    /* ================= 頂部導覽列 (Liquid Glass) ================= */
     header {
       padding: 10px 0;
       display: flex;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.3);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
     .nav-container {
@@ -119,9 +152,9 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       z-index: 999;
       display: flex;
       flex-direction: column;
@@ -157,7 +190,7 @@
 
     /* ================= 通用區塊設定 ================= */
     main {
-      max-width: 900px; /* 歷史頁面稍微縮窄，閱讀體驗更好 */
+      max-width: 900px;
       margin: 0 auto;
       padding: 0 20px;
       width: 100%;
@@ -165,29 +198,45 @@
       flex-direction: column;
       align-items: center;
       flex-grow: 1;
+      position: relative;
+      z-index: 1;
     }
 
-    /* 頁面大標題 */
+    /* 頁面大標題 (Liquid Glass) */
     .page-hero {
       text-align: center;
       margin-top: 60px;
       margin-bottom: 40px;
       width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
       padding: 40px 30px;
-      box-shadow: var(--card-shadow);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
+      position: relative;
+      overflow: hidden;
     }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      animation: shine 8s infinite;
+      pointer-events: none;
+    }
+
     .page-hero h1 {
       margin: 0;
       color: var(--accent-dark);
       font-size: 32px;
       font-weight: 900;
       letter-spacing: 2px;
-      text-shadow: 0 2px 5px rgba(255,255,255,0.8);
+      text-shadow: 0 2px 5px rgba(255,255,255,1);
     }
     .page-hero p {
       margin: 15px 0 0 0;
@@ -195,6 +244,7 @@
       font-size: 15px;
       line-height: 1.8;
       text-align: left;
+      font-weight: 600;
     }
 
     /* ================= 時間軸 (Timeline) 樣式 ================= */
@@ -202,7 +252,7 @@
       position: relative;
       width: 100%;
       margin-bottom: 80px;
-      padding-left: 30px; /* 留空間給左側的線 */
+      padding-left: 30px;
     }
 
     /* 時間軸的主線 */
@@ -237,21 +287,23 @@
       border: 4px solid var(--accent-dark);
       border-radius: 50%;
       z-index: 1;
-      box-shadow: 0 0 10px rgba(99, 164, 255, 0.5);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
     }
 
-    /* 年份標題區塊 */
+    /* 年份標題區塊 (毛玻璃化) */
     .timeline-year {
       display: inline-block;
       font-size: 24px;
       font-weight: 900;
       color: var(--accent-dark);
-      background: rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       padding: 5px 15px;
       border-radius: 12px;
       margin-bottom: 15px;
-      border: 1px solid rgba(99, 164, 255, 0.2);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
     .timeline-subtitle {
       font-size: 16px;
@@ -260,20 +312,21 @@
       font-weight: bold;
     }
 
-    /* 歷史事件的玻璃卡片 */
+    /* 歷史事件的玻璃卡片 (Liquid Glass) */
     .timeline-content {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 16px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
       padding: 25px;
-      box-shadow: var(--card-shadow);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
     .timeline-content:hover {
       transform: translateY(-3px);
-      box-shadow: var(--card-shadow-hover);
+      box-shadow: 0 12px 30px rgba(31, 38, 135, 0.15), var(--glass-inner);
+      background: rgba(255, 255, 255, 0.6);
     }
 
     /* 歷史事件列表 */
@@ -287,7 +340,7 @@
       flex-direction: column;
       margin-bottom: 18px;
       padding-bottom: 18px;
-      border-bottom: 1px dashed rgba(0,0,0,0.1);
+      border-bottom: 1px dashed rgba(59, 130, 246, 0.3);
     }
     .event-item:last-child {
       margin-bottom: 0;
@@ -304,6 +357,7 @@
       font-size: 15px;
       line-height: 1.7;
       color: var(--text-main);
+      font-weight: 500;
     }
     .event-desc ul {
       margin: 8px 0 0 0;
@@ -314,7 +368,7 @@
       margin-bottom: 4px;
     }
 
-    /* 強調特規排版 (例如聲線說明) */
+    /* 強調特規排版 */
     .event-sub-desc {
       margin-top: 10px;
       padding: 12px 15px;
@@ -332,30 +386,28 @@
     /* ================= 8. 頁尾 ================= */
     footer {
       text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px;
-      background: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.3); border-top: 1px solid rgba(255,255,255,0.6);
       width: 100%;
       backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       margin-top: auto;
+      position: relative;
+      z-index: 1;
     }
 
     /* RWD 響應式 */
     @media (max-width: 768px) {
-      /* 導覽列：手機版 Logo 至左，漢堡選單至右 */
-      header { padding: 10px 0; background: rgba(255, 255, 255, 0.8); }
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.6); }
       .nav-container {
-        flex-direction: row; /* 強制左右排列 */
+        flex-direction: row;
         justify-content: space-between;
         padding: 10px 25px;
       }
-
-      /* 隱藏電腦版的文字連結區塊 */
       .header-left, .header-right { display: none; }
-
-      /* Logo 改為靠左 */
       .header-center { flex: unset; justify-content: flex-start; }
-
-      /* 顯示漢堡選單按鈕 */
       .menu-btn { display: block; }
+
+      body { padding-top: 100px; }
 
       .page-hero { margin-top: 40px; margin-bottom: 30px; padding: 30px 20px;}
       .page-hero h1 { font-size: 26px; }
@@ -367,10 +419,19 @@
       .timeline-year { font-size: 20px; padding: 4px 12px;}
       .timeline-subtitle { display: block; margin-left: 0; margin-top: 5px; font-size: 14px;}
       .timeline-content { padding: 20px 15px; }
+
+      .blob-1 { width: 300px; height: 300px; }
+      .blob-2 { width: 350px; height: 350px; }
+      .blob-3 { width: 250px; height: 250px; }
     }
   </style>
 </head>
 <body>
+  <!-- Liquid Background Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
   <!-- 滑鼠星星粒子畫布 -->
   <canvas id="cursor-canvas"></canvas>
 
@@ -650,7 +711,7 @@
       function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
       window.addEventListener('resize', resize); resize();
 
-      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const palette = ['#9bc8fb', '#FB9D9E', '#C7EEFB', '#FCC89B'];
       const particles = [];
 
       function drawStar(ctx, x, y, radius, rot) {
