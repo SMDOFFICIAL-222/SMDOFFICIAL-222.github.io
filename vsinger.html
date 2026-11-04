@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>歌手陣容 | 星樂之夢</title>
-  <meta name="description" content="探索星樂之夢 Star Music Dream 旗下的四大虛擬歌手系列：StreetEchoes、森嶼之聲、星幻之城 × StarLeo、Nova 系列。">
+  <title>歌手陣容 | 星樂之夢 Star Music Dream</title>
+  <meta name="description" content="探索星樂之夢 Star Music Dream 旗下的四大虛擬歌手系列：StreetEchoes、森嶼之聲、星幻之城 × StarLeo。">
 
   <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
 
@@ -14,23 +14,22 @@
       box-sizing: border-box;
     }
 
-    /* 變數 (星樂之夢：柔和藍白明亮風) */
+    /* 變數 (Liquid Glass 風格配色) */
     :root {
-      --bg: #ffffff;
-      --text-main: #1e293b;
+      --bg-color: #f0f8ff; /* 極淺藍底色，讓 Blob 更顯色 */
+      --text-main: #0f172a;
       --text-muted: #475569;
-      --accent-dark: #63a4ff; /* 主題藍 */
-      --accent-street: #26d9ff; /* StreetEchoes 專屬色 (活力橘) */
-      --accent-forest: #ABC48B; /* 森嶼之聲 專屬色 (自然綠) */
-      --accent-starleo: #FFDB82; /* StarLeo 專屬色 (星空紫) */
-      --accent-nova: #6366F1; /* Nova 專屬色 (新星粉) */
+      --accent-dark: #3b82f6; /* 主題藍 */
+      --accent-street: #00b8d4; /* StreetEchoes 專屬色 (加深一點以便在亮底閱讀) */
+      --accent-forest: #7cb342; /* 森嶼之聲 專屬色 (加深綠) */
+      --accent-starleo: #fbbf24; /* StarLeo 專屬色 (加深黃) */
 
-      /* 明亮霧面玻璃卡片變數 */
-      --card-bg: rgba(255, 255, 255, 0.55);
-      --card-border: rgba(255, 255, 255, 0.8);
-      --card-shadow: 0 8px 30px rgba(99, 164, 255, 0.12);
-      --card-shadow-hover: 0 12px 40px rgba(99, 164, 255, 0.22);
-      --glass-blur: blur(20px) saturate(120%);
+      /* Liquid Glass 核心變數 */
+      --glass-bg: rgba(255, 255, 255, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.7);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+      --glass-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.9), inset 0 -2px 4px 0 rgba(255, 255, 255, 0.2);
+      --glass-blur: blur(12px) saturate(160%);
     }
 
     body {
@@ -39,10 +38,43 @@
       font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
       color: var(--text-main);
       min-height: 100vh;
-      /* ================= 專屬背景 ================= */
-      background: url('img/星樂之夢官網首頁背景_1.png') no-repeat center center fixed;
-      background-color: #f0f8ff;
-      background-size: cover;
+      background-color: var(--bg-color);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ================= Liquid Blobs (流動背景色塊) ================= */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: -1;
+      opacity: 0.6;
+      animation: float 15s infinite ease-in-out alternate;
+    }
+    .blob-1 {
+      width: 450px; height: 450px;
+      background: #bae6fd; /* 淺藍 */
+      top: -100px; left: -100px;
+    }
+    .blob-2 {
+      width: 550px; height: 550px;
+      background: #fbcfe8; /* 淺粉 */
+      bottom: -150px; right: -150px;
+      animation-delay: -5s;
+    }
+    .blob-3 {
+      width: 350px; height: 350px;
+      background: #fef08a; /* 淺黃 */
+      top: 30%; left: 40%;
+      animation-delay: -10s;
+      animation-duration: 20s;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -60px) scale(1.1); }
+      66% { transform: translate(-30px, 30px) scale(0.9); }
+      100% { transform: translate(0, 0) scale(1); }
     }
 
     /* 滑鼠星星粒子畫布樣式 */
@@ -56,12 +88,12 @@
       padding: 10px 0;
       display: flex;
       justify-content: center;
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.3);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
     .nav-container {
@@ -101,7 +133,7 @@
       border: none;
       cursor: pointer;
       padding: 5px;
-      z-index: 1001; /* 確保在展開選單的最上層 */
+      z-index: 1001;
       position: relative;
     }
     .menu-btn svg {
@@ -119,9 +151,9 @@
       left: 0;
       width: 100%;
       height: 100vh;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(25px);
-      -webkit-backdrop-filter: blur(25px);
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
       z-index: 999;
       display: flex;
       flex-direction: column;
@@ -164,36 +196,58 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      position: relative;
+      z-index: 1; /* 確保內容在 Blob 之上 */
     }
 
-    /* 頁面大標題 */
+    /* 頁面大標題 (Liquid Glass 風格) */
     .page-hero {
       text-align: center;
       margin-top: 60px;
       margin-bottom: 60px;
       width: 100%;
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
       padding: 40px 20px;
-      box-shadow: var(--card-shadow);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
+      position: relative;
+      overflow: hidden;
     }
+
+    /* 玻璃卡片反光 */
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      animation: shine 8s infinite;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0% { left: -100%; }
+      20% { left: 200%; }
+      100% { left: 200%; }
+    }
+
     .page-hero h1 {
       margin: 0 0 15px 0;
       color: var(--accent-dark);
       font-size: 36px;
       font-weight: 900;
       letter-spacing: 2px;
-      text-shadow: 0 2px 5px rgba(255,255,255,0.8);
+      text-shadow: 0 2px 5px rgba(255,255,255,1);
     }
     .page-hero p {
       margin: 0;
-      color: var(--text-muted);
+      color: var(--text-main);
       font-size: 16px;
       line-height: 1.8;
-      font-weight: bold;
+      font-weight: 600;
     }
 
     /* ================= 系列展示區塊 ================= */
@@ -207,7 +261,7 @@
       align-items: center;
       gap: 15px;
       margin-bottom: 30px;
-      border-bottom: 2px solid rgba(0,0,0,0.05);
+      border-bottom: 2px solid rgba(255,255,255,0.6); /* 改為淺色底線 */
       padding-bottom: 15px;
     }
 
@@ -216,17 +270,18 @@
       margin: 0;
       color: var(--text-main);
       font-weight: 900;
+      text-shadow: 0 2px 4px rgba(255,255,255,0.8);
     }
 
     /* 系列 Logo 圖片樣式 */
     .series-logo {
-      height: 40px; /* 統一高度 */
+      height: 40px;
       width: auto;
       object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+      filter: drop-shadow(0 2px 4px rgba(255,255,255,0.8));
     }
 
-    /* ================= 歌手卡片網格 ================= */
+    /* ================= 歌手卡片網格 (Liquid Glass) ================= */
     .singers-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -235,12 +290,12 @@
     }
 
     .singer-card {
-      background: rgba(255,255,255,0.6);
-      border: 1px solid var(--card-border);
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
       border-radius: 20px;
       overflow: hidden;
       text-decoration: none;
-      box-shadow: var(--card-shadow);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
       transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -250,20 +305,14 @@
 
     .singer-card:hover {
       transform: translateY(-8px);
-      box-shadow: var(--card-shadow-hover);
-      border-color: #ffffff;
+      box-shadow: 0 15px 40px rgba(31, 38, 135, 0.15), var(--glass-inner);
+      background: rgba(255, 255, 255, 0.6);
     }
-
-    /* 針對不同系列設定 Hover 外發光顏色 */
-    .singer-card.hover-street:hover { box-shadow: 0 12px 30px rgba(38, 217, 255, 0.2); }
-    .singer-card.hover-forest:hover { box-shadow: 0 12px 30px rgba(171, 196, 139, 0.2); }
-    .singer-card.hover-starleo:hover { box-shadow: 0 12px 30px rgba(255, 219, 130, 0.2); }
-    .singer-card.hover-nova:hover { box-shadow: 0 12px 30px rgba(99, 102, 241, 0.2); }
 
     .singer-img-box {
       width: 100%;
       height: 260px;
-      background: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.2);
       display: flex;
       justify-content: center;
       align-items: flex-end;
@@ -272,7 +321,6 @@
       position: relative;
     }
 
-    /* 讓立繪底部切齊卡片邊緣 */
     .singer-img-box img {
       width: 100%;
       height: 100%;
@@ -285,29 +333,10 @@
       transform: scale(1.08);
     }
 
-    /* 如果沒有圖片，顯示預設漸層圓圈 */
-    .placeholder-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      margin-bottom: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 30px;
-      font-weight: bold;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    .bg-street { background: linear-gradient(135deg, #71e6ff, #26d9ff); }
-    .bg-forest { background: linear-gradient(135deg, #c7ddab, #ABC48B); }
-    .bg-starleo { background: linear-gradient(135deg, #ffeaa3, #FFDB82); }
-    .bg-nova { background: linear-gradient(135deg, #a5a7f9, #6366F1); }
-
     .singer-info {
       padding: 18px 15px;
       text-align: center;
-      background: rgba(255,255,255,0.9);
+      background: rgba(255,255,255,0.4);
       border-top: 1px solid rgba(255,255,255,0.6);
       flex-grow: 1;
       display: flex;
@@ -333,7 +362,6 @@
     .txt-street { color: var(--accent-street); }
     .txt-forest { color: var(--accent-forest); }
     .txt-starleo { color: var(--accent-starleo); }
-    .txt-nova { color: var(--accent-nova); }
 
     /* ================= 規約按鈕 ================= */
     .rules-btn-container {
@@ -343,7 +371,7 @@
       margin-bottom: 60px;
     }
     .rules-btn {
-      background: rgba(255, 255, 255, 0.7);
+      background: rgba(255, 255, 255, 0.5);
       border: 1px solid var(--accent-dark);
       color: var(--accent-dark);
       padding: 12px 30px;
@@ -351,7 +379,7 @@
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      box-shadow: var(--card-shadow);
+      box-shadow: var(--glass-shadow);
       backdrop-filter: var(--glass-blur);
       transition: all 0.3s ease;
     }
@@ -359,19 +387,19 @@
       background: var(--accent-dark);
       color: #fff;
       transform: translateY(-2px);
-      box-shadow: var(--card-shadow-hover);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
     }
 
-    /* ================= 規約彈出視窗 (Modal) ================= */
+    /* ================= 規約彈出視窗 (Liquid Modal) ================= */
     .modal-overlay {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(5px);
-      -webkit-backdrop-filter: blur(5px);
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
       z-index: 2000;
       display: flex;
       justify-content: center;
@@ -386,15 +414,15 @@
       pointer-events: auto;
     }
     .modal-content {
-      background: rgba(255, 255, 255, 0.95);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
       width: 100%;
       max-width: 700px;
       max-height: 85vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+      box-shadow: 0 25px 60px rgba(31, 38, 135, 0.2), var(--glass-inner);
       transform: translateY(20px);
       transition: transform 0.3s ease;
     }
@@ -402,125 +430,113 @@
       transform: translateY(0);
     }
     .modal-header {
-      padding: 20px 25px;
-      border-bottom: 1px solid rgba(0,0,0,0.1);
+      padding: 25px 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.6);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
     .modal-header h2 {
       margin: 0;
-      font-size: 20px;
+      font-size: 22px;
       color: var(--accent-dark);
+      font-weight: 900;
     }
     .modal-close {
-      background: none;
-      border: none;
-      font-size: 24px;
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.8);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      font-size: 20px;
       color: var(--text-muted);
       cursor: pointer;
-      transition: color 0.3s;
+      display: flex; justify-content: center; align-items: center;
+      transition: all 0.3s;
     }
     .modal-close:hover {
+      background: #fff;
       color: var(--text-main);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
     .modal-body {
-      padding: 25px;
+      padding: 30px;
       overflow-y: auto;
       font-size: 15px;
       line-height: 1.8;
       color: var(--text-main);
     }
-    /* 規約內容排版 */
     .modal-body h3 {
       font-size: 18px;
-      color: var(--text-title);
+      color: var(--accent-dark);
       margin-top: 25px;
       margin-bottom: 10px;
-      border-bottom: 2px solid rgba(99, 164, 255, 0.2);
-      padding-bottom: 5px;
+      border-bottom: 2px dashed rgba(99, 164, 255, 0.3);
+      padding-bottom: 8px;
     }
-    .modal-body h3:first-child {
-      margin-top: 0;
-    }
-    .modal-body h4 {
-      font-size: 16px;
-      color: var(--text-main);
-      margin-top: 15px;
-      margin-bottom: 5px;
-    }
-    .modal-body ul {
-      margin: 5px 0 15px 0;
-      padding-left: 20px;
-    }
-    .modal-body li {
-      margin-bottom: 5px;
-    }
-    .modal-body p {
-      margin-bottom: 15px;
-    }
+    .modal-body h3:first-child { margin-top: 0; }
+    .modal-body h4 { font-size: 16px; color: var(--text-main); margin-top: 15px; margin-bottom: 5px; }
+    .modal-body ul { margin: 5px 0 15px 0; padding-left: 20px; }
+    .modal-body li { margin-bottom: 5px; }
+    .modal-body p { margin-bottom: 15px; }
 
     /* ================= 8. 頁尾 ================= */
     footer {
-      text-align: center; padding: 30px; color: var(--text-muted); font-size: 14px;
-      background: rgba(255, 255, 255, 0.7); border-top: 1px solid rgba(0,0,0,0.05);
+      text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
+      background: rgba(255, 255, 255, 0.3); border-top: 1px solid rgba(255,255,255,0.6);
       width: 100%;
       backdrop-filter: var(--glass-blur);
+      position: relative;
+      z-index: 1;
     }
 
     /* RWD 響應式 */
     @media (max-width: 768px) {
-      /* 導覽列：手機版 Logo 至左，漢堡選單至右 */
-      header { padding: 10px 0; background: rgba(255, 255, 255, 0.8); }
-      .nav-container {
-        flex-direction: row; /* 強制左右排列 */
-        justify-content: space-between;
-        padding: 10px 25px;
-      }
-
-      /* 隱藏電腦版的文字連結區塊 */
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.6); }
+      .nav-container { flex-direction: row; justify-content: space-between; padding: 10px 25px; }
       .header-left, .header-right { display: none; }
-
-      /* Logo 改為靠左 */
       .header-center { flex: unset; justify-content: flex-start; }
-
-      /* 顯示漢堡選單按鈕 */
       .menu-btn { display: block; }
+
+      body { padding-top: 100px; }
 
       .series-title-container { flex-direction: column; align-items: flex-start; gap: 10px; }
       .page-hero { padding: 30px 15px; }
       .page-hero h1 { font-size: 28px; }
-
       .modal-body { padding: 20px 15px; }
+
+      .blob-1 { width: 300px; height: 300px; }
+      .blob-2 { width: 350px; height: 350px; }
+      .blob-3 { width: 250px; height: 250px; }
     }
   </style>
 </head>
 <body>
+  <!-- Liquid Background Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
   <!-- 滑鼠星星粒子畫布 -->
   <canvas id="cursor-canvas"></canvas>
 
   <header>
     <div class="nav-container">
-      <!-- 電腦版：左側連結 -->
       <div class="header-left nav-links">
         <a href="vsinger.html" class="active">歌手資訊</a>
         <a href="news.html">情報與消息</a>
       </div>
 
-      <!-- Logo (電腦版置中，手機版靠左) -->
       <div class="header-center">
         <a href="index.html" class="logo">
           <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
         </a>
       </div>
 
-      <!-- 電腦版：右側連結 -->
       <div class="header-right nav-links">
         <a href="about.html">關於我們</a>
         <a href="history.html">歷史概要</a>
       </div>
 
-      <!-- 手機版：漢堡選單按鈕 (電腦版隱藏) -->
       <button class="menu-btn" id="mobileMenuBtn" aria-label="打開選單">
         <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="3" y1="12" x2="21" y2="12" class="line-mid"></line>
@@ -531,7 +547,6 @@
     </div>
   </header>
 
-  <!-- 手機版：全螢幕展開選單 -->
   <div class="mobile-menu-overlay" id="mobileMenuOverlay">
     <div class="mobile-nav-links">
       <a href="vsinger.html" class="active">歌手資訊</a>
@@ -542,10 +557,9 @@
   </div>
 
   <main>
-    <!-- 頁面大標題 -->
     <div class="page-hero">
       <h1>VSinger / 歌手陣容</h1>
-      <p>來自四大音樂宇宙的聲音。<br>探索星樂之夢旗下獨一無二的虛擬歌手與企劃角色。</p>
+      <p>來自星樂之夢音樂宇宙的聲音。<br>探索旗下獨一無二的虛擬歌手與企劃角色。</p>
     </div>
 
     <!-- ================= 1. StreetEchoes 系列 ================= -->
@@ -561,27 +575,27 @@
         <!-- 希恩 -->
         <a href="#" class="singer-card hover-street">
           <div class="singer-img-box">
-            <img src="img/希恩立繪.png" alt="柊赫" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2326d9ff\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>希恩</text></svg>'">
+            <img src="img/希恩立繪.png" alt="希恩" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2300b8d4\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>希恩</text></svg>'">
           </div>
           <div class="singer-info">
-            <h3>柊赫</h3>
-            <p class="txt-street">Jonghyeok</p>
+            <h3>希恩</h3>
+            <p class="txt-street">Xien</p>
           </div>
         </a>
         <!-- 宇熙 -->
         <a href="#" class="singer-card hover-street">
           <div class="singer-img-box">
-            <img src="img/宇熙立繪.png" alt="懿姍" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2326d9ff\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>宇熙</text></svg>'">
+            <img src="img/宇熙立繪.png" alt="宇熙" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2300b8d4\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>宇熙</text></svg>'">
           </div>
           <div class="singer-info">
-            <h3>懿姍</h3>
-            <p class="txt-street">Yishan</p>
+            <h3>宇熙</h3>
+            <p class="txt-street">Yuxi</p>
           </div>
         </a>
         <!-- 程都 -->
         <a href="#" class="singer-card hover-street">
           <div class="singer-img-box">
-             <img src="img/程都立繪.png" alt="程都" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2326d9ff\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>程都</text></svg>'">
+             <img src="img/程都立繪.png" alt="程都" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2300b8d4\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>程都</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>程都</h3>
@@ -591,7 +605,7 @@
         <!-- 悠珊 -->
         <a href="#" class="singer-card hover-street">
           <div class="singer-img-box">
-             <img src="img/悠珊立繪.png" alt="悠珊" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2326d9ff\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>悠珊</text></svg>'">
+             <img src="img/悠珊立繪.png" alt="悠珊" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%2300b8d4\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>悠珊</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>悠珊</h3>
@@ -614,7 +628,7 @@
         <!-- 岳嵐 -->
         <a href="#" class="singer-card hover-forest">
           <div class="singer-img-box">
-            <img src="img/岳嵐立繪.png" alt="岳嵐" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23ABC48B\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>岳嵐</text></svg>'">
+            <img src="img/岳嵐立繪.png" alt="岳嵐" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%237cb342\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>岳嵐</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>岳嵐</h3>
@@ -624,7 +638,7 @@
         <!-- 穗蓉 -->
         <a href="#" class="singer-card hover-forest">
           <div class="singer-img-box">
-            <img src="img/穗蓉立繪.png" alt="穗蓉" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23ABC48B\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>穗蓉</text></svg>'">
+            <img src="img/穗蓉立繪.png" alt="穗蓉" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%237cb342\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>穗蓉</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>穗蓉</h3>
@@ -634,7 +648,7 @@
         <!-- 湛嶠 -->
         <a href="#" class="singer-card hover-forest">
           <div class="singer-img-box">
-             <img src="img/湛嶠立繪.png" alt="湛嶠" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23ABC48B\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>湛嶠</text></svg>'">
+             <img src="img/湛嶠立繪.png" alt="湛嶠" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%237cb342\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>湛嶠</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>湛嶠</h3>
@@ -644,7 +658,7 @@
         <!-- 雉瑜 -->
         <a href="#" class="singer-card hover-forest">
           <div class="singer-img-box">
-             <img src="img/雉瑜立繪.png" alt="雉瑜" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23ABC48B\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>雉瑜</text></svg>'">
+             <img src="img/雉瑜立繪.png" alt="雉瑜" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%237cb342\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>雉瑜</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>雉瑜</h3>
@@ -667,7 +681,7 @@
         <!-- 星希羽 -->
         <a href="HoshiKiha.html" class="singer-card hover-starleo">
           <div class="singer-img-box">
-            <img src="img/星希羽(羽翼).png" alt="星希羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FFDB82\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星希羽</text></svg>'">
+            <img src="img/星希羽(羽翼).png" alt="星希羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23fbbf24\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星希羽</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>星希羽</h3>
@@ -678,7 +692,7 @@
         <!-- 星彗羽 -->
         <a href="HoshiHuiha.html" class="singer-card hover-starleo">
           <div class="singer-img-box">
-            <img src="img/星彗羽2.0.png" alt="星彗羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FFDB82\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星彗羽</text></svg>'">
+            <img src="img/星彗羽2.0.png" alt="星彗羽" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23fbbf24\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星彗羽</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>星彗羽</h3>
@@ -689,7 +703,7 @@
         <!-- 星丞軒 -->
         <a href="HoshiJoken.html" class="singer-card hover-starleo">
           <div class="singer-img-box">
-            <img src="img/星丞軒立繪.png" alt="星丞軒" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FFDB82\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星丞軒</text></svg>'">
+            <img src="img/星丞軒立繪.png" alt="星丞軒" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23fbbf24\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星丞軒</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>星丞軒</h3>
@@ -700,44 +714,11 @@
         <!-- 星卉芯 -->
         <a href="HoshiHuishin.html" class="singer-card hover-starleo">
           <div class="singer-img-box">
-            <img src="img/星卉芯立繪.png" alt="星卉芯" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23FFDB82\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星卉芯</text></svg>'">
+            <img src="img/星卉芯立繪.png" alt="星卉芯" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23fbbf24\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>星卉芯</text></svg>'">
           </div>
           <div class="singer-info">
             <h3>星卉芯</h3>
             <p class="txt-starleo">HoshiHuishin</p>
-          </div>
-        </a>
-      </div>
-    </section>
-
-    <!-- ================= 4. Nova 系列 ================= -->
-    <section class="series-section">
-      <div class="series-title-container">
-        <!-- 替換為 Logo -->
-        <img src="img/Nova_Logo.png" alt="Nova Logo" class="series-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
-        <span class="series-badge badge-nova" style="display: none;">SERIES 04</span>
-        <h2 class="series-title">Nova 系列</h2>
-      </div>
-
-      <div class="singers-grid">
-        <!-- 祐恩 -->
-        <a href="Yuon.html" class="singer-card hover-nova">
-          <div class="singer-img-box">
-             <img src="img/祐恩立繪.png" alt="祐恩" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%236366F1\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>祐恩</text></svg>'">
-          </div>
-          <div class="singer-info">
-            <h3>祐恩</h3>
-            <p class="txt-nova">Yuon</p>
-          </div>
-        </a>
-        <!-- 卡歐 -->
-        <a href="#" class="singer-card hover-nova">
-          <div class="singer-img-box">
-             <img src="img/卡歐立繪.png" alt="卡歐" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%236366F1\' font-weight=\'bold\' font-size=\'20\' text-anchor=\'middle\'>卡歐</text></svg>'">
-          </div>
-          <div class="singer-info">
-            <h3>卡歐</h3>
-            <p class="txt-nova">カオ｜Kao</p>
           </div>
         </a>
       </div>
@@ -822,7 +803,7 @@
 
         <h3>五、免責聲明</h3>
         <h4>責任歸屬</h4>
-        <p>創作作品及衍生作品/二次創作的著作權歸創作者本人所有。<br>若創作者所製作或公開的作品引發社會爭議、著作權侵權或其他法律糾紛，相關責任與星樂之夢無關。<br>創作者本人應自行承擔因此產生的相關法律責任及賠償責任。</p>
+        <p>二次創作及衍生作品的著作權歸創作者本人所有。<br>若創作者所製作或公開的作品引發社會爭議、著作權侵權或其他法律糾紛，相關責任與星樂之夢無關。<br>創作者本人應自行承擔因此產生的相關法律責任及賠償責任。</p>
       </div>
     </div>
   </div>
@@ -897,7 +878,7 @@
       function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
       window.addEventListener('resize', resize); resize();
 
-      const palette = ['#A2D9FF', '#FF9AA2', '#FFD966', '#F4D1FF', '#B8FFB0'];
+      const palette = ['#9bc8fb', '#FB9D9E', '#C7EEFB', '#FCC89B'];
       const particles = [];
 
       function drawStar(ctx, x, y, radius, rot) {
