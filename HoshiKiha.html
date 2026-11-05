@@ -140,7 +140,7 @@
       display: flex; align-items: center; flex: 1;
     }
     .header-left { justify-content: flex-start; gap: 25px; }
-    .header-center { justify-content: center; }
+    .header-center { justify-content: center; } /* 讓 Logo 完美置中 */
     .header-right { justify-content: flex-end; gap: 25px; }
 
     .logo { text-decoration: none; display: flex; align-items: center; }
@@ -259,7 +259,7 @@
     .glass-panel {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 24px;
+      border-radius: 24px; /* 稍微加大圓角更符合液態感 */
       box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -321,11 +321,17 @@
       vertical-align: top;
     }
 
-    .color-indicator { display: flex; align-items: center; gap: 8px; }
+    .color-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-    .voice-provider { line-height: 1.6; }
+    .voice-provider {
+        line-height: 1.6;
+    }
 
-    /* 人設/故事資訊按鈕群組 */
+    /* 人設/故事資訊按鈕群組 (等分三欄，底部對齊) */
     .info-btn-group {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -362,7 +368,7 @@
     .voicebank-panel {
       padding: 40px;
       margin-bottom: 60px;
-      position: relative;
+      position: relative; /* 為了讓悠悠可以絕對定位在這個區塊內 */
     }
     .vb-header {
       display: flex; gap: 25px; align-items: center; margin-bottom: 25px;
@@ -398,16 +404,16 @@
 
     .vb-video-container {
       position: relative; border-radius: 16px; overflow: hidden;
-      background: #e5e5e5; aspect-ratio: 16/9; cursor: default; border: 1px solid var(--glass-border);
+      background: #e5e5e5; aspect-ratio: 16/9; cursor: pointer; border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
       max-width: 600px;
     }
     .vb-video-container img, .vb-video-container svg.placeholder {
         width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.5s ease; display: block;
     }
-
+    .vb-video-container:hover img { transform: scale(1.05); opacity: 1; }
     .play-btn {
-      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.2); pointer-events: none;
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none;
     }
     .play-btn::before { content: ''; border-style: solid; border-width: 10px 0 10px 16px; border-color: transparent transparent transparent #fff; margin-left: 4px; }
 
@@ -422,17 +428,17 @@
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
 
-    /* ================= 5. 中之人與形象 (雙欄版，移除預留照片區) ================= */
+    /* ================= 5. 中之人與形象 ================= */
     .vp-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* 改回雙欄 (左右排列) */
+      grid-template-columns: 1fr 1fr; /* 電腦版維持雙欄 */
       gap: 30px;
     }
     .vp-card {
       padding: 35px;
       display: flex;
       flex-direction: column;
-      justify-content: flex-start; /* 讓內容靠上對齊 */
+      justify-content: flex-start;
       gap: 20px;
     }
     .vp-info { flex: 1; }
@@ -595,6 +601,29 @@
       box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3);
     }
 
+    /* 歌詞 Modal 特別樣式 */
+    .lyrics-container {
+      text-align: center;
+      line-height: 2;
+      font-size: 16px;
+      color: var(--text-main);
+      padding: 30px 20px;
+      background: rgba(255,255,255,0.5);
+      border-radius: 16px;
+      white-space: pre-line; /* 保持歌詞換行 */
+      font-weight: 500;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+    .lyrics-title {
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--accent-dark);
+      margin-bottom: 15px;
+      border-bottom: 2px dashed rgba(2, 132, 199, 0.3);
+      padding-bottom: 10px;
+      display: inline-block;
+    }
+
     /* 飛鳥裝飾圖樣式 */
     .bird-img {
       position: absolute;
@@ -666,29 +695,6 @@
     }
     .lore-poem p { margin: 8px 0; }
 
-    /* 歌詞 Modal 特別樣式 */
-    .lyrics-container {
-      text-align: center;
-      line-height: 2;
-      font-size: 16px;
-      color: var(--text-main);
-      padding: 30px 20px;
-      background: rgba(255,255,255,0.5);
-      border-radius: 16px;
-      white-space: pre-line; /* 保持歌詞換行 */
-      font-weight: 500;
-      border: 1px solid rgba(255,255,255,0.8);
-    }
-    .lyrics-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: var(--accent-dark);
-      margin-bottom: 15px;
-      border-bottom: 2px dashed rgba(2, 132, 199, 0.3);
-      padding-bottom: 10px;
-      display: inline-block;
-    }
-
     /* ================= 8. 頁尾 ================= */
     footer {
       text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
@@ -720,7 +726,7 @@
     }
 
     @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏左側連結，重新排列 */
+      /* 手機版導覽列：隱藏左側連結，重新排列置中 */
       header { padding: 10px 0; background: rgba(255, 255, 255, 0.6);}
       .nav-container {
         flex-direction: row;
@@ -739,7 +745,7 @@
       .portrait-card { height: 350px; }
       .profile-card { padding: 25px 20px; }
 
-      .vp-card { padding: 25px 20px; }
+      /* 中之人區塊手機版調整：取消上下排，恢復為一般排列 */
       .vp-list li { display: flex; flex-direction: row; flex-wrap: wrap; }
       .vp-list li strong { width: auto; margin-right: 15px; flex-shrink: 0;}
 
@@ -783,7 +789,7 @@
         <div class="dropdown" onclick="toggleDropdown(event, this)">
           <span class="dropdown-btn">其他歌手 ▾</span>
           <div class="dropdown-content">
-            <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
+            <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
             <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
             <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
             <a href="Yuon.html">祐恩 (Yuon)</a>
@@ -812,7 +818,7 @@
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn" style="color: var(--text-main);">其他歌手 ▾</span>
         <div class="dropdown-content">
-          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
+          <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
           <a href="Yuon.html">祐恩 (Yuon)</a>
@@ -942,8 +948,8 @@
             <ul class="vp-list">
               <li><strong>活動名稱：</strong>(不公開)</li>
               <li><strong>生日：</strong>(不公開)</li>
-              <li><strong>聲音錄製日期：</strong>2026年</li>
-              <li><strong>錄製年齡：</strong>10歲</li>
+              <li><strong>聲音錄製日期：</strong>2026 年</li>
+              <li><strong>錄製年齡：</strong>(保密)</li>
             </ul>
             <p class="vp-desc">
               ✨ 為了呈現更具穿透力與活力的童聲表現，星希羽 V1.5.2 導入了由另一位小學生錄製的 Lively 聲線。<br>
@@ -1291,9 +1297,7 @@
     function toggleDropdown(event, element) {
       event.stopPropagation();
       document.querySelectorAll('.dropdown-content').forEach(d => {
-        if (d !== element.querySelector('.dropdown-content')) {
-          d.classList.remove('show');
-        }
+        if (d !== element.querySelector('.dropdown-content')) d.classList.remove('show');
       });
       element.querySelector('.dropdown-content').classList.toggle('show');
     }
@@ -1303,7 +1307,6 @@
       document.getElementById(id).classList.add('active');
       document.body.style.overflow = 'hidden';
     }
-
     function closeLoreModal(id) {
       document.getElementById(id).classList.remove('active');
       document.body.style.overflow = 'auto';
@@ -1318,9 +1321,7 @@
 
     window.onclick = function(event) {
       if (!event.target.matches('.dropdown-btn')) {
-        document.querySelectorAll('.dropdown-content').forEach(d => {
-          d.classList.remove('show');
-        });
+        document.querySelectorAll('.dropdown-content').forEach(d => d.classList.remove('show'));
       }
       if (event.target.classList.contains('modal-overlay') || event.target.id === 'lightbox') {
         event.target.classList.remove('active');
@@ -1353,27 +1354,12 @@
       const particles = [];
 
       function drawStar(ctx, x, y, radius, rot) {
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(rot);
-        ctx.beginPath();
-        const spikes = 5;
-        const outerRadius = radius;
-        const innerRadius = radius * 0.5;
-        let angle = Math.PI / 2 * 3;
-        let step = Math.PI / spikes;
-
+        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
+        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
         ctx.moveTo(0, -outerRadius);
-        for (let i = 0; i < spikes; i++) {
-          ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius);
-          angle += step;
-          ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius);
-          angle += step;
-        }
-        ctx.lineTo(0, -outerRadius);
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
+        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
+        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
       }
 
       function addParticle(x, y) {
