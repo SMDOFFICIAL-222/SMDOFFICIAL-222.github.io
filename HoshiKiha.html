@@ -259,7 +259,7 @@
     .glass-panel {
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 24px; /* 稍微加大圓角更符合液態感 */
+      border-radius: 24px;
       box-shadow: var(--glass-shadow), var(--glass-inner);
       backdrop-filter: var(--glass-blur);
       -webkit-backdrop-filter: var(--glass-blur);
@@ -321,11 +321,7 @@
       vertical-align: top;
     }
 
-    .color-indicator {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .color-indicator { display: flex; align-items: center; gap: 8px; }
 
     .voice-provider {
         line-height: 1.6;
@@ -404,14 +400,13 @@
 
     .vb-video-container {
       position: relative; border-radius: 16px; overflow: hidden;
-      background: #e5e5e5; aspect-ratio: 16/9; cursor: pointer; border: 1px solid var(--glass-border);
+      background: #e5e5e5; aspect-ratio: 16/9; cursor: default; border: 1px solid var(--glass-border);
       box-shadow: var(--glass-shadow);
       max-width: 600px;
     }
     .vb-video-container img, .vb-video-container svg.placeholder {
         width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.5s ease; display: block;
     }
-    .vb-video-container:hover img { transform: scale(1.05); opacity: 1; }
     .play-btn {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 60px; height: 40px; background: rgba(0, 0, 0, 0.6); border-radius: 10px; display: flex; justify-content: center; align-items: center; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.3); pointer-events: none;
     }
@@ -428,10 +423,10 @@
       filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
     }
 
-    /* ================= 5. 中之人與形象 ================= */
+    /* ================= 雙欄並列的中之人區塊 ================= */
     .vp-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr; /* 電腦版維持雙欄 */
+      grid-template-columns: 1fr 1fr;
       gap: 30px;
     }
     .vp-card {
@@ -461,12 +456,12 @@
       font-weight: 500;
     }
 
-    /* ================= 6. 形象3視圖展示 ================= */
+    /* ================= 3. 形象3視圖展示 ================= */
     .reference-sheet-wrapper { position: relative; width: 100%; overflow: hidden; border-radius: 24px; border: 1px solid var(--glass-border); padding: 0;}
     .reference-sheet { width: 100%; display: block; background: rgba(255, 255, 255, 0.2); }
     .tinka-star { position: absolute; bottom: 20px; left: 20px; max-height: 100px; opacity: 0.9; pointer-events: none; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
 
-    /* ================= 圖繪專區 (Masonry Grid) ================= */
+    /* ================= 4. 圖繪專區 (Masonry Grid) ================= */
     .gallery-masonry {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -726,19 +721,20 @@
     }
 
     @media (max-width: 768px) {
-      /* 手機版導覽列：隱藏左側連結，重新排列置中 */
-      header { padding: 10px 0; background: rgba(255, 255, 255, 0.6);}
+      /* 手機版導覽列：隱藏左側連結，置中排列 */
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.85);}
       .nav-container {
-        flex-direction: row;
-        gap: 12px;
-        justify-content: space-between;
-        padding: 0 20px;
+        flex-direction: column;
+        gap: 10px;
+        justify-content: center;
+        padding: 10px 20px;
       }
-      .header-left, .header-right { display: none; }
-      .header-center { width: 100%; display: flex; justify-content: flex-start; }
-      .menu-btn { display: block; }
+      .header-left { display: none; }
+      .header-center { width: 100%; display: flex; justify-content: center; }
+      .header-right { width: 100%; display: flex; justify-content: center; gap: 20px; }
+      .menu-btn { display: none; }
 
-      body { padding-top: 100px; }
+      body { padding-top: 130px; }
 
       .left-column { flex-direction: column; height: auto; }
       .logo-card { height: auto; padding: 20px;}
@@ -789,7 +785,7 @@
         <div class="dropdown" onclick="toggleDropdown(event, this)">
           <span class="dropdown-btn">其他歌手 ▾</span>
           <div class="dropdown-content">
-            <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
+            <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
             <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
             <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
             <a href="Yuon.html">祐恩 (Yuon)</a>
@@ -818,7 +814,7 @@
       <div class="dropdown" onclick="toggleDropdown(event, this)">
         <span class="dropdown-btn" style="color: var(--text-main);">其他歌手 ▾</span>
         <div class="dropdown-content">
-          <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
+          <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
           <a href="Yuon.html">祐恩 (Yuon)</a>
@@ -1046,7 +1042,7 @@
           <div class="theme-col">
             <div class="platform-label" style="align-self: flex-start; background: rgba(255,255,255,0.7); backdrop-filter: blur(5px);">
               <svg viewBox="0 0 24 24"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.84.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.781s.18-1.2.78-1.381c4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.56.3z"/></svg>
-              Spotify EP專區
+              Spotify
             </div>
 
             <div class="spotify-embed">
@@ -1224,24 +1220,47 @@
       <h2>《飛鳥》 歌詞</h2>
       <div class="lyrics-container">
         <div class="lyrics-title">飛鳥</div>
-        <p>午後的陽光穿透了窗櫺</p>
-        <p>空氣中懸浮著微小的曾經</p>
-        <p>課桌椅刻下的名是我們長大的證明</p>
-        <p>收進心底 當作遠行的行李</p>
+        <p>午後的陽光 穿透了窗櫺<p>
+        <p>空氣中懸浮著 微小的曾經<p>
+        <p>課桌椅刻下的名 是我們長大的證明<p>
+        <p>收進心底 當作遠行的行李<p>
+        <p>鐘聲催促著步伐 卻催不走回憶<p>
+        <p>誰的吉他還在走廊 練習著勇氣<p>
 
-        <p style="font-size: 14px; color: var(--text-muted); margin-top: 20px;">
-          (為了保護版權，此處僅節錄部分歌詞。<br>請搜尋《飛鳥》以獲得完整歌詞內容。)
-        </p>
+        <p>雖然不捨這熟悉的舊場景<p>
+        <p>但我們知道候鳥必須遷徙<p>
 
-        <div class="lyrics-title" style="margin-top: 30px;">飛鳥2027『展翅高飛版』</div>
-        <p>午後的陽光 穿透了窗櫺</p>
-        <p>空氣中懸浮著 微小的曾經</p>
-        <p>課桌椅刻下的名 是我們長大的證明</p>
-        <p>收進心底 當作遠行的行李</p>
+        <p>展翅吧！擁抱這片穹蒼<p>
+        <p>把青春寫成最驕傲的篇章<p>
+        <p>當星樂之夢在指尖發燙<p>
+        <p>指引我們越過海洋尋找新的方向<p>
+        <p>翱翔吧！逆著風的狂妄<p><p>
+        <p>讓淚水蒸發成名為成長的光
+        <p>掙脫了那些迷惘的牆<p>
+        <p>原來天空一直在我們頭頂等待飛翔<p>
 
-        <p style="font-size: 14px; color: var(--text-muted); margin-top: 20px;">
-          (為了保護版權，此處僅節錄部分歌詞。<br>請搜尋《飛鳥2027『展翅高飛版』》以獲得完整歌詞內容。)
-        </p>
+        <p>教室裡的對白換了誰來接棒<p>
+        <p>舞台上的燈光會有新的模樣<p>
+        <p>卸下了這身行囊換上未知的渴望<p>
+        <p>在下個路口我會變得更堅強<p>
+        <p>季節總會更迭羽翼終將豐滿<p>
+        <p>如果聲音改變了形狀與波段<p>
+
+        <p>請記得這首曾一起唱過的歌<p>
+        <p>是我們之間最美的羈絆<p>
+
+        <p>去飛吧！擁抱這片穹蒼<p>
+        <p>把青春寫成最驕傲的篇章<p>
+        <p>當星樂之夢在指尖發燙<p>
+        <p>就算孤單也要大聲地唱<p>
+        <p>去追吧！逆著風的狂妄<p>
+        <p>讓淚水蒸發成名為成長的光<p>
+        <p>飛鳥啊！別回頭看過往<p>
+        <p>因為未來正在前方的雲端<p>
+        <p>閃閃發亮
+
+        <p>再見了我的青春<p>
+        <p>謝謝你給了我展翅的天分<p>
       </div>
     </div>
   </div>
@@ -1342,8 +1361,10 @@
       function resize(){
         width = window.innerWidth;
         height = window.innerHeight;
-        canvas.width = width * DPR;
-        canvas.height = height * DPR;
+-         canvas.width = width
+DPR;
+-         canvas.height = height
+DPR;
         ctx.scale(DPR, DPR);
       }
       window.addEventListener('resize', resize);
@@ -1354,26 +1375,45 @@
       const particles = [];
 
       function drawStar(ctx, x, y, radius, rot) {
-        ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
-        const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
-        let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rot);
+        ctx.beginPath();
+        const spikes = 5;
+        const outerRadius = radius;
+        const innerRadius = radius * 0.5;
+-         let angle = Math.PI / 2
+3;
+        let step = Math.PI / spikes;
+
         ctx.moveTo(0, -outerRadius);
-        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
-        ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius);
+          angle += step;
+          ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius);
+          angle += step;
+        }
+        ctx.lineTo(0, -outerRadius);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
       }
 
       function addParticle(x, y) {
         particles.push({
           x: x,
           y: y,
-          vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5),
-          vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5,
+-           vx: Math.cos(Math.random() * Math.PI
+2) * (Math.random() * 1.5),
+-           vy: Math.sin(Math.random() * Math.PI
+2) * (Math.random() * 1.5) - 0.5,
           size: Math.random() * 8 + 6,
           color: palette[Math.floor(Math.random() * palette.length)],
           alpha: 0.8,
           life: 0,
           maxLife: Math.random() * 40 + 40,
-          rot: Math.random() * Math.PI * 2,
+-           rot: Math.random() * Math.PI
+2,
           rotSpeed: (Math.random() - 0.5) * 0.1
         });
       }
@@ -1396,7 +1436,8 @@
 
       function animate() {
         ctx.clearRect(0, 0, width, height);
-        for (let i = particles.length - 1; i >= 0; i--) {
+-         for (let i = particles.length
+1; i >= 0; i--) {
           const p = particles[i];
           p.life++;
 
@@ -1409,7 +1450,9 @@
           p.y += p.vy;
           p.vy += 0.05;
           p.rot += p.rotSpeed;
-          p.alpha = 0.8 * (1 - p.life / p.maxLife);
+-           p.alpha = 0.8 (
+- 1
+p.life / p.maxLife);
 
           ctx.fillStyle = p.color;
           ctx.globalAlpha = p.alpha;
