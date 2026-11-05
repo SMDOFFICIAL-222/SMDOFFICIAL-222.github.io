@@ -636,7 +636,6 @@
       flex-direction: column;
       text-decoration: none;
       cursor: pointer;
-      flex-grow: 1; /* 關鍵：讓卡片自動撐滿剩餘高度 */
       justify-content: flex-start;
       background: rgba(255,255,255,0.4);
       border-radius: 16px;
@@ -872,8 +871,7 @@
             <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
             <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
             <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
-            <a href="Yuon.html">祐恩 (Yuon)</a>
-            <a href="index.html#singers">查看全陣容</a>
+            <a href="vsinger.html">查看全陣容</a>
           </div>
         </div>
         <a href="index.html">返回首頁</a>
@@ -901,8 +899,7 @@
           <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
           <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
-          <a href="Yuon.html">祐恩 (Yuon)</a>
-          <a href="index.html#singers">查看全陣容</a>
+          <a href="vsinger.html">查看全陣容</a>
         </div>
       </div>
     </div>
@@ -921,7 +918,6 @@
 
       <div class="profile-card glass-panel">
         <table class="char-table">
-          <tr><td>世界觀本名</td><td>陳彗羽</td></tr>
           <tr><td>性別</td><td>女生</td></tr>
           <tr><td>年齡</td><td>9歲</td></tr>
           <tr><td>身高</td><td>135cm</td></tr>
@@ -961,9 +957,9 @@
       <div class="glass-panel voicebank-panel">
         <div class="vb-header">
           <!-- 暫時使用立繪作為頭像 -->
-          <img class="vb-avatar" src="img/星彗羽2.0.png" alt="星彗羽頭像" style="object-position: top;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/></svg>'">
+          <img class="vb-avatar" src="img/星彗羽頭像ACE2.png" alt="星彗羽頭像" style="object-position: top;" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'100%\'><rect fill=\'%23ffffff\' width=\'100%\' height=\'100%\'/></svg>'">
           <div class="vb-info">
-            <h3>星彗羽 ACE Ai Voice System V1.1</h3>
+            <h3>星彗羽V2即將到來，敬請期待</h3>
             <p>是由星樂之夢開發並營運的女性兒童聲虛擬歌手，基於使用 ACE Studio 歌聲合成引擎製作，由台灣女性小學生錄製。</p>
           </div>
         </div>
@@ -1060,7 +1056,7 @@
               YouTube MV
             </div>
 
-            <!-- 修正YouTube MV 讓它不延展 (移除 flex: 1 與 height: 100%) -->
+            <!-- 修正YouTube MV 讓它不延展 -->
             <a href="https://youtu.be/tUKJC-72Syw" target="_blank" class="mv-card-link">
               <div class="mv-title"><span>代表作</span> 《花途》</div>
               <div class="mv-thumbnail">
@@ -1100,41 +1096,27 @@
   <div class="modal-overlay" id="infoModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('infoModal')">✕</div>
-      <h2>🌟 星希羽｜人設設定</h2>
+      <h2>🌟 星彗羽｜人設設定</h2>
       <ul class="lore-list">
-        <li><strong>本名：</strong>武田祐恩(金祐恩)</li>
-        <li><strong>MBTI：</strong>ENFJ-A</li>
+        <li><strong>本名：</strong>金祐奈(武田祐奈)</li>
+        <li><strong>MBTI：</strong>未公開</li>
         <li><strong>星座：</strong>獅子座 ♌️</li>
-        <li><strong>血型：</strong>AB型</li>
-        <li><strong>個性：</strong>活潑、熱情、好奇心強、有自己的想法，喜歡與熟悉的人相處，很愛調皮搗蛋</li>
-        <li><strong>喜歡：</strong>四處玩耍冒險、唱歌跳舞、創作音樂、捉弄姊姊</li>
-        <li><strong>怪癖：</strong>喜歡被搔癢、把指甲稱呼為「爪爪」</li>
-        <li><strong>喜歡的食物：</strong>納豆</li>
-        <li><strong>討厭的食物：</strong>青椒、香菜</li>
-        <li><strong>使用的名字：</strong>在台灣生活期間使用「金祐恩」這個名字，以隱藏日本人的身分</li>
-        <li><strong>視力：</strong>遠視</li>
-        <li><strong>出生日期：</strong>2017年8月14日 AM 4:09</li>
-        <li><strong>出生地：</strong>日本・東京都</li>
+        <li><strong>血型：</strong>O型</li>
+        <li><strong>個性：</strong>溫柔，細膩</li>
+        <li><strong>喜歡：</strong>繪圖，烹飪</li>
+        <li><strong>喜歡的食物：</strong>都喜歡</li>
+        <li><strong>討厭的食物：</strong>沒有任何討厭的食物</li>
+        <li><strong>出生日期：</strong>2015年8月14日 AM11:18</li>
+        <li><strong>出生地：</strong>臺灣・高雄市</li>
       </ul>
-      <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.7); border-radius: 12px; border: 1px solid var(--card-border);">
-        <h3 style="color: var(--accent-dark); margin-top: 0; margin-bottom: 15px; font-size: 18px;">✨「星希羽」名字由來</h3>
-        <p style="margin: 5px 0;"><strong>星｜</strong> 星星、星官、流星，象徵星辰與閃耀。</p>
-        <p style="margin: 5px 0;"><strong>希｜</strong> 人們向星空許下的願望與希望。</p>
-        <p style="margin: 5px 0;"><strong>羽｜</strong> 羽毛的輕盈、活潑與可愛，象徵自由飛翔。</p>
-        <hr style="border: 0; border-top: 1px dashed rgba(0,0,0,0.1); margin: 15px 0;">
-        <p style="margin: 0;"><strong>🌠 8月14日｜</strong>「14」取自軒轅十四（Regulus），呼應獅子座與星辰意象。</p>
-      </div>
-
       <div style="margin-top: 25px; padding: 20px; background: rgba(255,255,255,0.7); border-radius: 12px; border: 1px solid var(--card-border);">
         <h3 style="color: var(--accent-dark); margin-top: 0; margin-bottom: 15px; font-size: 18px;">🌱 頭髮呆毛設定</h3>
         <ul style="list-style: none; padding-left: 0; margin: 0; color: var(--text-main); line-height: 1.8; font-size: 15px;">
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😊 開心：</strong>呆毛會挺直並搖晃</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>🤔 好奇：</strong>一直隨意晃動</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😠 生氣：</strong>依照性別垂下呆毛顏色，男垂黃／女垂橘</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😢 難過：</strong>呆毛會變得相當無力或垂下</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😳 害羞：</strong>呆毛左右小幅度晃動</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😊 開心：</strong>晃動</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😠 生氣：</strong>捲起來</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😢 難過：</strong>垂下</li>
+          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😲 驚訝：</strong>束直</li>
           <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😶 發呆：</strong>呆毛會節奏擺動</li>
-          <li style="margin-bottom: 8px; border-bottom: 1px dashed rgba(0,0,0,0.05); padding-bottom: 8px;"><strong>😲 驚訝：</strong>兩根束直</li>
           <li><strong>💤 睡覺：</strong>呆毛完全關機垂下</li>
         </ul>
       </div>
@@ -1248,27 +1230,49 @@
   <div class="modal-overlay" id="lyricsModal">
     <div class="modal-card">
       <div class="close-modal" onclick="closeLoreModal('lyricsModal')">✕</div>
-      <h2>《飛鳥》 歌詞</h2>
+      <h2>《花途》 歌詞</h2>
       <div class="lyrics-container">
-        <div class="lyrics-title">飛鳥</div>
-        <p>午後的陽光穿透了窗櫺</p>
-        <p>空氣中懸浮著微小的曾經</p>
-        <p>課桌椅刻下的名是我們長大的證明</p>
-        <p>收進心底 當作遠行的行李</p>
-
-        <p style="font-size: 14px; color: var(--text-muted); margin-top: 20px;">
-          (為了保護版權，此處僅節錄部分歌詞。<br>請搜尋《飛鳥》以獲得完整歌詞內容。)
-        </p>
-
-        <div class="lyrics-title" style="margin-top: 30px;">飛鳥2027『展翅高飛版』</div>
-        <p>午後的陽光 穿透了窗櫺</p>
-        <p>空氣中懸浮著 微小的曾經</p>
-        <p>課桌椅刻下的名 是我們長大的證明</p>
-        <p>收進心底 當作遠行的行李</p>
-
-        <p style="font-size: 14px; color: var(--text-muted); margin-top: 20px;">
-          (為了保護版權，此處僅節錄部分歌詞。<br>請搜尋《飛鳥2027『展翅高飛版』》以獲得完整歌詞內容。)
-        </p>
+        <div class="lyrics-title">花途</div>
+        <p>當熟悉的鐘聲，劃破了冬日的微寒</p>
+        <p>翻開下一頁，是尚未命名的期盼</p>
+        <p>溫柔地告別，那些跌跌撞撞的從前</p>
+        <p>所有的迷惘，都化作土壤裡的沉澱</p>
+        <p>不盲從誰的航線，我有我扎根的起點</p>
+        <p>準備好綻放，迎向這嶄新的明天</p>
+        <br>
+        <p>當第一陣春風，輕撫過懵懂的側臉</p>
+        <p>我知道，是時候向未知的遠方許願</p>
+        <br>
+        <p>聽見了嗎？這是花開的宣告</p>
+        <p>熬過寒冬，換來這一刻的驕傲</p>
+        <p>微笑著轉身，走過那些熟悉的街道</p>
+        <p>未知的旅程，我會帶著溫柔的步調</p>
+        <p>不再害怕，狂風陣陣地呼嘯</p>
+        <p>每一次飄落，都是成長蛻變的記號</p>
+        <p>就讓這漫天粉雪，成為青春的座標</p>
+        <p>在自己的時區裡，畫出最美的微笑</p>
+        <br>
+        <p>告別了溫室，踏上未知的風景</p>
+        <p>偶爾有逆風，天空卻無比透明</p>
+        <p>將那些回憶，摺疊成沿途的幸運</p>
+        <p>陪伴著我，度過每一次的瓶頸</p>
+        <p>不再需要，誰來為我點亮繁星</p>
+        <p>內心的微光，早已足夠澄明</p>
+        <br>
+        <p>當突來的狂風，捲起了沉睡的落葉</p>
+        <p>我知道，這一次將毫無保留地跨界</p>
+        <br>
+        <p>綻放吧！染上一抹無畏的紅妝</p>
+        <p>在屬於我的季節，迎著風歌唱</p>
+        <p>揮手告別昨天，眼淚化作閃耀的光芒</p>
+        <p>不再猶豫，向著未來勇敢地闖蕩</p>
+        <p>每一片花瓣，都是歲月凝結的信仰</p>
+        <p>就算曾經受傷，也要長出堅韌的翅膀</p>
+        <p>這就是我，絕不退縮的倔強</p>
+        <p>化作漫天櫻花，為自己驕傲地盛放</p>
+        <br>
+        <p>乘著你振翅高飛的那陣微風</p>
+        <p>就是我們約定好，一起盛開的春天</p>
       </div>
     </div>
   </div>
@@ -1292,9 +1296,6 @@
       </a>
       <a href="https://open.spotify.com/artist/79GjJBcPcD7dFuWA3GWo50" target="_blank" aria-label="Spotify" style="background: none; box-shadow: none; width: auto; height: auto;">
         <svg viewBox="0 0 24 24" width="28" height="28" fill="#1ED760"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.84.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.781s.18-1.2.78-1.381c4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.56.3z"/></svg>
-      </a>
-      <a href="https://x.com/SMD_Kiha" target="_blank" aria-label="X (Twitter)" style="background: none; box-shadow: none; width: auto; height: auto;">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="#000000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
       </a>
     </div>
     <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
@@ -1393,7 +1394,7 @@
         const spikes = 5;
         const outerRadius = radius;
         const innerRadius = radius * 0.5;
-        let angle = Math.PI / 2 * 3;
+        let angle = -Math.PI / 2;
         let step = Math.PI / spikes;
 
         ctx.moveTo(0, -outerRadius);
@@ -1473,4 +1474,4 @@
     })();
   </script>
 </body>
-</html> 
+</html>
