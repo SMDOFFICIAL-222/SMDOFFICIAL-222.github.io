@@ -479,6 +479,48 @@
     .modal-body li { margin-bottom: 5px; }
     .modal-body p { margin-bottom: 15px; }
 
+    /* ================= 回到頂部按鈕 ================= */
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), var(--glass-inner);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      color: var(--accent-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #scrollToTopBtn.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    #scrollToTopBtn:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(31, 38, 135, 0.15), var(--glass-inner);
+    }
+
+    #scrollToTopBtn svg {
+      width: 24px;
+      height: 24px;
+    }
+
     /* ================= 8. 頁尾 ================= */
     footer {
       text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
@@ -507,6 +549,14 @@
       .blob-1 { width: 300px; height: 300px; }
       .blob-2 { width: 350px; height: 350px; }
       .blob-3 { width: 250px; height: 250px; }
+
+      /* 手機版回到頂部按鈕調整 */
+      #scrollToTopBtn {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+      }
     }
   </style>
 </head>
@@ -812,6 +862,13 @@
     <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
   </footer>
 
+  <!-- 回到頂部按鈕 -->
+  <button id="scrollToTopBtn" aria-label="回到頂部">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="18 15 12 9 6 15"></polyline>
+    </svg>
+  </button>
+
   <!-- 手機版選單與 Modal 切換腳本 -->
   <script>
     // ================= 手機版漢堡選單邏輯 =================
@@ -875,7 +932,13 @@
       let width, height;
       const DPR = window.devicePixelRatio || 1;
 
-      function resize(){ width = window.innerWidth; height = window.innerHeight; canvas.width = width * DPR; canvas.height = height * DPR; ctx.scale(DPR, DPR); }
+      function resize(){
+        width = window.innerWidth;
+        height = window.innerHeight;
+        canvas.width = width * DPR;
+        canvas.height = height * DPR;
+        ctx.scale(DPR, DPR);
+      }
       window.addEventListener('resize', resize); resize();
 
       const palette = ['#9bc8fb', '#FB9D9E', '#C7EEFB', '#FCC89B'];
@@ -886,15 +949,36 @@
         const spikes = 5; const outerRadius = radius; const innerRadius = radius * 0.5;
         let angle = Math.PI / 2 * 3; let step = Math.PI / spikes;
         ctx.moveTo(0, -outerRadius);
-        for (let i = 0; i < spikes; i++) { ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius); angle += step; ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius); angle += step; }
+        for (let i = 0; i < spikes; i++) {
+          ctx.lineTo(Math.cos(angle) * outerRadius, Math.sin(angle) * outerRadius);
+          angle += step;
+          ctx.lineTo(Math.cos(angle) * innerRadius, Math.sin(angle) * innerRadius);
+          angle += step;
+        }
         ctx.lineTo(0, -outerRadius); ctx.closePath(); ctx.fill(); ctx.restore();
       }
 
       function addParticle(x, y) {
-        particles.push({ x: x, y: y, vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5), vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5, size: Math.random() * 8 + 6, color: palette[Math.floor(Math.random() * palette.length)], alpha: 0.8, life: 0, maxLife: Math.random() * 40 + 40, rot: Math.random() * Math.PI * 2, rotSpeed: (Math.random() - 0.5) * 0.1 });
+        particles.push({
+          x: x,
+          y: y,
+          vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 1.5),
+          vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 1.5) - 0.5,
+          size: Math.random() * 8 + 6,
+          color: palette[Math.floor(Math.random() * palette.length)],
+          alpha: 0.8,
+          life: 0,
+          maxLife: Math.random() * 40 + 40,
+          rot: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - 0.5) * 0.1
+        });
       }
 
-      window.addEventListener('mousemove', (e) => { for(let i=0; i<2; i++) addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10); }, {passive: true});
+      window.addEventListener('mousemove', (e) => {
+        for(let i=0; i<2; i++) {
+          addParticle(e.clientX + (Math.random()-0.5)*10, e.clientY + (Math.random()-0.5)*10);
+        }
+      }, {passive: true});
 
       function animate() {
         ctx.clearRect(0, 0, width, height);
@@ -909,6 +993,29 @@
       }
       animate();
     })();
+  </script>
+
+  <!-- 回到頂部按鈕邏輯 -->
+  <script>
+    const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+    // 監聽滾動事件
+    window.addEventListener("scroll", () => {
+      // 當頁面向下滾動超過 300px 時顯示按鈕
+      if (window.scrollY > 300) {
+        scrollToTopBtn.classList.add("show");
+      } else {
+        scrollToTopBtn.classList.remove("show");
+      }
+    });
+
+    // 點擊返回頂部（平滑滾動）
+    scrollToTopBtn.addEventListener("click", () => {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    });
   </script>
 </body>
 </html>
