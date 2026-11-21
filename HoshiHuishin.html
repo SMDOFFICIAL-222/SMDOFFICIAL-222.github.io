@@ -6,7 +6,7 @@
   <title>星卉芯 HoshiHuishin | 官方網站</title>
   <meta name="description" content="星卉芯，是由星樂之夢開發並營運的女性兒童聲虛擬歌手。">
 
-  <link rel="icon" href="img/StarLeo_Logo.png" type="image/png">
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
 
   <style>
     /* ================= 全域設定與重置 ================= */
@@ -292,12 +292,14 @@
 
     .color-indicator { display: flex; align-items: center; gap: 8px; }
 
-    /* 人設按鈕群組 */
+    /* 個人詳細人設按鈕（世界觀改由 vsinger.html 統一管理） */
     .info-btn-group {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: minmax(0, 1fr);
+      width: 100%;
+      max-width: 320px;
       gap: 15px;
-      margin-top: 30px;
+      margin: 30px auto 0;
       padding-top: 20px;
       border-top: 1px solid rgba(0,0,0,0.06);
     }
@@ -457,13 +459,6 @@
     .lore-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(240, 155, 89, 0.2); }
     .lore-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .lore-list strong { color: var(--accent-dark); display: inline-block; min-width: 100px; }
-    .lore-poem {
-      text-align: center; margin: 20px 0; padding: 25px 20px;
-      background: rgba(255,255,255,0.6); border-radius: 12px; border: 1px solid rgba(255,255,255,0.8);
-      color: var(--accent-dark); font-size: 15px; letter-spacing: 1px; font-weight: bold;
-    }
-    .lore-poem p { margin: 8px 0; }
-
     /* ================= 回到頂部按鈕 ================= */
     .back-to-top {
       position: fixed;
@@ -559,9 +554,10 @@
           <span class="dropdown-btn">其他歌手 ▾</span>
           <div class="dropdown-content">
             <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
-            <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
             <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
-            <a href="vsinger.html">查看全陣容</a>
+            <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
+            <a href="Yuon.html">祐恩 (Yuon)</a>
+            <a href="index.html#singers">查看全陣容</a>
           </div>
         </div>
         <a href="index.html">返回首頁</a>
@@ -587,9 +583,10 @@
         <span class="dropdown-btn" style="color: var(--text-main);">其他歌手 ▾</span>
         <div class="dropdown-content">
           <a href="HoshiKiha.html">星希羽 (HoshiKiha)</a>
-          <a href="HoshiHuiha.html">星彗羽 (HoshiHuiha)</a>
           <a href="HoshiJoken.html">星丞軒 (HoshiJoken)</a>
-          <a href="vsinger.html">查看全陣容</a>
+          <a href="HoshiHuishin.html">星卉芯 (HoshiHuishin)</a>
+          <a href="Yuon.html">祐恩 (Yuon)</a>
+          <a href="index.html#singers">查看全陣容</a>
         </div>
       </div>
     </div>
@@ -608,13 +605,15 @@
 
       <div class="profile-card glass-panel">
         <table class="char-table">
+          <tr><td>本名</td><td>許卉芯</td></tr>
           <tr><td>性別</td><td>女生</td></tr>
           <tr><td>年齡</td><td>8歲</td></tr>
           <tr><td>身高</td><td>132cm</td></tr>
           <tr><td>體重</td><td>27kg</td></tr>
-          <tr><td>生日</td><td>7月24日</td></tr>
+          <tr><td>出生日期</td><td>2016年7月24日</td></tr>
           <tr><td>星座</td><td>獅子座</td></tr>
           <tr><td>血型</td><td>A型</td></tr>
+          <tr><td>MBTI</td><td>ESFP-A（暫定）</td></tr>
           <tr><td>代表色</td>
             <td>
               <div class="color-indicator">
@@ -627,10 +626,9 @@
           <tr><td>立繪插畫</td><td>非當事炸蝦</td></tr>
         </table>
 
-        <!-- 按鈕群組 (已移除故事背景) -->
-        <div class="info-btn-group" style="grid-template-columns: repeat(2, 1fr);">
-          <button class="info-btn-small" onclick="openLoreModal('infoModal')">📖 詳細人設</button>
-          <button class="info-btn-small" onclick="openLoreModal('worldModal')">🌌 團體世界觀</button>
+        <!-- 個人設定：團體世界觀已移至 vsinger.html -->
+        <div class="info-btn-group">
+          <button type="button" class="info-btn-small" onclick="openLoreModal('infoModal')">📖 詳細人設</button>
         </div>
 
       </div>
@@ -712,34 +710,21 @@
     </section>
   </main>
 
-  <!-- ================= 彈出視窗：人設資訊 ================= -->
-  <div class="modal-overlay" id="infoModal">
+  <!-- ================= 彈出視窗：星卉芯個人詳細人設 ================= -->
+  <div class="modal-overlay" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="huishinInfoTitle">
     <div class="modal-card">
-      <div class="close-modal" onclick="closeLoreModal('infoModal')">✕</div>
-      <h2>🌟 星卉芯｜人設設定</h2>
+      <button type="button" class="close-modal" onclick="closeLoreModal('infoModal')" aria-label="關閉詳細人設">✕</button>
+      <h2 id="jokenInfoTitle">🌟 星卉芯｜詳細人設</h2>
       <ul class="lore-list">
-        <li><strong>特徵：</strong>目前官方設定建置中...</li>
+        <li><strong>本名：</strong>許卉芯</li>
+        <li><strong>MBTI：</strong>ESFP-A</li>
+        <li><strong>星座：</strong>獅子座</li>
+        <li><strong>血型：</strong>A型</li>
+        <li><strong>個性：</strong>元氣、活潑、好奇、自然愛笑</li>
+        <li><strong>喜歡：</strong>唱歌跳舞，研究小動物</li>
+        <li><strong>出生日期：</strong>2016年7月24日</li>
+        <li><strong>出生地：</strong>臺灣・高雄市</li>
       </ul>
-    </div>
-  </div>
-
-  <!-- ================= 彈出視窗：團體世界觀 ================= -->
-  <div class="modal-overlay" id="worldModal">
-    <div class="modal-card">
-      <div class="close-modal" onclick="closeLoreModal('worldModal')">✕</div>
-      <h2>團體世界觀：星幻之城 × StarLeo</h2>
-      <div class="lore-list" style="color: var(--text-main); line-height: 1.8;">
-        <p><strong>星幻之城 × StarLeo</strong> 是星樂之夢旗下的小學生虛擬歌手團體系列，由 <strong>星希羽、星彗羽、星丞軒、星卉芯</strong> 組成。</p>
-        <div class="lore-poem">
-          <p>每個成員都各有自己專屬的音域</p>
-          <p>在這浩瀚星河中，誕生著被稱為「星之子」的孩子。</p>
-          <p>星幻之城，是他們相遇的地方。</p>
-          <p>而星幻樂園，能將心中的情感化為星光，</p>
-          <p>讓尚未說出口的故事，被世界聽見。</p>
-        </div>
-        <p><strong>StarLeo</strong> 是誕生於世界觀舞台「星幻之城」的音樂團體。成員們在同一座城市相遇，站上核心舞台「星幻樂園」，用各自不同的聲音，一起唱出屬於他們的故事。</p>
-        <p>團體不設固定主唱，每一首作品，都由最適合那首歌的成員擔任核心演唱。</p>
-      </div>
     </div>
   </div>
 
@@ -752,7 +737,7 @@
 
   <footer>
     <div class="social-links" style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
-      </a>
+      
       <a href="#" target="_blank" aria-label="YouTube Music" style="background: rgba(255,255,255,0.8); box-shadow: none; width: auto; height: auto; pointer-events: none; opacity: 0.5;">
         <svg viewBox="0 0 24 24" width="30" height="30"><circle cx="12" cy="12" r="11.5" fill="#FF0000"/><circle cx="12" cy="12" r="6" fill="#FFFFFF"/><polygon points="10,9 15.5,12 10,15" fill="#FF0000"/></svg>
       </a>
