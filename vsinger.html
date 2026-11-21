@@ -281,6 +281,78 @@
       filter: drop-shadow(0 2px 4px rgba(255,255,255,0.8));
     }
 
+
+    /* ================= 團體設定按鈕：標題右側 ================= */
+    .group-info-btn {
+      --group-accent: var(--accent-dark);
+      margin-left: auto;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 43px;
+      padding: 9px 21px;
+      border: 1px solid var(--group-accent);
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.55);
+      color: var(--group-accent);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      font: inherit;
+      font-size: 15px;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .group-info-street { --group-accent: #008eac; }
+    .group-info-forest { --group-accent: #5b892b; }
+    .group-info-starleo { --group-accent: #ab7400; }
+    .group-info-btn:hover {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 12px 26px rgba(31, 38, 135, .15), var(--glass-inner);
+      transform: translateY(-2px);
+    }
+    .group-info-btn:focus-visible, .group-info-modal-close:focus-visible {
+      outline: 3px solid var(--accent-dark);
+      outline-offset: 3px;
+    }
+
+    /* ================= 三組共用的 Liquid Glass 團體設定視窗 ================= */
+    .group-modal { --modal-accent: var(--accent-dark); }
+    .group-modal[data-theme="street"] { --modal-accent: #008eac; }
+    .group-modal[data-theme="forest"] { --modal-accent: #5b892b; }
+    .group-modal[data-theme="starleo"] { --modal-accent: #ab7400; }
+    .group-modal .modal-content {
+      max-width: 760px;
+      border-top: 4px solid var(--modal-accent);
+      overflow: hidden;
+    }
+    .group-modal .modal-header h2,
+    .group-modal .modal-body h3 { color: var(--modal-accent); }
+    .group-modal .modal-body {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .group-modal .modal-body h3 {
+      border-bottom: 2px dashed color-mix(in srgb, var(--modal-accent), transparent 75%);
+    }
+    .group-modal .modal-body ul { padding-left: 24px; }
+    .group-modal .modal-body li { padding-left: 2px; }
+    .group-modal .modal-body strong { font-weight: 800; }
+    @media (max-width: 768px) {
+      .group-info-btn { margin-left: 0; align-self: flex-start; }
+      .group-modal .modal-header { padding: 18px; }
+      .group-modal .modal-header h2 { font-size: 18px; }
+      .group-modal .modal-content { max-height: 88vh; }
+      .group-modal .modal-body { padding: 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .group-info-btn { transition: none; }
+    }
+
     /* ================= 歌手卡片網格 (Liquid Glass) ================= */
     .singers-grid {
       display: grid;
@@ -619,6 +691,7 @@
         <img src="img/STREETECHOES_Logo.png" alt="StreetEchoes Logo" class="series-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
         <span class="series-badge badge-street" style="display: none;">SERIES 01</span>
         <h2 class="series-title">StreetEchoes 系列</h2>
+        <button type="button" class="group-info-btn group-info-street" data-group="street" aria-haspopup="dialog" aria-controls="groupInfoModal" aria-label="查看 StreetEchoes 團體設定"><span aria-hidden="true">✦</span> 團體設定</button>
       </div>
 
       <div class="singers-grid">
@@ -672,6 +745,7 @@
         <img src="img/森嶼之聲Logo.png" alt="森嶼之聲 Logo" class="series-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
         <span class="series-badge badge-forest" style="display: none;">SERIES 02</span>
         <h2 class="series-title">森嶼之聲 系列</h2>
+        <button type="button" class="group-info-btn group-info-forest" data-group="forest" aria-haspopup="dialog" aria-controls="groupInfoModal" aria-label="查看 森嶼之聲 團體設定"><span aria-hidden="true">✦</span> 團體設定</button>
       </div>
 
       <div class="singers-grid">
@@ -725,6 +799,7 @@
         <img src="img/StarLeo_Logo.png" alt="StarLeo Logo" class="series-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='inline-block';">
         <span class="series-badge badge-starleo" style="display: none;">SERIES 03</span>
         <h2 class="series-title">星幻之城 × StarLeo 系列</h2>
+        <button type="button" class="group-info-btn group-info-starleo" data-group="starleo" aria-haspopup="dialog" aria-controls="groupInfoModal" aria-label="查看 星幻之城 × StarLeo 團體設定"><span aria-hidden="true">✦</span> 團體設定</button>
       </div>
 
       <div class="singers-grid">
@@ -780,6 +855,71 @@
     </div>
 
   </main>
+
+
+  <!-- ================= 團體設定共用視窗：三組各自的內容 ================= -->
+  <div class="modal-overlay group-modal" id="groupInfoModal"
+       role="dialog" aria-modal="true" aria-labelledby="groupInfoTitle"
+       aria-hidden="true" data-theme="street" inert>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="groupInfoTitle">團體設定</h2>
+        <button class="modal-close group-info-modal-close" type="button"
+                id="closeGroupInfoBtn" aria-label="關閉團體設定">&times;</button>
+      </div>
+      <div class="modal-body" id="groupInfoBody"></div>
+    </div>
+  </div>
+
+  <!-- StreetEchoes -->
+  <template id="groupInfo-street">
+    <p><strong>StreetEchoes</strong> 是「星樂之夢」旗下的<strong>高中生虛擬歌手團體</strong>，以「<strong>城市 × 青春 × 街頭聲音</strong>」為核心概念打造。他們將來自街頭與生活中的情緒，轉化為屬於這個世代的音樂回聲。</p>
+    <h3>🎧 團體概念</h3>
+    <p>「Echoes（回聲）」象徵：</p>
+    <ul>
+      <li>青春的吶喊與迷惘</li>
+      <li>城市中被忽略的聲音</li>
+      <li>少年少女之間的情感共鳴</li>
+    </ul>
+    <p>StreetEchoes 透過音樂，描繪高中生成長過程中的——<strong>夢想、壓力、叛逆與孤獨</strong>。</p>
+    <h3>🎼 音樂風格</h3>
+    <ul>
+      <li>J-Rock / Pop Rock</li>
+      <li>都會流行（Urban Pop / City Pop）</li>
+      <li>電子 × 樂團混合風格</li>
+      <li>情緒系（青春／emo 氛圍）</li>
+    </ul>
+  </template>
+
+  <!-- 森嶼之聲 -->
+  <template id="groupInfo-forest">
+    <p><strong>森嶼之聲</strong> 為「星樂之夢」旗下的<strong>國中生虛擬歌手音樂團體</strong>，以<strong>台灣生態系與自然環境</strong>作為核心靈感，構築出獨特的世界觀與角色設定。</p>
+    <p>團體由四位國中生角色組成，分別象徵<strong>大地、山嶺、海洋與生命</strong>，將自然元素轉化為音樂與情感，形成屬於「森嶼之聲」的聲音風景。</p>
+    <p>他們的作品圍繞著<strong>自然、土地、生命與青春成長</strong>，透過歌聲描繪少年少女在世界中探索自我、理解情感的過程。</p>
+    <p>在旋律之中，既能聽見山林的回聲，也能感受到海潮的律動，讓每一首歌，都像是一段來自島嶼深處的故事。</p>
+    <p>此外，森嶼之聲的每位成員，其名字皆取自台灣的大自然意象，將真實地景與生態融入角色之中，使團體更具在地連結與文化深度。</p>
+  </template>
+
+  <!-- 星幻之城 × StarLeo -->
+  <template id="groupInfo-starleo">
+    <p><strong>星幻之城 × StarLeo</strong> 是「星樂之夢」旗下的<strong>小學生虛擬歌手團體</strong>，以奇幻世界觀「星幻之城」為舞台，描繪「星之子」們的音樂與成長故事。</p>
+    <h3>🌟 StarLeo 團體介紹</h3>
+    <p>StarLeo 是誕生於世界觀舞台「星幻之城」的音樂團體，由四位星之子組成。他們各自擁有不同的聲音特質與音域，在同一座城市中相遇，並於核心舞台「<strong>星幻樂園</strong>」一同歌唱。</p>
+    <p><strong>StarLeo 不設固定主唱</strong>，每首作品皆由最適合的成員擔任核心演唱。</p>
+    <h3>🌌 世界觀簡介｜星之子 × 星河神話</h3>
+    <p>在浩瀚星河之中，誕生著被稱為「星之子」的孩子。每一位星之子都擁有屬於自己的<strong>音域之星</strong>，那顆星，代表他們最自然、最真實的聲音。</p>
+    <p>星幻之城，是讓星之子們相遇的城市。而位於城市核心的舞台——<strong>星幻樂園</strong>，能將歌聲轉化為星光，讓情感與故事被聽見。</p>
+    <p>在這個世界裡，音樂不是裝飾，而是連結星河與成長的力量。</p>
+    <h3>🎤 音域與演唱特色</h3>
+    <p>StarLeo 的音域設計以「<strong>角色本位</strong>」為核心，而非統一聲線。</p>
+    <ul>
+      <li>🪐 <strong>星丞軒</strong>：橫跨華語與英文流行，偏向熱血、搖滾、饒舌、電子系音域</li>
+      <li>☄️ <strong>星彗羽</strong>：擅長抒情、戲劇張力與情感層次</li>
+      <li>🧡 <strong>星卉芯</strong>：明亮、元氣、偶像感與輕快流行</li>
+      <li>💫 <strong>星希羽</strong>：橫跨日系與韓系流行、舞曲、嘻哈與多變情緒表現</li>
+    </ul>
+    <p>透過不同音域的交錯與輪替，StarLeo 的每一首作品，都能展現截然不同的舞台樣貌。</p>
+  </template>
 
   <!-- ================= 規約彈出視窗 (Modal) ================= -->
   <div class="modal-overlay" id="rulesModal">
@@ -895,6 +1035,59 @@
           mobileMenuBtn.click();
         }
       });
+    });
+
+
+    // ================= 三組團體設定 Modal 邏輯 =================
+    const groupInfoModal = document.getElementById('groupInfoModal');
+    const groupInfoTitle = document.getElementById('groupInfoTitle');
+    const groupInfoBody = document.getElementById('groupInfoBody');
+    const closeGroupInfoBtn = document.getElementById('closeGroupInfoBtn');
+    const groupTitles = {
+      street: 'StreetEchoes｜團體設定',
+      forest: '森嶼之聲｜團體設定',
+      starleo: '星幻之城 × StarLeo｜團體設定'
+    };
+    let lastGroupTrigger = null;
+
+    document.querySelectorAll('.group-info-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.group;
+        const template = document.getElementById(`groupInfo-${group}`);
+        if (!template || !groupTitles[group]) return;
+        lastGroupTrigger = button;
+        groupInfoTitle.textContent = groupTitles[group];
+        groupInfoBody.replaceChildren(template.content.cloneNode(true));
+        groupInfoBody.scrollTop = 0;
+        groupInfoModal.dataset.theme = group;
+        groupInfoModal.inert = false;
+        groupInfoModal.setAttribute('aria-hidden', 'false');
+        groupInfoModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        closeGroupInfoBtn.focus();
+      });
+    });
+
+    function closeGroupInfo() {
+      if (!groupInfoModal.classList.contains('active')) return;
+      groupInfoModal.classList.remove('active');
+      groupInfoModal.setAttribute('aria-hidden', 'true');
+      groupInfoModal.inert = true;
+      document.body.style.overflow = '';
+      if (lastGroupTrigger) lastGroupTrigger.focus();
+    }
+    closeGroupInfoBtn.addEventListener('click', closeGroupInfo);
+    groupInfoModal.addEventListener('click', event => {
+      if (event.target === groupInfoModal) closeGroupInfo();
+    });
+    document.addEventListener('keydown', event => {
+      if (!groupInfoModal.classList.contains('active')) return;
+      if (event.key === 'Escape') closeGroupInfo();
+      if (event.key === 'Tab') {
+        // 這個視窗唯一的可互動控制項是關閉按鈕，避免 Tab 跳到背後頁面。
+        event.preventDefault();
+        closeGroupInfoBtn.focus();
+      }
     });
 
     // ================= 規約 Modal 邏輯 =================
