@@ -1,0 +1,634 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>懿姍 YiShan | 官方網站</title>
+  <meta name="description" content="懿姍（YiShan），星樂之夢旗下 StreetEchoes 高中生虛擬歌手。">
+  <link rel="icon" href="img/STREETECHOES_Logo.png" type="image/png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      /* 懿姍・紫晶夜幕 / Amethyst Violet Liquid Glass */
+      --bg-start: #17052E;
+      --bg-mid: #380078;
+      --bg-end: #4700A1;
+      --text-main: #FCF8FF;
+      --text-muted: #E5D3FF;
+      --accent-dark: #E7BCFF;
+      --accent: #C49BFF;
+      --glass-bg: linear-gradient(132deg, rgba(199,148,255,.18) 0%, rgba(90,36,157,.26) 43%, rgba(27,8,61,.54) 100%);
+      --glass-border: rgba(238,217,255,.36);
+      --glass-shadow: 0 16px 48px rgba(16,0,44,.36), 0 2px 12px rgba(20,0,42,.15);
+      --glass-inner: inset 0 1px 0 rgba(255,255,255,.30), inset 0 -1px 0 rgba(215,168,255,.16), inset 1px 0 0 rgba(255,255,255,.11);
+      --glass-blur: blur(25px) saturate(170%);
+      --header-h: 62px;
+    }
+
+    html { min-height: 100%; }
+    body {
+      margin: 0;
+      padding-top: var(--header-h);
+      min-height: 100vh;
+      min-height: 100dvh;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text-main);
+      background: linear-gradient(128deg, var(--bg-start) 0%, #250753 25%, var(--bg-mid) 54%, var(--bg-end) 100%);
+      background-attachment: fixed;
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -2;
+      background: radial-gradient(ellipse at 12% 70%, rgba(159,79,241,.19), transparent 48%),
+                  radial-gradient(ellipse at 82% 12%, rgba(218,125,255,.13), transparent 45%);
+    }
+
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: .20;
+      z-index: -1;
+      pointer-events: none;
+      animation: float 19s infinite ease-in-out alternate;
+    }
+    .blob-1 { width: 430px; height: 430px; background: #6D28D9; top: -140px; left: -100px; }
+    .blob-2 { width: 520px; height: 520px; background: #B15BFC; right: -160px; bottom: -170px; animation-delay: -6s; }
+    .blob-3 { width: 340px; height: 340px; background: #C084FC; left: 26%; top: 32%; animation-delay: -11s; }
+    @keyframes float {
+      0% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(22px,-32px) scale(1.08); }
+      100% { transform: translate(-18px,20px) scale(.95); }
+    }
+
+    /* 透明暗紫玻璃與細緻高光，背後紫色可透過卡片呈現 */
+    .glass-panel {
+      position: relative;
+      isolation: isolate;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: var(--glass-shadow), var(--glass-inner);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      overflow: hidden;
+    }
+    .glass-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(125deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.022) 26%, transparent 52%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .glass-panel::after {
+      content: '';
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.64) 35%, rgba(255,255,255,.28) 70%, transparent);
+      pointer-events: none;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      min-height: var(--header-h);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      background: rgba(27, 7, 56, .57);
+      backdrop-filter: blur(25px) saturate(165%);
+      -webkit-backdrop-filter: blur(25px) saturate(165%);
+      border-bottom: 1px solid rgba(244,220,255,.25);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 4px 22px rgba(2,8,24,.16);
+    }
+    .nav-container {
+      max-width: 1100px;
+      width: 100%;
+      min-height: var(--header-h);
+      margin: 0 auto;
+      padding: 8px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .header-left, .header-center, .header-right { flex: 1; display: flex; align-items: center; }
+    .header-left { justify-content: flex-start; gap: 25px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 25px; }
+    .logo { text-decoration: none; display: flex; align-items: center; }
+    .logo img { max-height: 42px; max-width: 200px; width: auto; display: block; }
+    header a, .dropdown-btn {
+      color: #F8EEFF;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 800;
+      transition: color .22s ease;
+      cursor: pointer;
+    }
+    header a:hover, .dropdown:hover .dropdown-btn { color: #E8B5FF; }
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown::after { content: ''; position: absolute; left: 0; top: 100%; width: 100%; height: 14px; }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: calc(100% + 10px);
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 170px;
+      padding: 8px 0;
+      background: rgba(36, 9, 77, .85);
+      border: 1px solid rgba(234,207,255,.30);
+      border-radius: 14px;
+      box-shadow: 0 12px 32px rgba(1,8,28,.3), inset 0 1px 0 rgba(255,255,255,.13);
+      backdrop-filter: blur(23px);
+      -webkit-backdrop-filter: blur(23px);
+      z-index: 1001;
+    }
+    .dropdown-content.show { display: block; }
+    .dropdown-content a { display: block; padding: 11px 18px; text-align: center; font-size: 14px; font-weight: 600; }
+    .dropdown-content a:hover { background: rgba(191,138,255,.18); }
+    main {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 20px 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-section { display: grid; grid-template-columns: minmax(0, 350px) minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); gap: 26px; align-items: stretch; }
+    .left-column { min-width: 0; display: grid; grid-template-rows: 148px minmax(0, 1fr); gap: 18px; }
+    .logo-card { padding: 18px 28px; display: flex; justify-content: center; align-items: center; }
+    .profile-logo-top {
+      display: block;
+      max-width: min(100%, 210px);
+      max-height: 106px;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 9px rgba(0,0,0,.2));
+    }
+    .portrait-card {
+      min-width: 0;
+      min-height: 0;
+      padding: 14px 16px 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    #profile-portrait {
+      display: block;
+      width: auto;
+      height: 100%;
+      max-height: 100%;
+      max-width: 100%;
+      min-width: 0;
+      min-height: 0;
+      object-fit: contain;
+      object-position: center center;
+      margin: 0 auto;
+      filter: drop-shadow(0 10px 16px rgba(0,0,0,.16));
+    }
+    .profile-card { min-width: 0; min-height: 0; padding: 18px 36px; display: flex; flex-direction: column; }
+    .char-table { width: 100%; height: 100%; table-layout: fixed; border-collapse: collapse; margin: 0; }
+    .char-table tr { height: 10%; }
+    .char-table td {
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(229,196,255,.18);
+      font-size: 15.5px;
+      vertical-align: middle;
+      color: #FCF8FF;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .char-table tr:last-child td { border-bottom: none; }
+    .char-table td:first-child {
+      width: 112px;
+      white-space: nowrap;
+      color: #E5C3FF;
+      font-weight: 850;
+      padding-right: 14px;
+    }
+    .color-indicator { display: flex; align-items: center; gap: 9px; }
+    .color-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #4700A1;
+      border: 1px solid rgba(241,216,255,.72);
+      box-shadow: 0 0 0 3px rgba(204,151,255,.19);
+      flex-shrink: 0;
+    }
+    footer {
+      margin: 0;
+      min-height: 42px;
+      padding: 10px 20px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: rgba(239,223,255,.78);
+      font-size: 13px;
+    }
+
+    /* 桌面版：依瀏覽器可視高度分配空間，不必往下捲動才能看到完整角色 */
+    @media (min-width: 921px) and (min-height: 650px) {
+      body { display: flex; flex-direction: column; }
+      main { flex: 1; min-height: 0; display: flex; }
+      .profile-section { width: 100%; min-height: 0; height: calc(100dvh - var(--header-h) - 20px - 10px - 42px); }
+      .left-column, .profile-card { height: 100%; }
+      footer { flex: none; height: 42px; padding: 0 20px; }
+    }
+
+    @media (max-width: 920px) {
+      main { padding-top: 18px; }
+      .profile-section { grid-template-columns: minmax(0,1fr); grid-template-rows: auto; gap: 18px; }
+      .left-column { grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); grid-template-rows: minmax(0, 245px); gap: 18px; }
+      .logo-card, .portrait-card { min-height: 245px; }
+      .portrait-card { padding: 12px; }
+      .profile-card { min-height: 540px; padding: 18px 30px; }
+      .char-table { height: 100%; }
+    }
+
+    @media (max-width: 768px) {
+      /* 手機長頁面讓背景隨內容延伸，避免可視區外出現白底 */
+      body { background-attachment: scroll; }
+      main { padding: 16px 16px 12px; }
+      /* 手機版採星希羽的雙排導覽：Logo 在上，其他歌手與首頁在下。 */
+      .nav-container {
+        min-height: 0;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        padding: 10px 20px;
+      }
+      .header-left { display: none; }
+      .header-center {
+        flex: none;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+      .header-right {
+        flex: none;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+      }
+      .header-right a, .header-right .dropdown-btn { font-size: 17px; }
+      .header-right .dropdown-content a { font-size: 14px; }
+      .left-column { grid-template-columns: 1fr; grid-template-rows: 112px minmax(0, 425px); gap: 14px; }
+      .logo-card { min-height: 0; padding: 10px 20px; }
+      .portrait-card { min-height: 0; padding: 12px; }
+      .profile-logo-top { max-height: 84px; }
+      #profile-portrait { height: 100%; max-height: 100%; }
+      .profile-card { padding: 14px 24px; min-height: 500px; }
+      .char-table td { font-size: 14px; padding: 7px 0; }
+      .char-table td:first-child { width: 100px; }
+      footer { padding: 20px 12px 24px; }
+    }
+    @media (max-width: 420px) {
+      .left-column { grid-template-rows: 104px minmax(0, 380px); }
+      .profile-card { padding: 12px 20px; min-height: 480px; }
+      .char-table td { font-size: 13.5px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .blob { animation: none; }
+    }
+
+    /* ================= 星希羽同款導覽尺寸 × 懿姍暗紫 Liquid Glass ================= */
+    :root { --header-h: 65px; }
+    header {
+      min-height: 65px;
+      padding: 10px 0;
+      background: rgba(27, 7, 56, .57);
+      border-bottom: 1px solid rgba(244,220,255,.25);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.09), 0 4px 22px rgba(2,8,24,.16);
+      backdrop-filter: blur(25px) saturate(165%);
+      -webkit-backdrop-filter: blur(25px) saturate(165%);
+    }
+    .nav-container {
+      min-height: 45px;
+      padding: 0 20px;
+    }
+    .logo img {
+      max-height: 45px;
+      width: auto;
+      max-width: min(220px, 75vw);
+    }
+    header a, header .dropdown-btn {
+      color: #F8EEFF;
+      font-weight: 700;
+    }
+    header a:hover, header .dropdown:hover .dropdown-btn { color: #E8B5FF; }
+    header .dropdown-btn {
+      display: inline-block;
+      padding: 10px 0;
+      user-select: none;
+      border: 0;
+      background: transparent;
+      font-family: inherit;
+      line-height: normal;
+      cursor: pointer;
+    }
+    header .dropdown-content {
+      background: rgba(36, 9, 77, .85);
+      border-color: rgba(234,207,255,.30);
+      box-shadow: 0 12px 32px rgba(1,8,28,.30), inset 0 1px 0 rgba(255,255,255,.13);
+      z-index: 1002;
+    }
+    header .dropdown-content a { color: #F8EEFF; }
+    header .dropdown-content a:hover { background: rgba(191,138,255,.18); }
+
+    @media (max-width: 768px) {
+      :root { --header-h: 130px; }
+      header {
+        min-height: 130px;
+        padding: 10px 0;
+        background: rgba(27, 7, 56, .68);
+      }
+      .nav-container {
+        min-height: 0;
+        flex-direction: column;
+        gap: 10px;
+        justify-content: center;
+        padding: 10px 20px;
+      }
+      .header-center { flex: none; width: 100%; display: flex; justify-content: center; }
+      .header-right { flex: none; width: 100%; display: flex; justify-content: center; gap: 24px; }
+      .header-left { display: none; }
+      .logo img { max-height: 45px; }
+      .header-right > a, .header-right .dropdown-btn { font-size: 17px; font-weight: 800; }
+      .header-right .dropdown-content a { font-size: 14px; }
+      .header-right .dropdown-content { top: calc(100% + 5px); }
+    }
+
+
+    /* ================= 懿姍專屬：紫色星星拖尾特效 ================= */
+    #cursor-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none !important;
+      z-index: 900; /* 在角色卡之上、導覽列之下，且完全不攔截點擊 */
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- 星希羽／星樂之夢同款：滑鼠與觸控的紫色星星粒子效果 -->
+  <canvas id="cursor-canvas" aria-hidden="true"></canvas>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="https://acestudio.ai/" target="_blank">ACE官網</a>
+        <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank">ACE社群</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo">
+          <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo">
+        </a>
+      </div>
+      <div class="header-right">
+        <div class="dropdown" onclick="toggleDropdown(event, this)">
+          <button class="dropdown-btn" type="button" aria-expanded="false">其他歌手 ▾</button>
+          <div class="dropdown-content">
+            <a href="Jonghyeog.html">柊赫</a>
+            <a href="Chengdu.html">程都</a>
+            <a href="Youshan.html">悠珊</a>
+            <a href="vsinger.html">查看全陣容</a>
+          </div>
+        </div>
+        <a href="index.html">返回首頁</a>
+      </div>
+    </div>
+  </header>
+
+
+  <main>
+    <section class="profile-section">
+      <div class="left-column">
+        <div class="glass-panel logo-card">
+          <img class="profile-logo-top" src="img/懿姍Logo.png" alt="懿姍 Logo" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'220\' height=\'80\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23E9C9FF\' font-family=\'sans-serif\' font-size=\'34\' font-weight=\'bold\' text-anchor=\'middle\' alignment-baseline=\'middle\'>懿姍</text></svg>'">
+        </div>
+        <div class="glass-panel portrait-card">
+          <img id="profile-portrait" src="img/宇熙立繪.png" alt="懿姍全身立繪" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'100%\' height=\'600\'><rect fill=\'transparent\' width=\'100%\' height=\'100%\'/><text x=\'50%\' y=\'50%\' fill=\'%23E9C9FF\' font-family=\'sans-serif\' font-size=\'18\' text-anchor=\'middle\' alignment-baseline=\'middle\'>懿姍立繪預留</text></svg>'">
+        </div>
+      </div>
+
+      <div class="glass-panel profile-card">
+        <table class="char-table">
+          <tr><td>性別</td><td>女性</td></tr>
+          <tr><td>年齡</td><td>17歲</td></tr>
+          <tr><td>身高</td><td>172cm</td></tr>
+          <tr><td>體重</td><td>54kg</td></tr>
+          <tr><td>生日</td><td>7月7日</td></tr>
+          <tr><td>星座</td><td>巨蟹座♋</td></tr>
+          <tr><td>血型</td><td>O型</td></tr>
+          <tr>
+            <td>代表色</td>
+            <td><div class="color-indicator"><span class="color-dot"></span>紫色</div></td>
+          </tr>
+          <tr><td>所屬團體</td><td>StreetEchoes</td></tr>
+          <tr><td>立繪插畫</td><td>斯貝</td></tr>
+        </table>
+
+
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 星樂之夢 (Star Music Dream)
+  </footer>
+
+  <script>
+    function toggleDropdown(event, element) {
+      event.stopPropagation();
+      document.querySelectorAll('.dropdown-content').forEach(d => {
+        if (d !== element.querySelector('.dropdown-content')) d.classList.remove('show');
+      });
+      const target = element.querySelector('.dropdown-content');
+      if (target) {
+        target.classList.toggle('show');
+        const trigger = element.querySelector('.dropdown-btn');
+        trigger?.setAttribute('aria-expanded', String(target.classList.contains('show')));
+      }
+    }
+
+    window.addEventListener('click', function(event) {
+      if (!event.target.closest('.dropdown')) {
+        document.querySelectorAll('.dropdown-content').forEach(d => {
+          d.classList.remove('show');
+          d.closest('.dropdown')?.querySelector('.dropdown-btn')?.setAttribute('aria-expanded', 'false');
+        });
+      }
+    });
+
+  </script>
+
+  <!-- 滑鼠星星粒子：與既有官網一致的五星造型，懿姍限定紫晶／薰衣草配色 -->
+  <script>
+    (() => {
+      const canvas = document.getElementById('cursor-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d', { alpha: true });
+      if (!ctx) return;
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const palette = [
+        '#F8E9FF', // 雪霧紫
+        '#E9CAFF', // 淡紫晶
+        '#D7A2FF', // 薰衣草
+        '#BE83FF', // 丁香紫
+        '#A66BFF', // 紫羅蘭
+        '#8C4CE5'  // 深紫星光
+      ];
+      const particles = [];
+      const maxParticles = 220;
+      let width = 0;
+      let height = 0;
+      let frameId = 0;
+      let lastSpawn = 0;
+
+      function resizeCanvas() {
+        width = window.innerWidth;
+        height = window.innerHeight;
+        const scale = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(width * scale);
+        canvas.height = Math.round(height * scale);
+        ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      }
+      window.addEventListener('resize', resizeCanvas, { passive: true });
+      resizeCanvas();
+
+      // 維持星希羽官網的五角星形狀與隨機旋轉、下墜和淡出動態。
+      function drawStar(x, y, radius, rotation) {
+        const spikes = 5;
+        const step = Math.PI / spikes;
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(rotation);
+        ctx.beginPath();
+        for (let i = 0; i < spikes * 2; i++) {
+          const angle = -Math.PI / 2 + i * step;
+          const r = i % 2 === 0 ? radius : radius * 0.48;
+          const px = Math.cos(angle) * r;
+          const py = Math.sin(angle) * r;
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function addStar(x, y) {
+        const direction = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 1.35 + .15;
+        particles.push({
+          x: x + (Math.random() - .5) * 14,
+          y: y + (Math.random() - .5) * 14,
+          vx: Math.cos(direction) * speed,
+          vy: Math.sin(direction) * speed - .45,
+          size: Math.random() * 6.5 + 4.5,
+          color: palette[Math.floor(Math.random() * palette.length)],
+          life: 0,
+          maxLife: Math.random() * 30 + 38,
+          rotation: Math.random() * Math.PI * 2,
+          rotSpeed: (Math.random() - .5) * .095
+        });
+        if (particles.length > maxParticles) particles.splice(0, particles.length - maxParticles);
+        if (!frameId) frameId = requestAnimationFrame(animate);
+      }
+
+      function leaveTrail(x, y) {
+        if (reducedMotion.matches || document.hidden) return;
+        // 降低高更新率滑鼠的粒子量，仍保留移動時連續的星星拖尾。
+        const now = performance.now();
+        if (now - lastSpawn < 10) return;
+        lastSpawn = now;
+        addStar(x, y);
+        addStar(x, y);
+      }
+
+      window.addEventListener('mousemove', (event) => {
+        leaveTrail(event.clientX, event.clientY);
+      }, { passive: true });
+
+      window.addEventListener('touchmove', (event) => {
+        if (event.touches.length) {
+          leaveTrail(event.touches[0].clientX, event.touches[0].clientY);
+        }
+      }, { passive: true });
+
+      function animate() {
+        frameId = 0;
+        ctx.clearRect(0, 0, width, height);
+        if (document.hidden || reducedMotion.matches) {
+          particles.length = 0;
+          return;
+        }
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const star = particles[i];
+          star.life++;
+          if (star.life >= star.maxLife) {
+            particles.splice(i, 1);
+            continue;
+          }
+          star.x += star.vx;
+          star.y += star.vy;
+          star.vy += .045;
+          star.rotation += star.rotSpeed;
+          const t = 1 - star.life / star.maxLife;
+          ctx.globalAlpha = Math.min(1, t * 1.03);
+          ctx.fillStyle = star.color;
+          ctx.shadowColor = star.color;
+          ctx.shadowBlur = 10;
+          drawStar(star.x, star.y, star.size, star.rotation);
+        }
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+        if (particles.length) frameId = requestAnimationFrame(animate);
+      }
+
+      // 切換分頁時不讓粒子在背景持續運算。
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          if (frameId) cancelAnimationFrame(frameId);
+          frameId = 0;
+          particles.length = 0;
+          ctx.clearRect(0, 0, width, height);
+        }
+      });
+      reducedMotion.addEventListener?.('change', () => {
+        if (!reducedMotion.matches) return;
+        if (frameId) cancelAnimationFrame(frameId);
+        frameId = 0;
+        particles.length = 0;
+        ctx.clearRect(0, 0, width, height);
+      });
+    })();
+  </script>
+</body>
+</html>
