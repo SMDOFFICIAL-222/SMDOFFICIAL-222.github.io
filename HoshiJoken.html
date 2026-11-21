@@ -296,12 +296,13 @@
       gap: 8px;
     }
 
-    /* 人設按鈕群組 */
+    /* 人設按鈕群組：單一按鈕置中 */
     .info-btn-group {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-      margin-top: 30px;
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 300px;
+      width: 100%;
+      margin: 30px auto 0;
       padding-top: 20px;
       border-top: 1px solid rgba(0,0,0,0.06);
     }
@@ -487,12 +488,6 @@
     .lore-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(99, 164, 255, 0.2); }
     .lore-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .lore-list strong { color: var(--accent-dark); display: inline-block; min-width: 100px; }
-    .lore-poem {
-      text-align: center; margin: 20px 0; padding: 25px 20px;
-      background: rgba(255,255,255,0.6); border-radius: 12px; border: 1px solid rgba(255,255,255,0.8);
-      color: var(--accent-dark); font-size: 15px; letter-spacing: 1px; font-weight: bold;
-    }
-    .lore-poem p { margin: 8px 0; }
 
     /* ================= 8. 頁尾 ================= */
     footer {
@@ -611,11 +606,12 @@
 
       <div class="profile-card glass-panel">
         <table class="char-table">
+          <tr><td>本名</td><td>許丞軒</td></tr>
           <tr><td>性別</td><td>男生</td></tr>
-          <tr><td>年齡</td><td>10歲</td></tr>
+          <tr><td>角色年齡</td><td>10歲</td></tr>
           <tr><td>身高</td><td>140cm</td></tr>
           <tr><td>體重</td><td>34kg</td></tr>
-          <tr><td>生日</td><td>7月24日</td></tr>
+          <tr><td>出生日期</td><td>2014年7月24日</td></tr>
           <tr><td>星座</td><td>獅子座</td></tr>
           <tr><td>血型</td><td>B型</td></tr>
           <tr><td>代表色</td>
@@ -630,10 +626,9 @@
           <tr><td>立繪插畫</td><td>非當事炸蝦</td></tr>
         </table>
 
-        <!-- 按鈕群組 (星丞軒專屬：詳細人設、團體世界觀) -->
-        <div class="info-btn-group" style="grid-template-columns: repeat(2, 1fr);">
+        <!-- 角色個人詳細設定 -->
+        <div class="info-btn-group">
           <button class="info-btn-small" onclick="openLoreModal('infoModal')">📖 詳細人設</button>
-          <button class="info-btn-small" onclick="openLoreModal('worldModal')">🌌 團體世界觀</button>
         </div>
 
       </div>
@@ -715,36 +710,24 @@
 
    </main>
 
-  <!-- ================= 彈出視窗：人設資訊 ================= -->
-  <div class="modal-overlay" id="infoModal">
+  <!-- ================= 彈出視窗：星丞軒個人人設 ================= -->
+  <div class="modal-overlay" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="jokenInfoTitle">
     <div class="modal-card">
-      <div class="close-modal" onclick="closeLoreModal('infoModal')">✕</div>
-      <h2>🌟 星丞軒｜人設設定</h2>
+      <button type="button" class="close-modal" onclick="closeLoreModal('infoModal')" aria-label="關閉詳細人設">✕</button>
+      <h2 id="jokenInfoTitle">🌟 星丞軒｜詳細人設</h2>
       <ul class="lore-list">
-        <li><strong>特徵：</strong>目前官方設定建置中...</li>
+        <li><strong>本名：</strong>許丞軒</li>
+        <li><strong>MBTI：</strong>ENTJ-A</li>
+        <li><strong>星座：</strong>獅子座</li>
+        <li><strong>血型：</strong>B型</li>
+        <li><strong>個性：</strong>開朗、自信、熱血、行動力強，具有領導氣質</li>
+        <li><strong>喜歡：</strong>跳各種流行舞蹈，秀一段B-Box</li>
+        <li><strong>出生日期：</strong>2014年7月24日</li>
+        <li><strong>出生地：</strong>臺灣・高雄市</li>
       </ul>
     </div>
   </div>
 
-  <!-- ================= 彈出視窗：團體世界觀 ================= -->
-  <div class="modal-overlay" id="worldModal">
-    <div class="modal-card">
-      <div class="close-modal" onclick="closeLoreModal('worldModal')">✕</div>
-      <h2>團體世界觀：星幻之城 × StarLeo</h2>
-      <div class="lore-list" style="color: var(--text-main); line-height: 1.8;">
-        <p><strong>星幻之城 × StarLeo</strong> 是星樂之夢旗下的小學生虛擬歌手團體系列，由 <strong>星希羽、星彗羽、星丞軒、星卉芯</strong> 組成。</p>
-        <div class="lore-poem">
-          <p>每個成員都各有自己專屬的音域</p>
-          <p>在這浩瀚星河中，誕生著被稱為「星之子」的孩子。</p>
-          <p>星幻之城，是他們相遇的地方。</p>
-          <p>而星幻樂園，能將心中的情感化為星光，</p>
-          <p>讓尚未說出口的故事，被世界聽見。</p>
-        </div>
-        <p><strong>StarLeo</strong> 是誕生於世界觀舞台「星幻之城」的音樂團體。成員們在同一座城市相遇，站上核心舞台「星幻樂園」，用各自不同的聲音，一起唱出屬於他們的故事。</p>
-        <p>團體不設固定主唱，每一首作品，都由最適合那首歌的成員擔任核心演唱。</p>
-      </div>
-    </div>
-  </div>
 
   <footer>
     <div class="social-links" style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
