@@ -327,10 +327,10 @@
         line-height: 1.6;
     }
 
-    /* 人設/故事資訊按鈕群組 (等分三欄，底部對齊) */
+    /* 人設／故事資訊按鈕群組（兩欄等寬，底部對齊） */
     .info-btn-group {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 15px;
       margin-top: 30px;
       padding-top: 20px;
@@ -683,12 +683,6 @@
     .lore-list li { margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed rgba(2, 132, 199, 0.2); }
     .lore-list li:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
     .lore-list strong { color: var(--accent-dark); display: inline-block; min-width: 100px; }
-    .lore-poem {
-      text-align: center; margin: 20px 0; padding: 25px 20px;
-      background: rgba(255,255,255,0.6); border-radius: 12px; border: 1px solid rgba(255,255,255,0.8);
-      color: var(--accent-dark); font-size: 15px; letter-spacing: 1px; font-weight: bold;
-    }
-    .lore-poem p { margin: 8px 0; }
 
     /* ================= 8. 頁尾 ================= */
     footer {
@@ -861,11 +855,10 @@
           </tr>
         </table>
 
-        <!-- 新版等分按鈕群組 -->
+        <!-- 兩欄按鈕：詳細人設／故事背景 -->
         <div class="info-btn-group">
           <button class="info-btn-small" onclick="openLoreModal('infoModal')">📖 詳細人設</button>
           <button class="info-btn-small" onclick="openLoreModal('storyModal')">📜 故事背景</button>
-          <button class="info-btn-small" onclick="openLoreModal('worldModal')">🌌 團體世界觀</button>
         </div>
 
       </div>
@@ -1187,26 +1180,6 @@
             <li><strong>14歲</strong><br>與朋友們組了樂團，重新以祐恩Yuon身份，踏上舞台，繼續寫下的新篇章。</li>
           </ul>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= 彈出視窗：團體世界觀 ================= -->
-  <div class="modal-overlay" id="worldModal">
-    <div class="modal-card">
-      <div class="close-modal" onclick="closeLoreModal('worldModal')">✕</div>
-      <h2>團體世界觀：星幻之城 × StarLeo</h2>
-      <div class="lore-list" style="color: var(--text-main); line-height: 1.8;">
-        <p><strong>星幻之城 × StarLeo</strong> 是星樂之夢旗下的小學生虛擬歌手團體系列，由 <strong>星希羽、星彗羽、星丞軒、星卉芯</strong> 組成。</p>
-        <div class="lore-poem">
-          <p>每個成員都各有自己專屬的音域</p>
-          <p>在這浩瀚星河中，誕生著被稱為「星之子」的孩子。</p>
-          <p>星幻之城，是他們相遇的地方。</p>
-          <p>而星幻樂園，能將心中的情感化為星光，</p>
-          <p>讓尚未說出口的故事，被世界聽見。</p>
-        </div>
-        <p><strong>StarLeo</strong> 是誕生於世界觀舞台「星幻之城」的音樂團體。成員們在同一座城市相遇，站上核心舞台「星幻樂園」，用各自不同的聲音，一起唱出屬於他們的故事。</p>
-        <p>團體不設固定主唱，每一首作品，都由最適合那首歌的成員擔任核心演唱。</p>
       </div>
     </div>
   </div>
