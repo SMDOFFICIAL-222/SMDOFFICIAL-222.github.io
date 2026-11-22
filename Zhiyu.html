@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#345B43">
+  <meta name="description" content="雉瑜 Zhiyu｜星樂之夢・森嶼之聲虛擬歌手官方角色介紹頁面。">
+  <title>雉瑜 Zhiyu | 星樂之夢</title>
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display:none !important; }
+    :root {
+      --header-h: 65px;
+      --ink: #2b403b;
+      --ink-muted: #57716a;
+      --accent: #6f5bc3;
+      --accent-light: #d9d2ff;
+      --glass-background: linear-gradient(130deg,rgba(249,251,253,.58) 0%,rgba(235,245,239,.36) 55%,rgba(222,228,255,.28) 100%);
+      --glass-border: rgba(245,251,252,.78);
+      --glass-shadow: 0 18px 44px rgba(47,73,68,.15),0 3px 14px rgba(69,88,84,.07);
+      --glass-filter: blur(22px) saturate(155%);
+    }
+    html { min-height:100%; background:#709681; }
+    body {
+      margin:0;
+      min-height:100vh;
+      min-height:100dvh;
+      padding-top:var(--header-h);
+      color:var(--ink);
+      font-family:"Noto Sans TC","Microsoft JhengHei",-apple-system,BlinkMacSystemFont,sans-serif;
+      background: linear-gradient(155deg,#a5c2ae 0%,#93b6a0 42%,#709e84 72%,#859e92 100%);
+      overflow-x:hidden;
+    }
+
+    /* 玉山林間的霧氣與日光：以完全軟邊的多重漸層表現景深。
+       不畫樹幹、木棧道、稜線或重複紋理，避免變成低多邊形遊戲場景。 */
+    .forest-scenery {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+      isolation: isolate;
+      background-color: #a4c2aa;
+      background-image:
+        /* 清晨由森林上方透入的柔和日光 */
+        radial-gradient(ellipse 68% 60% at 49% -12%, rgba(245,252,226,.88) 0%, rgba(229,243,217,.53) 37%, transparent 94%),
+        radial-gradient(ellipse 40% 50% at 49% 37%, rgba(220,242,204,.47) 0%, rgba(217,239,211,.17) 57%, transparent 100%),
+        /* 遠方的霧綠色林地 */
+        radial-gradient(ellipse 75% 52% at 53% 62%, rgba(170,204,170,.52) 0%, rgba(131,181,143,.18) 58%, transparent 100%),
+        /* 左右較深的樹蔭，使用極柔和的橢圓暈染 */
+        radial-gradient(ellipse 63% 102% at -18% 46%, rgba(23,74,49,.80) 0%, rgba(44,104,65,.48) 43%, transparent 100%),
+        radial-gradient(ellipse 62% 104% at 117% 49%, rgba(25,74,52,.78) 0%, rgba(40,106,73,.43) 46%, transparent 100%),
+        /* 遠樹冠與近景植被以漸層柔化，不做具象輪廓 */
+        radial-gradient(ellipse 66% 40% at 47% 107%, rgba(31,95,65,.61) 0%, rgba(72,131,87,.30) 54%, transparent 100%),
+        radial-gradient(ellipse 55% 34% at 6% 107%, rgba(48,112,66,.40) 0%, transparent 100%),
+        radial-gradient(ellipse 52% 40% at 103% 103%, rgba(47,101,67,.44) 0%, transparent 100%),
+        /* 與代表色呼應的輕微紫色晨霧 */
+        radial-gradient(ellipse 38% 27% at 75% 88%, rgba(139,121,208,.18) 0%, transparent 100%),
+        linear-gradient(180deg, #c4dac8 0%, #a2c6b0 41%, #78a589 74%, #688e79 100%);
+    }
+
+    /* 半透明霧層：大面積暈染，消除筆直分界。 */
+    .forest-scenery::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 46% 35% at 50% 49%, rgba(252,255,238,.33) 0%, rgba(236,250,231,.12) 57%, transparent 100%),
+        radial-gradient(ellipse 76% 21% at 50% 76%, rgba(221,241,220,.23) 0%, transparent 100%),
+        radial-gradient(ellipse 55% 29% at 51% 18%, rgba(247,255,226,.24) 0%, transparent 100%);
+      filter: blur(30px);
+    }
+
+    .forest-scenery::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 35% 49% at 3% 44%, rgba(20,67,49,.11) 0%, transparent 100%),
+        radial-gradient(ellipse 39% 45% at 98% 67%, rgba(18,65,47,.09) 0%, transparent 100%),
+        radial-gradient(ellipse 35% 24% at 58% 99%, rgba(139,121,208,.13) 0%, transparent 100%);
+      filter: blur(38px);
+    }
+
+    @media (max-width: 768px) {
+      /* 手機與桌面共用柔和森林，不會露出底色或出現條狀樹幹。 */
+      .forest-scenery {
+        background-image:
+          radial-gradient(ellipse 78% 42% at 50% -8%, rgba(242,250,226,.78) 0%, transparent 98%),
+          radial-gradient(ellipse 73% 66% at -27% 47%, rgba(24,79,51,.67) 0%, rgba(54,113,72,.32) 50%, transparent 100%),
+          radial-gradient(ellipse 80% 68% at 125% 47%, rgba(32,84,60,.64) 0%, rgba(55,115,78,.29) 50%, transparent 100%),
+          radial-gradient(ellipse 77% 57% at 51% 51%, rgba(196,226,188,.52) 0%, rgba(176,211,182,.14) 65%, transparent 100%),
+          radial-gradient(ellipse 76% 42% at 50% 109%, rgba(51,115,74,.43) 0%, transparent 100%),
+          radial-gradient(ellipse 50% 27% at 72% 91%, rgba(139,121,208,.14) 0%, transparent 100%),
+          linear-gradient(180deg, #b9d5c0 0%, #92b9a1 52%, #719e82 100%);
+      }
+    }
+
+    .glass-panel {
+      background: var(--glass-background);
+      border: 1px solid var(--glass-border);
+      border-radius: 26px;
+      box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255,255,255,.74), inset 0 -1px 0 rgba(255,255,255,.14);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      position:relative; overflow:hidden; isolation:isolate;
+    }
+    .glass-panel::before {
+      content:""; position:absolute; inset:0; border-radius:inherit;
+      background: linear-gradient(123deg,rgba(255,255,255,.28),rgba(255,255,255,.04) 28%,transparent 62%);
+      pointer-events:none; z-index:-1;
+    }
+    .glass-panel::after {
+      content:""; position:absolute; left:23px; right:23px; top:0; height:1px;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,.85) 38%,rgba(255,255,255,.3) 72%,transparent);
+      pointer-events:none;
+    }
+
+    header {
+      position:fixed; z-index:1000; inset:0 0 auto;
+      min-height:var(--header-h);
+      background: linear-gradient(105deg,rgba(25,64,39,.66),rgba(58,104,69,.49) 54%,rgba(33,75,51,.61));
+      border-bottom:1px solid rgba(240,249,246,.34);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.11), 0 4px 22px rgba(42,74,64,.13);
+      backdrop-filter: blur(24px) saturate(150%);
+      -webkit-backdrop-filter: blur(24px) saturate(150%);
+    }
+    .nav-container { width:100%; max-width:1120px; min-height:var(--header-h); margin:0 auto; padding:8px 20px; display:flex; align-items:center; justify-content:space-between; gap:20px; }
+    .header-left,.header-center,.header-right { display:flex; align-items:center; flex:1; }
+    .header-left { justify-content:flex-start; gap:25px; }
+    .header-center { justify-content:center; }
+    .header-right { justify-content:flex-end; gap:25px; }
+    .logo { display:flex; text-decoration:none; align-items:center; }
+    .logo img { display:block; width:auto; max-height:45px; max-width:220px; }
+    .site-logo-fallback { color:#f5faf8; font-size:21px; font-weight:800; letter-spacing:2px; text-align:center; line-height:1.05; }
+    .site-logo-fallback small { display:block; font-size:7px; letter-spacing:2px; margin-top:4px; }
+    header a, header button {
+      font-size:15px; font-weight:700; line-height:1.4; color:#f9fdfb; text-decoration:none; transition:color .2s ease;
+    }
+    header a:hover, header button:hover { color:#ddd7ff; }
+    .dropdown { position:relative; }
+    .dropdown-btn {
+      display:inline-block; padding:10px 0; cursor:pointer; border:none; background:transparent; font-family:inherit; font-size:15px; font-weight:700; color:#f9fdfb; white-space:nowrap;
+    }
+    .dropdown-content {
+      display:none; position:absolute; top:calc(100% + 8px); right:-16px; min-width:168px; padding:8px 0;
+      background: rgba(71,92,84,.88); border:1px solid rgba(243,250,247,.27); border-radius:14px;
+      box-shadow:0 15px 38px rgba(48,69,60,.26), inset 0 1px 0 rgba(255,255,255,.12);
+      backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px); z-index:1100;
+    }
+    .dropdown-content.show { display:block; }
+    .dropdown-content a { display:block; padding:11px 16px; text-align:center; font-size:14px; }
+    .dropdown-content a:hover { background: rgba(222,215,255,.15); }
+
+    main { max-width:1120px; width:100%; margin:0 auto; padding:18px 20px 10px; position:relative; z-index:1; }
+    .profile-section { display:grid; grid-template-columns:minmax(0,365px) minmax(0,1fr); gap:26px; align-items:stretch; width:100%; min-height:0; }
+    .left-column { display:grid; grid-template-rows:minmax(96px,21%) minmax(0,1fr); gap:18px; min-width:0; min-height:0; }
+    .name-card { display:flex; align-items:center; justify-content:center; padding:16px 20px; min-height:0; flex-direction:column; gap:6px; }
+    .profile-logo-top { max-height:100px; max-width:min(90%,230px); width:auto; height:auto; object-fit:contain; }
+    .name-fallback { text-align:center; }
+    .name-fallback h1 { margin:0; font-size:clamp(37px,4.1vw,55px); color:#7e6acb; letter-spacing:3px; line-height:1.05; text-shadow:0 1px 16px rgba(126,106,203,.16); }
+    .name-fallback p { margin:7px 0 0; color:rgba(87,98,115,.70); font-size:11px; letter-spacing:3px; font-weight:750; }
+    .portrait-card { padding:12px 16px; display:flex; align-items:center; justify-content:center; min-width:0; min-height:0; }
+    .portrait-card img { display:block; width:auto; height:100%; max-width:100%; max-height:100%; object-fit:contain; object-position:center; filter:drop-shadow(0 8px 17px rgba(75,91,83,.17)); }
+    .portrait-fallback { display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; color:#7a6bc5; font-weight:750; text-align:center; }
+    .portrait-fallback .wheat-icon { font-size:clamp(72px,11vw,130px); opacity:.68; }
+    .portrait-fallback p { font-size:16px; margin:0; }
+    .profile-card { min-width:0; min-height:0; padding:14px 32px; display:flex; }
+    .char-table { width:100%; height:100%; border-collapse:collapse; table-layout:fixed; }
+    .char-table tr { height:8.33%; }
+    .char-table td {
+      padding:3px 0; border-bottom:1px solid rgba(104,129,118,.17); color:#314640; font-weight:650; line-height:1.25; font-size:clamp(13px,1.05vw,16px); vertical-align:middle;
+    }
+    .char-table td:first-child { width:126px; padding-right:10px; color:#5a8b70; font-weight:850; }
+    .char-table tr:last-child td { border-bottom:none; }
+    .color-indicator { display:inline-flex; gap:8px; align-items:center; }
+    .color-dot { width:16px; height:16px; border-radius:50%; background:linear-gradient(135deg,#cfc5ff,#8B79D0); border:1px solid rgba(99,82,171,.28); box-shadow:0 0 0 3px rgba(230,224,255,.46); }
+    footer { position:relative; z-index:1; text-align:center; font-size:13px; font-weight:700; color:rgba(244,252,246,.93); text-shadow:0 1px 4px rgba(12,47,26,.48); height:42px; display:flex; justify-content:center; align-items:center; padding:0 14px; }
+
+    @media (min-width: 921px) and (min-height: 650px) {
+      body { display:flex; flex-direction:column; }
+      main { flex:1; min-height:0; display:flex; }
+      .profile-section { width:100%; height:calc(100vh - var(--header-h) - 18px - 10px - 42px); height:calc(100dvh - var(--header-h) - 18px - 10px - 42px); }
+      .left-column, .profile-card { height:100%; }
+      footer { flex:0 0 42px; }
+    }
+    @media (min-width: 921px) and (max-height: 649px) {
+      .profile-section { min-height:610px; }
+      .left-column { grid-template-rows:134px 1fr; }
+    }
+    @media (max-width: 920px) {
+      .profile-section { grid-template-columns:1fr; gap:18px; }
+      .left-column { grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr); grid-template-rows:260px; }
+      .portrait-card img { max-height:100%; width:auto; height:100%; }
+      .profile-card { min-height:590px; }
+      .char-table tr { height:auto; }
+    }
+    @media (max-width: 768px) {
+      :root { --header-h:128px; }
+      .nav-container { flex-direction:column; justify-content:center; min-height:128px; gap:9px; padding:10px 16px; }
+      .header-left { display:none; }
+      .header-center,.header-right { flex:none; width:100%; justify-content:center; }
+      .header-right { gap:28px; }
+      .header-right a,.dropdown-btn { font-size:17px; }
+      .dropdown-content { right:50%; transform:translateX(50%); top:calc(100% + 5px); }
+      .logo img { max-height:45px; }
+      main { padding:16px 16px 8px; }
+      .left-column { grid-template-columns:1fr; grid-template-rows:106px minmax(0,420px); gap:14px; }
+      .name-card { padding:12px 18px; }
+      .profile-logo-top { max-height:84px; }
+      .name-fallback h1 { font-size:41px; }
+      .name-fallback p { font-size:10px; }
+      .portrait-card { padding:14px; }
+      .portrait-card img { width:auto; height:100%; max-height:100%; }
+      .profile-card { padding:14px 22px; min-height:0; }
+      .char-table td { padding:15px 0; font-size:14.5px; }
+      .char-table td:first-child { width:103px; }
+      footer { height:auto; min-height:56px; padding:14px 8px 20px; }
+      .glass-panel { background: linear-gradient(130deg,rgba(244,251,246,.82),rgba(226,240,230,.70)); }
+    }
+    @media (max-width: 420px) {
+      .left-column { grid-template-rows:100px minmax(0,378px); }
+      .profile-card { padding:12px 18px; }
+      .char-table td { font-size:13.5px; padding:14px 0; }
+      .char-table td:first-child { width:94px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior:auto !important; } }
+  </style>
+</head>
+<body>
+  <div class="forest-scenery" aria-hidden="true"></div>
+  <canvas id="cursor-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:900;pointer-events:none;"></canvas>
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="https://acestudio.ai/" target="_blank" rel="noopener noreferrer">ACE官網</a>
+        <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" rel="noopener noreferrer">ACE社群</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo"><img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="site-logo-fallback" hidden>✦ 星樂之夢<small>STAR MUSIC DREAM</small></span></a>
+      </div>
+      <div class="header-right">
+        <div class="dropdown">
+          <button class="dropdown-btn" type="button" aria-expanded="false" aria-controls="otherSingers">其他歌手 ▾</button>
+          <div class="dropdown-content" id="otherSingers">
+            <a href="YueLan.html">岳嵐</a>
+            <a href="Suirong.html">穗蓉</a>
+            <a href="Zhanqiao.html">湛嶠</a>
+            <a href="vsinger.html">查看全陣容</a>
+          </div>
+        </div>
+        <a href="index.html">返回首頁</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="profile-section" aria-label="雉瑜角色資料">
+      <div class="left-column">
+        <div class="glass-panel name-card">
+          <img class="profile-logo-top" src="img/雉瑜Logo.png" alt="雉瑜 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <div class="name-fallback" hidden><h1>雉瑜</h1><p>ZHIYU · 森嶼之聲</p></div>
+        </div>
+        <div class="glass-panel portrait-card">
+          <img src="img/雉瑜立繪.png" alt="雉瑜全身立繪" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <div class="portrait-fallback" hidden><span class="wheat-icon" aria-hidden="true">🪶</span><p>雉瑜立繪預留</p></div>
+        </div>
+      </div>
+      <div class="glass-panel profile-card">
+        <table class="char-table">
+          <tbody>
+            <tr><td>性別</td><td>女性</td></tr>
+            <tr><td>年齡</td><td>13歲</td></tr>
+            <tr><td>身高</td><td>165cm</td></tr>
+            <tr><td>體重</td><td>47kg</td></tr>
+            <tr><td>生日</td><td>6月6日</td></tr>
+            <tr><td>星座</td><td>雙子座 ♊</td></tr>
+            <tr><td>血型</td><td>B型</td></tr>
+            <tr><td>代表色</td><td><span class="color-indicator"><span class="color-dot" aria-hidden="true"></span>馬卡龍紫</span></td></tr>
+            <tr><td>所屬團體</td><td>森嶼之森</td></tr>
+            <tr><td>立繪插畫</td><td>斯貝</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+  <footer>© 星樂之夢 (Star Music Dream)</footer>
+
+  <script>
+    (() => {
+      const dropdown = document.querySelector('.dropdown');
+      const button = dropdown.querySelector('.dropdown-btn');
+      const menu = dropdown.querySelector('.dropdown-content');
+      function setOpen(open){ menu.classList.toggle('show',open); button.setAttribute('aria-expanded',String(open)); }
+      button.addEventListener('click', e=>{ e.stopPropagation(); setOpen(!menu.classList.contains('show')); });
+      document.addEventListener('click', e=>{ if(!dropdown.contains(e.target)) setOpen(false); });
+      document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ setOpen(false); button.focus(); } });
+    })();
+  </script>
+  <script>
+    // 雉瑜：紫霧、山林綠、淡白光點的五角星粒子。
+    (() => {
+      const canvas=document.getElementById('cursor-canvas'); if(!canvas) return;
+      const ctx=canvas.getContext('2d',{alpha:true}); if(!ctx) return;
+      const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+      const colors=['#FFFFFF','#F0EEFF','#D8D0FF','#BDAEF3','#8B79D0','#8FB89E','#CFE6DA'];
+      const particles=[]; let width=0,height=0,frame=0,lastSpawn=0; const maxParticles=200;
+      function resize(){ width=window.innerWidth; height=window.innerHeight; const dpr=Math.min(window.devicePixelRatio||1,2); canvas.width=Math.round(width*dpr); canvas.height=Math.round(height*dpr); ctx.setTransform(dpr,0,0,dpr,0,0); }
+      window.addEventListener('resize',resize,{passive:true}); resize();
+      function drawStar(x,y,r,rotation){ ctx.save(); ctx.translate(x,y); ctx.rotate(rotation); ctx.beginPath(); for(let i=0;i<10;i++){ const angle=-Math.PI/2+i*Math.PI/5; const radius=i%2===0?r:r*.49; const px=Math.cos(angle)*radius, py=Math.sin(angle)*radius; if(i===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);} ctx.closePath(); ctx.fill(); ctx.restore(); }
+      function addStar(x,y){ const angle=Math.random()*Math.PI*2, speed=Math.random()*1.2+.18; particles.push({ x:x+(Math.random()-.5)*13, y:y+(Math.random()-.5)*13, vx:Math.cos(angle)*speed, vy:Math.sin(angle)*speed-.36, size:Math.random()*5.8+4.6, color:colors[Math.floor(Math.random()*colors.length)], life:0, maxLife:Math.random()*30+36, rotation:Math.random()*Math.PI*2, rs:(Math.random()-.5)*.09 }); if(particles.length>maxParticles) particles.splice(0,particles.length-maxParticles); if(!frame) frame=requestAnimationFrame(animate); }
+      function leaveTrail(x,y){ if(document.hidden||reduceMotion.matches) return; const now=performance.now(); if(now-lastSpawn<12) return; lastSpawn=now; addStar(x,y); addStar(x,y); }
+      window.addEventListener('mousemove', e=>leaveTrail(e.clientX,e.clientY), {passive:true});
+      window.addEventListener('touchmove', e=>{ if(e.touches.length) leaveTrail(e.touches[0].clientX,e.touches[0].clientY); }, {passive:true});
+      function animate(){ frame=0; ctx.clearRect(0,0,width,height); if(document.hidden||reduceMotion.matches){ particles.length=0; return; } for(let i=particles.length-1;i>=0;i--){ const p=particles[i]; p.life++; if(p.life>=p.maxLife){ particles.splice(i,1); continue; } p.x+=p.vx; p.y+=p.vy; p.vy+=.042; p.rotation+=p.rs; const alpha=1-p.life/p.maxLife; ctx.globalAlpha=Math.min(.94,alpha); ctx.fillStyle=p.color; ctx.shadowColor=p.color; ctx.shadowBlur=9; drawStar(p.x,p.y,p.size,p.rotation);} ctx.globalAlpha=1; ctx.shadowBlur=0; if(particles.length) frame=requestAnimationFrame(animate); }
+      function reset(){ if(frame) cancelAnimationFrame(frame); frame=0; particles.length=0; ctx.clearRect(0,0,width,height); }
+      document.addEventListener('visibilitychange',()=>{ if(document.hidden) reset(); });
+      reduceMotion.addEventListener?.('change',()=>{ if(reduceMotion.matches) reset(); });
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#456a59">
+  <meta name="description" content="穗蓉 Suirong｜星樂之夢・森嶼之聲虛擬歌手官方角色介紹頁面。">
+  <title>穗蓉 Suirong | 星樂之夢</title>
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    :root {
+      --header-h: 65px;
+      --ink: #263b33;
+      --ink-muted: #526b5d;
+      --accent: #8c7d36;
+      --accent-light: #fff0ad;
+      --glass-background: linear-gradient(135deg,rgba(255,255,248,.63) 0%,rgba(241,242,205,.40) 54%,rgba(214,231,207,.41) 100%);
+      --glass-border: rgba(255,255,247,.76);
+      --glass-shadow: 0 18px 44px rgba(62,93,67,.18),0 3px 14px rgba(69,79,49,.06);
+      --glass-filter: blur(22px) saturate(158%);
+    }
+    html { min-height: 100%; background: #dce8dc; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-top: var(--header-h);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(155deg,#dcebe4 0%,#e2eddb 35%,#eee4bb 69%,#f2d8ae 100%);
+      overflow-x: hidden;
+    }
+
+    /* 花東縱谷意象：純 CSS 多層柔和漸層。無山形、田埂、SVG 或硬邊圖形。 */
+    .valley-scenery {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      isolation: isolate;
+      background-color: #dceadf;
+      background-image:
+        /* 左右兩側：森林與遠山的青綠空氣感 */
+        radial-gradient(ellipse 72% 78% at -6% 10%, rgba(91,153,130,.38) 0%, rgba(128,177,151,.19) 44%, transparent 79%),
+        radial-gradient(ellipse 70% 82% at 107% 16%, rgba(79,139,120,.38) 0%, rgba(123,171,143,.18) 46%, transparent 80%),
+        /* 中央透亮的谷地晨霧 */
+        radial-gradient(ellipse 73% 48% at 49% 25%, rgba(255,255,245,.52) 0%, rgba(252,253,226,.19) 48%, transparent 100%),
+        /* 稻田收穫季：金黃由下方自然漫開 */
+        radial-gradient(ellipse 95% 72% at 48% 113%, rgba(221,180,83,.52) 0%, rgba(238,205,129,.33) 39%, transparent 86%),
+        /* 少量花田的暖粉與奶油色 */
+        radial-gradient(ellipse 52% 49% at -8% 91%, rgba(248,191,161,.29) 0%, transparent 80%),
+        radial-gradient(ellipse 45% 44% at 108% 96%, rgba(247,213,155,.30) 0%, transparent 78%),
+        linear-gradient(160deg, #d9eae6 0%, #e5edd7 38%, #f1e7c6 70%, #eed39f 100%);
+    }
+    .valley-scenery::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 50% at 54% 52%, rgba(255,255,255,.25) 0%, transparent 90%),
+        linear-gradient(180deg, rgba(253,255,249,.07), rgba(250,235,202,.10));
+    }
+
+    .glass-panel {
+      background: var(--glass-background);
+      border: 1px solid var(--glass-border);
+      border-radius: 26px;
+      box-shadow: var(--glass-shadow),inset 0 1px 0 rgba(255,255,255,.75),inset 0 -1px 0 rgba(255,255,255,.16);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .glass-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(123deg,rgba(255,255,255,.30),rgba(255,255,255,.035) 29%,transparent 62%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .glass-panel::after {
+      content: "";
+      position: absolute;
+      left: 23px;
+      right: 23px;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,.85) 38%,rgba(255,255,255,.3) 72%,transparent);
+      pointer-events: none;
+    }
+
+    header {
+      position: fixed;
+      z-index: 1000;
+      inset: 0 0 auto;
+      min-height: var(--header-h);
+      background: linear-gradient(105deg,rgba(28,57,49,.68),rgba(64,93,67,.50) 54%,rgba(62,86,54,.62));
+      border-bottom: 1px solid rgba(248,255,242,.32);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12),0 4px 22px rgba(28,55,39,.12);
+      backdrop-filter: blur(24px) saturate(154%);
+      -webkit-backdrop-filter: blur(24px) saturate(154%);
+    }
+    .nav-container {
+      width: 100%;
+      max-width: 1120px;
+      min-height: var(--header-h);
+      margin: 0 auto;
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .header-left,.header-center,.header-right { display: flex; align-items: center; flex: 1; }
+    .header-left { justify-content: flex-start; gap: 25px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 25px; }
+    .logo { display: flex; text-decoration: none; align-items: center; }
+    .logo img { display: block; width: auto; max-height: 45px; max-width: 220px; }
+    .site-logo-fallback { color: #f8f7e7; font-size: 21px; font-weight: 800; letter-spacing: 2px; text-align: center; line-height: 1.05; }
+    .site-logo-fallback small { display:block; font-size: 7px; letter-spacing: 2px; margin-top: 4px; }
+    header a,header button {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #f8fdf5;
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+    header a:hover,header button:hover { color: #fff5ba; }
+    .dropdown { position: relative; }
+    .dropdown-btn {
+      display: inline-block;
+      padding: 10px 0;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      color: #f8fdf5;
+      white-space: nowrap;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: -16px;
+      min-width: 168px;
+      padding: 8px 0;
+      background: rgba(43,73,52,.88);
+      border: 1px solid rgba(249,255,238,.24);
+      border-radius: 14px;
+      box-shadow: 0 15px 38px rgba(29,51,34,.24),inset 0 1px 0 rgba(255,255,255,.13);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 1100;
+    }
+    .dropdown-content.show { display: block; }
+    .dropdown-content a { display: block; padding: 11px 16px; text-align: center; font-size: 14px; }
+    .dropdown-content a:hover { background: rgba(255,255,237,.10); }
+
+    main {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 18px 20px 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-section {
+      display: grid;
+      grid-template-columns: minmax(0,365px) minmax(0,1fr);
+      gap: 26px;
+      align-items: stretch;
+      width: 100%;
+      min-height: 0;
+    }
+    .left-column {
+      display: grid;
+      grid-template-rows: minmax(96px,21%) minmax(0,1fr);
+      gap: 18px;
+      min-width: 0;
+      min-height: 0;
+    }
+    .name-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      min-height: 0;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .profile-logo-top { max-height: 100px; max-width: min(90%,230px); width: auto; height: auto; object-fit: contain; }
+    .name-fallback { text-align: center; }
+    .name-fallback h1 {
+      margin: 0;
+      font-size: clamp(37px,4.1vw,55px);
+      color: #fff5bf;
+      letter-spacing: 3px;
+      line-height: 1.05;
+      text-shadow: 0 1px 16px rgba(100,99,29,.20);
+    }
+    .name-fallback p { margin: 7px 0 0; color: rgba(97,105,53,.75); font-size: 11px; letter-spacing: 3px; font-weight: 750; }
+    .portrait-card {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 0;
+    }
+    .portrait-card img {
+      display: block;
+      width: auto;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: drop-shadow(0 8px 17px rgba(44,64,43,.14));
+    }
+    .portrait-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      color: #78956e;
+      font-weight: 750;
+      text-align: center;
+    }
+    .portrait-fallback .wheat-icon { font-size: clamp(72px,11vw,130px); opacity: .68; }
+    .portrait-fallback p { font-size: 16px; margin: 0; }
+    .profile-card { min-width: 0; min-height: 0; padding: 14px 32px; display: flex; }
+    .char-table { width: 100%; height: 100%; border-collapse: collapse; table-layout: fixed; }
+    .char-table tr { height: 9.09%; }
+    .char-table td {
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(94,122,84,.15);
+      color: #2c4034;
+      font-weight: 650;
+      line-height: 1.25;
+      font-size: clamp(13px,1.05vw,16px);
+      vertical-align: middle;
+    }
+    .char-table td:first-child { width: 118px; padding-right: 10px; color: #738643; font-weight: 850; }
+    .char-table tr:last-child td { border-bottom: none; }
+    .color-indicator { display: inline-flex; gap: 8px; align-items: center; }
+    .color-dot { width: 16px; height: 16px; border-radius: 50%; background: #f4e49a; border: 1px solid rgba(154,127,49,.21); box-shadow: 0 0 0 3px rgba(255,247,208,.45); }
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(48,75,50,.75);
+      height: 42px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 14px;
+    }
+
+    /* 跟岳嵐、高中生系列一致：桌面在單一視窗看完立繪與角色卡。 */
+    @media (min-width: 921px) and (min-height: 650px) {
+      body { display: flex; flex-direction: column; }
+      main { flex: 1; min-height: 0; display: flex; }
+      .profile-section {
+        width: 100%;
+        height: calc(100vh - var(--header-h) - 18px - 10px - 42px);
+        height: calc(100dvh - var(--header-h) - 18px - 10px - 42px);
+      }
+      .left-column, .profile-card { height: 100%; }
+      footer { flex: 0 0 42px; }
+    }
+    @media (min-width: 921px) and (max-height: 649px) {
+      .profile-section { min-height: 610px; }
+      .left-column { grid-template-rows: 134px 1fr; }
+    }
+    @media (max-width: 920px) {
+      .profile-section { grid-template-columns: 1fr; gap: 18px; }
+      .left-column { grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); grid-template-rows: 260px; }
+      .name-card,.portrait-card { min-height: 0; }
+      .portrait-card img { max-height: 100%; width: auto; height: 100%; }
+      .profile-card { min-height: 575px; }
+      .char-table tr { height: auto; }
+    }
+    @media (max-width: 768px) {
+      :root { --header-h: 128px; }
+      .nav-container { flex-direction: column; justify-content: center; min-height: 128px; gap: 9px; padding: 10px 16px; }
+      .header-left { display: none; }
+      .header-center,.header-right { flex: none; width: 100%; justify-content: center; }
+      .header-right { gap: 28px; }
+      .header-right a,.dropdown-btn { font-size: 17px; }
+      .dropdown-content { right: 50%; transform: translateX(50%); top: calc(100% + 5px); }
+      .logo img { max-height: 45px; }
+      main { padding: 16px 16px 8px; }
+      .left-column { grid-template-columns: 1fr; grid-template-rows: 106px minmax(0,420px); gap: 14px; }
+      .name-card { padding: 12px 18px; }
+      .profile-logo-top { max-height: 84px; }
+      .name-fallback h1 { font-size: 41px; }
+      .name-fallback p { font-size: 10px; }
+      .portrait-card { padding: 14px; }
+      .portrait-card img { width: auto; height: 100%; max-height: 100%; }
+      .profile-card { padding: 14px 22px; min-height: 0; }
+      .char-table td { padding: 15px 0; font-size: 14.5px; }
+      .char-table td:first-child { width: 103px; }
+      footer { height: auto; min-height: 56px; padding: 14px 8px 20px; }
+      /* iPhone 的背景保底：不讓半透明卡片或 SVG 的合成失效顯示為白底。 */
+      .glass-panel { background: linear-gradient(130deg,rgba(255,254,235,.73),rgba(226,237,201,.60)); }
+    }
+    @media (max-width: 420px) {
+      .left-column { grid-template-rows: 100px minmax(0,378px); }
+      .profile-card { padding: 12px 18px; }
+      .char-table td { font-size: 13.5px; padding: 14px 0; }
+      .char-table td:first-child { width: 94px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <div class="valley-scenery" aria-hidden="true"></div>
+
+  <canvas id="cursor-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:900;pointer-events:none;"></canvas>
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="https://acestudio.ai/" target="_blank" rel="noopener noreferrer">ACE官網</a>
+        <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" rel="noopener noreferrer">ACE社群</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo"><img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="site-logo-fallback" hidden>✦ 星樂之夢<small>STAR MUSIC DREAM</small></span></a>
+      </div>
+      <div class="header-right">
+        <div class="dropdown">
+          <button class="dropdown-btn" type="button" aria-expanded="false" aria-controls="otherSingers">其他歌手 ▾</button>
+          <div class="dropdown-content" id="otherSingers">
+            <a href="YueLan.html">岳嵐</a>
+            <a href="Zhanqiao.html">湛嶠</a>
+            <a href="Zhiyu.html">雉瑜</a>
+            <a href="vsinger.html">查看全陣容</a>
+          </div>
+        </div>
+        <a href="index.html">返回首頁</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="profile-section" aria-label="穗蓉角色資料">
+      <div class="left-column">
+        <div class="glass-panel name-card">
+          <img class="profile-logo-top" src="img/穗蓉Logo.png" alt="穗蓉 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <div class="name-fallback" hidden><h1>穗蓉</h1><p>SUIRONG · FE02</p></div>
+        </div>
+        <div class="glass-panel portrait-card">
+          <img src="img/穗蓉立繪.png" alt="穗蓉全身立繪" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <div class="portrait-fallback" hidden><span class="wheat-icon" aria-hidden="true">🌾</span><p>穗蓉立繪預留</p></div>
+        </div>
+      </div>
+      <div class="glass-panel profile-card">
+        <table class="char-table">
+          <tbody>
+            <tr><td>性別</td><td>女性</td></tr>
+            <tr><td>年齡</td><td>14歲</td></tr>
+            <tr><td>身高</td><td>165cm</td></tr>
+            <tr><td>體重</td><td>50kg</td></tr>
+            <tr><td>生日</td><td>4月22日</td></tr>
+            <tr><td>星座</td><td>金牛座 ♉</td></tr>
+            <tr><td>血型</td><td>O型</td></tr>
+            <tr><td>應援色</td><td><span class="color-indicator"><span class="color-dot" aria-hidden="true"></span>馬卡龍黃</span></td></tr>
+            <tr><td>所屬團體</td><td>森嶼之聲</td></tr>
+            <tr><td>立繪插畫</td><td>斯貝</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 星樂之夢 (Star Music Dream)</footer>
+
+  <script>
+    // 導覽列：開關、點擊外側及 Escape，桌面與手機共用。
+    (() => {
+      const dropdown = document.querySelector('.dropdown');
+      const button = dropdown.querySelector('.dropdown-btn');
+      const menu = dropdown.querySelector('.dropdown-content');
+      function setOpen(open) {
+        menu.classList.toggle('show',open);
+        button.setAttribute('aria-expanded',String(open));
+      }
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        setOpen(!menu.classList.contains('show'));
+      });
+      document.addEventListener('click',event=>{
+        if(!dropdown.contains(event.target)) setOpen(false);
+      });
+      document.addEventListener('keydown',event=>{
+        if(event.key==='Escape') { setOpen(false); button.focus(); }
+      });
+    })();
+  </script>
+  <script>
+    // 森嶼之聲・穗蓉：暖金／稻穗黃／嫩葉綠的五角星粒子拖尾。
+    (() => {
+      const canvas=document.getElementById('cursor-canvas');
+      if(!canvas) return;
+      const ctx=canvas.getContext('2d',{alpha:true});
+      if(!ctx) return;
+      const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+      const colors=['#FFFAE8','#FFF3BD','#F4E49A','#E8D47B','#E5F0B2','#C6DA9E','#F5D5C4'];
+      const particles=[];
+      let width=0,height=0,frame=0,lastSpawn=0;
+      const maxParticles=200;
+      function resize(){
+        width=window.innerWidth;
+        height=window.innerHeight;
+        const dpr=Math.min(window.devicePixelRatio||1,2);
+        canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+      window.addEventListener('resize',resize,{passive:true});resize();
+      function drawStar(x,y,r,rotation){
+        ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.beginPath();
+        for(let i=0;i<10;i++){
+          const angle=-Math.PI/2+i*Math.PI/5;
+          const radius=i%2===0?r:r*.49;
+          const px=Math.cos(angle)*radius,py=Math.sin(angle)*radius;
+          if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
+        }
+        ctx.closePath();ctx.fill();ctx.restore();
+      }
+      function addStar(x,y){
+        const angle=Math.random()*Math.PI*2,speed=Math.random()*1.25+.18;
+        particles.push({
+          x:x+(Math.random()-.5)*13,y:y+(Math.random()-.5)*13,
+          vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-.38,
+          size:Math.random()*5.8+4.6,color:colors[Math.floor(Math.random()*colors.length)],
+          life:0,maxLife:Math.random()*30+36,rotation:Math.random()*Math.PI*2,
+          rs:(Math.random()-.5)*.09
+        });
+        if(particles.length>maxParticles)particles.splice(0,particles.length-maxParticles);
+        if(!frame)frame=requestAnimationFrame(animate);
+      }
+      function leaveTrail(x,y){
+        if(document.hidden||reduceMotion.matches)return;
+        const now=performance.now();if(now-lastSpawn<12)return;lastSpawn=now;
+        addStar(x,y);addStar(x,y);
+      }
+      window.addEventListener('mousemove',e=>leaveTrail(e.clientX,e.clientY),{passive:true});
+      window.addEventListener('touchmove',e=>{if(e.touches.length)leaveTrail(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+      function animate(){
+        frame=0;ctx.clearRect(0,0,width,height);
+        if(document.hidden||reduceMotion.matches){particles.length=0;return;}
+        for(let i=particles.length-1;i>=0;i--){
+          const p=particles[i];p.life++;
+          if(p.life>=p.maxLife){particles.splice(i,1);continue;}
+          p.x+=p.vx;p.y+=p.vy;p.vy+=.042;p.rotation+=p.rs;
+          const alpha=1-p.life/p.maxLife;
+          ctx.globalAlpha=Math.min(.94,alpha);
+          ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=9;
+          drawStar(p.x,p.y,p.size,p.rotation);
+        }
+        ctx.globalAlpha=1;ctx.shadowBlur=0;
+        if(particles.length)frame=requestAnimationFrame(animate);
+      }
+      function reset(){
+        if(frame)cancelAnimationFrame(frame);frame=0;
+        particles.length=0;ctx.clearRect(0,0,width,height);
+      }
+      document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();});
+      reduceMotion.addEventListener?.('change',()=>{if(reduceMotion.matches)reset();});
+    })();
+  </script>
+</body>
+</html>

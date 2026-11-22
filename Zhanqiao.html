@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#165E80">
+  <meta name="description" content="湛嶠 Zhanqiao｜星樂之夢・森嶼之聲虛擬歌手官方角色介紹頁面。">
+  <title>湛嶠 Zhanqiao | 星樂之夢</title>
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    :root {
+      --header-h: 65px;
+      --ink: #14374b;
+      --ink-muted: #4a6d78;
+      --accent: #087ea3;
+      --accent-light: #b5f3ff;
+      --glass-background: linear-gradient(130deg,rgba(244,253,255,.60) 0%,rgba(208,237,246,.38) 54%,rgba(169,217,229,.36) 100%);
+      --glass-border: rgba(240,253,255,.79);
+      --glass-shadow: 0 18px 44px rgba(26,91,116,.17),0 3px 14px rgba(34,93,126,.07);
+      --glass-filter: blur(22px) saturate(158%);
+    }
+    html { min-height: 100%; background: #b7e4ed; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-top: var(--header-h);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(170deg,#c3ecf6 0%,#8fd2e7 38%,#58b5d0 65%,#f2dfb7 100%);
+      overflow-x: hidden;
+    }
+
+    /* 屏東墾丁意象：純 CSS 漸層描繪晴空、湛藍海域、近岸淺灘和金色沙地。
+       不使用圖片、SVG、多邊形或硬線條，讓畫面保持柔和自然。 */
+    .coastal-scenery {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+      isolation: isolate;
+      background-color: #a8dfec;
+      background-image:
+        /* 沙灘在畫面下緣柔和漫開，沒有硬切的海岸線 */
+        linear-gradient(180deg, transparent 68%, rgba(249,228,182,.08) 79%, rgba(251,229,177,.25) 89%, rgba(249,220,164,.63) 100%),
+        /* 日光與天空的淺藍晨霧 */
+        radial-gradient(ellipse 77% 52% at 49% -12%, rgba(248,255,255,.91) 0%, rgba(218,247,255,.58) 43%, transparent 95%),
+        radial-gradient(ellipse 44% 42% at 11% 10%, rgba(237,255,255,.50) 0%, transparent 91%),
+        radial-gradient(ellipse 45% 36% at 106% 10%, rgba(233,251,255,.36) 0%, transparent 87%),
+        /* 中層湛藍海水：深淺漸變，沒有水平幾何海平線 */
+        radial-gradient(ellipse 88% 50% at 52% 66%, rgba(0,114,170,.71) 0%, rgba(18,155,193,.57) 40%, rgba(92,200,210,.24) 79%, transparent 100%),
+        radial-gradient(ellipse 45% 42% at 104% 48%, rgba(4,105,167,.39) 0%, transparent 92%),
+        radial-gradient(ellipse 44% 42% at -7% 62%, rgba(35,156,188,.24) 0%, transparent 90%),
+        /* 近岸清透的藍綠色浪潮 */
+        radial-gradient(ellipse 70% 29% at 47% 90%, rgba(72,195,194,.48) 0%, rgba(112,219,210,.25) 54%, transparent 96%),
+        radial-gradient(ellipse 44% 17% at 41% 92%, rgba(234,255,248,.46) 0%, rgba(236,255,245,.13) 44%, transparent 100%),
+        /* 溫暖的墾丁沙灘：從畫面底部自然融入海水 */
+        radial-gradient(ellipse 108% 46% at 51% 119%, rgba(248,220,163,.97) 0%, rgba(244,219,172,.64) 48%, rgba(249,235,203,.23) 75%, transparent 100%),
+        radial-gradient(ellipse 40% 32% at 104% 112%, rgba(254,239,199,.52) 0%, transparent 93%),
+        linear-gradient(180deg,#caedf8 0%,#92d6ed 30%,#42a4cd 57%,#62c1ca 78%,#eedbb6 100%);
+    }
+    /* 玻璃之後的光暈：模糊處理，而非拼接沙丘輪廓 */
+    .coastal-scenery::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 46% 27% at 52% 23%, rgba(250,255,255,.35) 0%,transparent 100%),
+        radial-gradient(ellipse 85% 20% at 52% 90%, rgba(236,255,248,.22) 0%,transparent 95%),
+        linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.00) 65%,rgba(255,244,211,.10));
+      filter: blur(18px);
+    }
+
+    .glass-panel {
+      background: var(--glass-background);
+      border: 1px solid var(--glass-border);
+      border-radius: 26px;
+      box-shadow: var(--glass-shadow),inset 0 1px 0 rgba(255,255,255,.76),inset 0 -1px 0 rgba(255,255,255,.16);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .glass-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(123deg,rgba(255,255,255,.30),rgba(255,255,255,.035) 29%,transparent 62%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .glass-panel::after {
+      content: "";
+      position: absolute;
+      left: 23px;
+      right: 23px;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,.85) 38%,rgba(255,255,255,.3) 72%,transparent);
+      pointer-events: none;
+    }
+
+    header {
+      position: fixed;
+      z-index: 1000;
+      inset: 0 0 auto;
+      min-height: var(--header-h);
+      background: linear-gradient(105deg,rgba(7,53,78,.64),rgba(16,99,131,.48) 54%,rgba(4,61,104,.62));
+      border-bottom: 1px solid rgba(237,251,255,.37);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12),0 4px 22px rgba(15,58,82,.15);
+      backdrop-filter: blur(24px) saturate(154%);
+      -webkit-backdrop-filter: blur(24px) saturate(154%);
+    }
+    .nav-container {
+      width: 100%;
+      max-width: 1120px;
+      min-height: var(--header-h);
+      margin: 0 auto;
+      padding: 8px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .header-left,.header-center,.header-right { display: flex; align-items: center; flex: 1; }
+    .header-left { justify-content: flex-start; gap: 25px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 25px; }
+    .logo { display: flex; text-decoration: none; align-items: center; }
+    .logo img { display: block; width: auto; max-height: 45px; max-width: 220px; }
+    .site-logo-fallback { color: #eefcff; font-size: 21px; font-weight: 800; letter-spacing: 2px; text-align: center; line-height: 1.05; }
+    .site-logo-fallback small { display:block; font-size: 7px; letter-spacing: 2px; margin-top: 4px; }
+    header a,header button {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #f8fdf5;
+      text-decoration: none;
+      transition: color .2s ease;
+    }
+    header a:hover,header button:hover { color: #b7f3ff; }
+    .dropdown { position: relative; }
+    .dropdown-btn {
+      display: inline-block;
+      padding: 10px 0;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      color: #f8fdf5;
+      white-space: nowrap;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: -16px;
+      min-width: 168px;
+      padding: 8px 0;
+      background: rgba(7,61,92,.89);
+      border: 1px solid rgba(240,254,255,.28);
+      border-radius: 14px;
+      box-shadow: 0 15px 38px rgba(13,52,84,.27),inset 0 1px 0 rgba(255,255,255,.13);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 1100;
+    }
+    .dropdown-content.show { display: block; }
+    .dropdown-content a { display: block; padding: 11px 16px; text-align: center; font-size: 14px; }
+    .dropdown-content a:hover { background: rgba(207,245,255,.16); }
+
+    main {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 18px 20px 10px;
+      position: relative;
+      z-index: 1;
+    }
+    .profile-section {
+      display: grid;
+      grid-template-columns: minmax(0,365px) minmax(0,1fr);
+      gap: 26px;
+      align-items: stretch;
+      width: 100%;
+      min-height: 0;
+    }
+    .left-column {
+      display: grid;
+      grid-template-rows: minmax(96px,21%) minmax(0,1fr);
+      gap: 18px;
+      min-width: 0;
+      min-height: 0;
+    }
+    .name-card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 20px;
+      min-height: 0;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .profile-logo-top { max-height: 100px; max-width: min(90%,230px); width: auto; height: auto; object-fit: contain; }
+    .name-fallback { text-align: center; }
+    .name-fallback h1 {
+      margin: 0;
+      font-size: clamp(37px,4.1vw,55px);
+      color: #137a9c;
+      letter-spacing: 3px;
+      line-height: 1.05;
+      text-shadow: 0 1px 16px rgba(25,121,155,.20);
+    }
+    .name-fallback p { margin: 7px 0 0; color: rgba(26,98,130,.70); font-size: 11px; letter-spacing: 3px; font-weight: 750; }
+    .portrait-card {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+      min-height: 0;
+    }
+    .portrait-card img {
+      display: block;
+      width: auto;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: drop-shadow(0 8px 17px rgba(23,100,138,.17));
+    }
+    .portrait-fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      color: #4a9fba;
+      font-weight: 750;
+      text-align: center;
+    }
+    .portrait-fallback .wheat-icon { font-size: clamp(72px,11vw,130px); opacity: .68; }
+    .portrait-fallback p { font-size: 16px; margin: 0; }
+    .profile-card { min-width: 0; min-height: 0; padding: 14px 32px; display: flex; }
+    .char-table { width: 100%; height: 100%; border-collapse: collapse; table-layout: fixed; }
+    .char-table tr { height: 9.09%; }
+    .char-table td {
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(61,140,161,.19);
+      color: #193b50;
+      font-weight: 650;
+      line-height: 1.25;
+      font-size: clamp(13px,1.05vw,16px);
+      vertical-align: middle;
+    }
+    .char-table td:first-child { width: 118px; padding-right: 10px; color: #0980a7; font-weight: 850; }
+    .char-table tr:last-child td { border-bottom: none; }
+    .color-indicator { display: inline-flex; gap: 8px; align-items: center; }
+    .color-dot { width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg,#b9f7ff,#1bbad7); border: 1px solid rgba(12,126,166,.26); box-shadow: 0 0 0 3px rgba(205,252,255,.48); }
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(22,75,98,.77);
+      height: 42px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 14px;
+    }
+
+    /* 跟岳嵐、穗蓉及高中生系列一致：桌面單一視窗看完立繪與角色卡。 */
+    @media (min-width: 921px) and (min-height: 650px) {
+      body { display: flex; flex-direction: column; }
+      main { flex: 1; min-height: 0; display: flex; }
+      .profile-section {
+        width: 100%;
+        height: calc(100vh - var(--header-h) - 18px - 10px - 42px);
+        height: calc(100dvh - var(--header-h) - 18px - 10px - 42px);
+      }
+      .left-column, .profile-card { height: 100%; }
+      footer { flex: 0 0 42px; }
+    }
+    @media (min-width: 921px) and (max-height: 649px) {
+      .profile-section { min-height: 610px; }
+      .left-column { grid-template-rows: 134px 1fr; }
+    }
+    @media (max-width: 920px) {
+      .profile-section { grid-template-columns: 1fr; gap: 18px; }
+      .left-column { grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); grid-template-rows: 260px; }
+      .name-card,.portrait-card { min-height: 0; }
+      .portrait-card img { max-height: 100%; width: auto; height: 100%; }
+      .profile-card { min-height: 575px; }
+      .char-table tr { height: auto; }
+    }
+    @media (max-width: 768px) {
+      :root { --header-h: 128px; }
+      .nav-container { flex-direction: column; justify-content: center; min-height: 128px; gap: 9px; padding: 10px 16px; }
+      .header-left { display: none; }
+      .header-center,.header-right { flex: none; width: 100%; justify-content: center; }
+      .header-right { gap: 28px; }
+      .header-right a,.dropdown-btn { font-size: 17px; }
+      .dropdown-content { right: 50%; transform: translateX(50%); top: calc(100% + 5px); }
+      .logo img { max-height: 45px; }
+      main { padding: 16px 16px 8px; }
+      .left-column { grid-template-columns: 1fr; grid-template-rows: 106px minmax(0,420px); gap: 14px; }
+      .name-card { padding: 12px 18px; }
+      .profile-logo-top { max-height: 84px; }
+      .name-fallback h1 { font-size: 41px; }
+      .name-fallback p { font-size: 10px; }
+      .portrait-card { padding: 14px; }
+      .portrait-card img { width: auto; height: 100%; max-height: 100%; }
+      .profile-card { padding: 14px 22px; min-height: 0; }
+      .char-table td { padding: 15px 0; font-size: 14.5px; }
+      .char-table td:first-child { width: 103px; }
+      footer { height: auto; min-height: 56px; padding: 14px 8px 20px; }
+      /* iPhone 背景保底：海色仍維持通透，不發生白底合成異常。 */
+      .glass-panel { background: linear-gradient(130deg,rgba(237,252,255,.79),rgba(184,226,239,.64)); }
+    }
+    @media (max-width: 420px) {
+      .left-column { grid-template-rows: 100px minmax(0,378px); }
+      .profile-card { padding: 12px 18px; }
+      .char-table td { font-size: 13.5px; padding: 14px 0; }
+      .char-table td:first-child { width: 94px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <div class="coastal-scenery" aria-hidden="true"></div>
+
+  <canvas id="cursor-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:900;pointer-events:none;"></canvas>
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left">
+        <a href="https://acestudio.ai/" target="_blank" rel="noopener noreferrer">ACE官網</a>
+        <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" rel="noopener noreferrer">ACE社群</a>
+      </div>
+      <div class="header-center">
+        <a href="index.html" class="logo"><img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="site-logo-fallback" hidden>✦ 星樂之夢<small>STAR MUSIC DREAM</small></span></a>
+      </div>
+      <div class="header-right">
+        <div class="dropdown">
+          <button class="dropdown-btn" type="button" aria-expanded="false" aria-controls="otherSingers">其他歌手 ▾</button>
+          <div class="dropdown-content" id="otherSingers">
+            <a href="YueLan.html">岳嵐</a>
+            <a href="Suirong.html">穗蓉</a>
+            <a href="Zhiyu.html">雉瑜</a>
+            <a href="vsinger.html">查看全陣容</a>
+          </div>
+        </div>
+        <a href="index.html">返回首頁</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="profile-section" aria-label="湛嶠角色資料">
+      <div class="left-column">
+        <div class="glass-panel name-card">
+          <img class="profile-logo-top" src="img/湛嶠Logo.png" alt="湛嶠 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <div class="name-fallback" hidden><h1>湛嶠</h1><p>ZHANQIAO · 森嶼之聲</p></div>
+        </div>
+        <div class="glass-panel portrait-card">
+          <img src="img/湛嶠立繪.png" alt="湛嶠全身立繪" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <div class="portrait-fallback" hidden><span class="wheat-icon" aria-hidden="true">🌊</span><p>湛嶠立繪預留</p></div>
+        </div>
+      </div>
+      <section class="glass-panel profile-card">
+        <table class="char-table">
+          <tr><td>性別</td><td>男性</td></tr>
+          <tr><td>年齡</td><td>13歲</td></tr>
+          <tr><td>身高</td><td>168cm</td></tr>
+          <tr><td>體重</td><td>55kg</td></tr>
+          <tr><td>生日</td><td>4月5日</td></tr>
+          <tr><td>星座</td><td>牡羊座 ♈</td></tr>
+          <tr><td>血型</td><td>A型</td></tr>
+          <tr><td>代表色</td><td><span class="color-indicator"><span class="color-dot"></span>馬卡龍藍</span></td></tr>
+          <tr><td>所屬團體</td><td>森嶼之森</td></tr>
+          <tr><td>立繪插畫</td><td>斯貝</td></tr>
+        </table>
+      </section>
+    </section>
+  </main>
+
+  <footer>© 星樂之夢 (Star Music Dream)</footer>
+
+  <script>
+    // 導覽列：開關、點擊外側及 Escape，桌面與手機共用。
+    (() => {
+      const dropdown = document.querySelector('.dropdown');
+      const button = dropdown.querySelector('.dropdown-btn');
+      const menu = dropdown.querySelector('.dropdown-content');
+      function setOpen(open) {
+        menu.classList.toggle('show',open);
+        button.setAttribute('aria-expanded',String(open));
+      }
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        setOpen(!menu.classList.contains('show'));
+      });
+      document.addEventListener('click',event=>{
+        if(!dropdown.contains(event.target)) setOpen(false);
+      });
+      document.addEventListener('keydown',event=>{
+        if(event.key==='Escape') { setOpen(false); button.focus(); }
+      });
+    })();
+  </script>
+  <script>
+    // 森嶼之聲・湛嶠：湛藍／海水青／泡沫白的五角星粒子拖尾。
+    (() => {
+      const canvas=document.getElementById('cursor-canvas');
+      if(!canvas) return;
+      const ctx=canvas.getContext('2d',{alpha:true});
+      if(!ctx) return;
+      const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+      const colors=['#F4FDFF','#D8F7FF','#9EEBFA','#67D5ED','#38B5E1','#258EC9','#A4F2DC'];
+      const particles=[];
+      let width=0,height=0,frame=0,lastSpawn=0;
+      const maxParticles=200;
+      function resize(){
+        width=window.innerWidth;
+        height=window.innerHeight;
+        const dpr=Math.min(window.devicePixelRatio||1,2);
+        canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+      window.addEventListener('resize',resize,{passive:true});resize();
+      function drawStar(x,y,r,rotation){
+        ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.beginPath();
+        for(let i=0;i<10;i++){
+          const angle=-Math.PI/2+i*Math.PI/5;
+          const radius=i%2===0?r:r*.49;
+          const px=Math.cos(angle)*radius,py=Math.sin(angle)*radius;
+          if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
+        }
+        ctx.closePath();ctx.fill();ctx.restore();
+      }
+      function addStar(x,y){
+        const angle=Math.random()*Math.PI*2,speed=Math.random()*1.25+.18;
+        particles.push({
+          x:x+(Math.random()-.5)*13,y:y+(Math.random()-.5)*13,
+          vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-.38,
+          size:Math.random()*5.8+4.6,color:colors[Math.floor(Math.random()*colors.length)],
+          life:0,maxLife:Math.random()*30+36,rotation:Math.random()*Math.PI*2,
+          rs:(Math.random()-.5)*.09
+        });
+        if(particles.length>maxParticles)particles.splice(0,particles.length-maxParticles);
+        if(!frame)frame=requestAnimationFrame(animate);
+      }
+      function leaveTrail(x,y){
+        if(document.hidden||reduceMotion.matches)return;
+        const now=performance.now();if(now-lastSpawn<12)return;lastSpawn=now;
+        addStar(x,y);addStar(x,y);
+      }
+      window.addEventListener('mousemove',e=>leaveTrail(e.clientX,e.clientY),{passive:true});
+      window.addEventListener('touchmove',e=>{if(e.touches.length)leaveTrail(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+      function animate(){
+        frame=0;ctx.clearRect(0,0,width,height);
+        if(document.hidden||reduceMotion.matches){particles.length=0;return;}
+        for(let i=particles.length-1;i>=0;i--){
+          const p=particles[i];p.life++;
+          if(p.life>=p.maxLife){particles.splice(i,1);continue;}
+          p.x+=p.vx;p.y+=p.vy;p.vy+=.042;p.rotation+=p.rs;
+          const alpha=1-p.life/p.maxLife;
+          ctx.globalAlpha=Math.min(.94,alpha);
+          ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=9;
+          drawStar(p.x,p.y,p.size,p.rotation);
+        }
+        ctx.globalAlpha=1;ctx.shadowBlur=0;
+        if(particles.length)frame=requestAnimationFrame(animate);
+      }
+      function reset(){
+        if(frame)cancelAnimationFrame(frame);frame=0;
+        particles.length=0;ctx.clearRect(0,0,width,height);
+      }
+      document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();});
+      reduceMotion.addEventListener?.('change',()=>{if(reduceMotion.matches)reset();});
+    })();
+  </script>
+</body>
+</html>
