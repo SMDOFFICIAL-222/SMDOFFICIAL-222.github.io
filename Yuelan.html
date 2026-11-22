@@ -3,45 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#4c846d">
+  <meta name="description" content="岳嵐 YueLan｜星樂之夢・森嶼之聲虛擬歌手官方角色介紹頁面。">
   <title>岳嵐 YueLan | 星樂之夢</title>
-  <meta name="description" content="岳嵐 YueLan｜森嶼之聲所屬虛擬歌手官方頁面。">
   <link rel="icon" href="img/森嶼之聲Logo.png" type="image/png">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
-
+    [hidden] { display: none !important; }
     :root {
-      --nav-dark: rgba(25, 59, 45, 0.44);
-      --nav-border: rgba(240, 255, 242, 0.34);
-      --page-top: #eef6f2;
-      --page-mid: #ddece5;
-      --page-bottom: #d9ebe4;
-      --text-main: #26372f;
-      --text-soft: #537265;
-      --accent: #3d9c6d;
-      --accent-soft: #9cdbba;
-      --glass-bg: linear-gradient(135deg, rgba(245, 253, 249, 0.52), rgba(178, 215, 196, 0.35));
-      --glass-border: rgba(249, 255, 251, 0.62);
-      --glass-shadow: 0 20px 46px rgba(43, 77, 64, 0.15);
-      --panel-blur: blur(16px) saturate(145%);
+      --header-h: 65px;
+      --ink: #263e36;
+      --ink-muted: #537469;
+      --accent: #36885e;
+      --accent-light: #E5FBA1;
+      --glass-background: linear-gradient(130deg,rgba(245,253,248,.60) 0%,rgba(207,237,222,.38) 54%,rgba(173,221,195,.36) 100%);
+      --glass-border: rgba(245,255,247,.79);
+      --glass-shadow: 0 18px 44px rgba(27,82,62,.17),0 3px 14px rgba(34,87,66,.07);
+      --glass-filter: blur(22px) saturate(158%);
     }
-
-    html, body { min-height: 100%; }
-
+    html { min-height: 100%; background: #accbc1; }
     body {
       margin: 0;
-      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-      color: var(--text-main);
-      background: linear-gradient(180deg, var(--page-top) 0%, var(--page-mid) 42%, var(--page-bottom) 100%);
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-top: var(--header-h);
+      color: var(--ink);
+      font-family: "Noto Sans TC", "Microsoft JhengHei", -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(180deg,#bdd4dd 0%,#dcece8 33%,#bedad1 68%,#86b4a9 100%);
       overflow-x: hidden;
-      position: relative;
-      padding-top: 86px;
     }
 
     /* 太魯閣的灰藍峽谷、植被與碧綠溪流：純 CSS 柔和色彩漸層。 */
-    .scenery {
+    .valley-scenery {
       position: fixed;
       inset: 0;
-      z-index: -5;
+      z-index: 0;
+      isolation: isolate;
       pointer-events: none;
       overflow: hidden;
       background:
@@ -63,7 +60,7 @@
     }
 
     /* 右側溪谷的溫柔光感，像水面反射而不是切割出的色塊。 */
-    .scenery::before {
+    .valley-scenery::before {
       content: '';
       position: absolute;
       inset: 0;
@@ -75,7 +72,7 @@
     }
 
     /* 山間霧光，降低卡片後方的對比，保留 Liquid Glass 的透景感。 */
-    .scenery::after {
+    .valley-scenery::after {
       content: '';
       position: absolute;
       inset: 0;
@@ -86,233 +83,262 @@
     }
 
     .glass-panel {
-      background: var(--glass-bg);
+      background: var(--glass-background);
       border: 1px solid var(--glass-border);
-      border-radius: 30px;
-      box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.56),
-        inset 0 -1px 0 rgba(255,255,255,0.08),
-        var(--glass-shadow);
-      backdrop-filter: var(--panel-blur);
-      -webkit-backdrop-filter: var(--panel-blur);
+      border-radius: 26px;
+      box-shadow: var(--glass-shadow),inset 0 1px 0 rgba(255,255,255,.76),inset 0 -1px 0 rgba(255,255,255,.16);
+      backdrop-filter: var(--glass-filter);
+      -webkit-backdrop-filter: var(--glass-filter);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .glass-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(123deg,rgba(255,255,255,.30),rgba(255,255,255,.035) 29%,transparent 62%);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .glass-panel::after {
+      content: "";
+      position: absolute;
+      left: 23px;
+      right: 23px;
+      top: 0;
+      height: 1px;
+      background: linear-gradient(90deg,transparent,rgba(255,255,255,.85) 38%,rgba(255,255,255,.3) 72%,transparent);
+      pointer-events: none;
     }
 
     header {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
       z-index: 1000;
-      background: linear-gradient(115deg, rgba(13, 42, 38, .56), rgba(55, 94, 70, .38));
-      border-bottom: 1px solid var(--nav-border);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.21), 0 6px 22px rgba(27, 43, 35, 0.15);
-      backdrop-filter: blur(19px) saturate(160%);
-      -webkit-backdrop-filter: blur(19px) saturate(160%);
+      inset: 0 0 auto;
+      min-height: var(--header-h);
+      background: linear-gradient(115deg,rgba(13,42,38,.56),rgba(55,94,70,.38) 54%,rgba(18,58,46,.56));
+      border-bottom: 1px solid rgba(238,255,245,.37);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.12),0 4px 22px rgba(17,58,42,.15);
+      backdrop-filter: blur(24px) saturate(154%);
+      -webkit-backdrop-filter: blur(24px) saturate(154%);
     }
-
     .nav-container {
+      width: 100%;
       max-width: 1120px;
+      min-height: var(--header-h);
       margin: 0 auto;
-      padding: 12px 18px;
+      padding: 8px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 18px;
+      gap: 20px;
     }
-
-    .header-left, .header-center, .header-right {
-      flex: 1;
-      display: flex;
-      align-items: center;
-    }
-    .header-left { gap: 28px; }
+    .header-left,.header-center,.header-right { display: flex; align-items: center; flex: 1; }
+    .header-left { justify-content: flex-start; gap: 25px; }
     .header-center { justify-content: center; }
-    .header-right { justify-content: flex-end; gap: 26px; }
-
-    .logo { display: flex; align-items: center; text-decoration: none; }
-    .logo img { height: 40px; width: auto; display: block; }
-
-    header a, .dropdown-btn {
-      color: rgba(255,255,255,0.94);
+    .header-right { justify-content: flex-end; gap: 25px; }
+    .logo { display: flex; text-decoration: none; align-items: center; }
+    .logo img { display: block; width: auto; max-height: 45px; max-width: 220px; }
+    .site-logo-fallback { color: #eefcff; font-size: 21px; font-weight: 800; letter-spacing: 2px; text-align: center; line-height: 1.05; }
+    .site-logo-fallback small { display:block; font-size: 7px; letter-spacing: 2px; margin-top: 4px; }
+    header a,header button {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: #f8fdf5;
       text-decoration: none;
-      font-size: 14px;
-      font-weight: 900;
-      cursor: pointer;
-      transition: color .22s ease;
+      transition: color .2s ease;
     }
-    header a:hover, .dropdown:hover .dropdown-btn { color: #e6ffef; }
-
+    header a:hover,header button:hover { color: #E5FBA1; }
     .dropdown { position: relative; }
+    .dropdown-btn {
+      display: inline-block;
+      padding: 10px 0;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      color: #f8fdf5;
+      white-space: nowrap;
+    }
     .dropdown-content {
       display: none;
       position: absolute;
-      right: 0;
-      top: calc(100% + 10px);
-      min-width: 156px;
+      top: calc(100% + 8px);
+      right: -16px;
+      min-width: 168px;
       padding: 8px 0;
-      border-radius: 16px;
-      background: rgba(52, 84, 66, 0.92);
-      border: 1px solid rgba(239,255,245,0.18);
-      box-shadow: 0 16px 38px rgba(17, 32, 24, 0.28);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
+      background: rgba(31,77,59,.89);
+      border: 1px solid rgba(240,254,255,.28);
+      border-radius: 14px;
+      box-shadow: 0 15px 38px rgba(13,52,84,.27),inset 0 1px 0 rgba(255,255,255,.13);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      z-index: 1100;
     }
     .dropdown-content.show { display: block; }
-    .dropdown-content a { display: block; padding: 12px 16px; text-align: center; }
-    .dropdown-content a:hover { background: rgba(255,255,255,0.08); }
+    .dropdown-content a { display: block; padding: 11px 16px; text-align: center; font-size: 14px; }
+    .dropdown-content a:hover { background: rgba(222,250,208,.16); }
 
     main {
       max-width: 1120px;
+      width: 100%;
       margin: 0 auto;
-      padding: 26px 20px 34px;
+      padding: 18px 20px 10px;
       position: relative;
       z-index: 1;
     }
-
     .profile-section {
       display: grid;
-      grid-template-columns: 390px minmax(0, 1fr);
-      gap: 32px;
+      grid-template-columns: minmax(0,365px) minmax(0,1fr);
+      gap: 26px;
       align-items: stretch;
-      min-height: calc(100vh - 86px - 54px);
-    }
-
-    .left-column {
-      display: grid;
-      grid-template-rows: 168px 1fr;
-      gap: 24px;
+      width: 100%;
       min-height: 0;
     }
-
-    .name-card,
-    .portrait-card,
-    .profile-card { min-height: 0; }
-
+    .left-column {
+      display: grid;
+      grid-template-rows: minmax(96px,21%) minmax(0,1fr);
+      gap: 18px;
+      min-width: 0;
+      min-height: 0;
+    }
     .name-card {
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px 20px;
+      min-height: 0;
       flex-direction: column;
-      gap: 8px;
-      text-align: center;
+      gap: 6px;
     }
-    .name-lockup {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-    .name-card h1 {
+    .profile-logo-top { max-height: 100px; max-width: min(90%,230px); width: auto; height: auto; object-fit: contain; }
+    .name-fallback { text-align: center; }
+    .name-fallback h1 {
       margin: 0;
-      font-size: clamp(38px, 5vw, 62px);
-      line-height: 1;
-      color: #2f7ea1;
-      text-shadow: 0 1px 18px rgba(47, 126, 161, 0.18);
-      letter-spacing: 2px;
-      font-weight: 900;
-    }
-    .name-card p {
-      margin: 0;
-      color: rgba(47, 98, 129, 0.72);
-      font-size: 11px;
-      line-height: 1;
+      font-size: clamp(37px,4.1vw,55px);
+      color: #8aaf52;
       letter-spacing: 3px;
-      font-weight: 800;
-      text-transform: uppercase;
-      white-space: nowrap;
+      line-height: 1.05;
+      text-shadow: 0 1px 16px rgba(25,121,155,.20);
     }
-
+    .name-fallback p { margin: 7px 0 0; color: rgba(65,119,86,.75); font-size: 11px; letter-spacing: 3px; font-weight: 750; }
     .portrait-card {
-      padding: 24px;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
-      position: relative;
-    }
-    .portrait-card::before {
-      content: "";
-      position: absolute;
-      width: 78%;
-      height: 78%;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(232,255,240,0.24) 0%, rgba(232,255,240,0.08) 36%, rgba(232,255,240,0.01) 66%, transparent 76%);
-      filter: blur(16px);
-      pointer-events: none;
-    }
-    .portrait-card img {
-      max-width: 100%;
-      max-height: min(64vh, 690px);
-      width: auto;
-      height: auto;
-      object-fit: contain;
-      display: block;
-      position: relative;
-      z-index: 1;
-    }
-
-    .profile-card {
-      padding: 34px 42px;
-      display: flex;
-      align-items: stretch;
-      justify-content: center;
+      min-width: 0;
       min-height: 0;
     }
-
-    .char-table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed;
-      align-self: stretch;
+    .portrait-card img {
+      display: block;
+      width: auto;
+      height: 100%;
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: drop-shadow(0 8px 17px rgba(27,94,57,.17));
     }
-    .char-table td {
-      border-bottom: 1px solid rgba(92, 127, 106, 0.16);
-      padding: 14px 0;
-      vertical-align: middle;
-      font-size: clamp(16px, 1.15vw, 19px);
-      font-weight: 700;
-      color: var(--text-main);
-      line-height: 1.45;
-    }
-    .char-table tr:last-child td { border-bottom: none; }
-    .char-table td:first-child {
-      width: 140px;
-      color: var(--accent);
-      font-weight: 900;
-      padding-right: 18px;
-    }
-
-    .color-indicator {
-      display: inline-flex;
+    .portrait-fallback {
+      display: flex;
       align-items: center;
-      gap: 10px;
-    }
-    .color-dot {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #E5FBA1;
-      box-shadow: 0 0 0 2px rgba(255,255,255,0.26);
-      flex-shrink: 0;
-    }
-
-    footer {
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+      color: #6fa27a;
+      font-weight: 750;
       text-align: center;
-      padding: 12px 16px 18px;
-      color: rgba(48, 72, 56, 0.86);
-      font-size: 14px;
-      font-weight: 700;
+    }
+    .portrait-fallback .wheat-icon { font-size: clamp(72px,11vw,130px); opacity: .68; }
+    .portrait-fallback p { font-size: 16px; margin: 0; }
+    .profile-card { min-width: 0; min-height: 0; padding: 14px 32px; display: flex; }
+    .char-table { width: 100%; height: 100%; border-collapse: collapse; table-layout: fixed; }
+    .char-table tr { height: 10%; }
+    .char-table td {
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(82,137,106,.19);
+      color: #283e35;
+      font-weight: 650;
+      line-height: 1.25;
+      font-size: clamp(13px,1.05vw,16px);
+      vertical-align: middle;
+    }
+    .char-table td:first-child { width: 118px; padding-right: 10px; color: #369866; font-weight: 850; }
+    .char-table tr:last-child td { border-bottom: none; }
+    .color-indicator { display: inline-flex; gap: 8px; align-items: center; }
+    .color-dot { width: 16px; height: 16px; border-radius: 50%; background: #E5FBA1; border: 1px solid rgba(93,146,76,.26); box-shadow: 0 0 0 3px rgba(245,255,204,.48); }
+    footer {
       position: relative;
       z-index: 1;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: rgba(34,81,58,.77);
+      height: 42px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 14px;
     }
 
+    /* 跟岳嵐、穗蓉及高中生系列一致：桌面單一視窗看完立繪與角色卡。 */
+    @media (min-width: 921px) and (min-height: 650px) {
+      body { display: flex; flex-direction: column; }
+      main { flex: 1; min-height: 0; display: flex; }
+      .profile-section {
+        width: 100%;
+        height: calc(100vh - var(--header-h) - 18px - 10px - 42px);
+        height: calc(100dvh - var(--header-h) - 18px - 10px - 42px);
+      }
+      .left-column, .profile-card { height: 100%; }
+      footer { flex: 0 0 42px; }
+    }
+    @media (min-width: 921px) and (max-height: 649px) {
+      .profile-section { min-height: 610px; }
+      .left-column { grid-template-rows: 134px 1fr; }
+    }
+    @media (max-width: 920px) {
+      .profile-section { grid-template-columns: 1fr; gap: 18px; }
+      .left-column { grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); grid-template-rows: 260px; }
+      .name-card,.portrait-card { min-height: 0; }
+      .portrait-card img { max-height: 100%; width: auto; height: 100%; }
+      .profile-card { min-height: 575px; }
+      .char-table tr { height: auto; }
+    }
+    @media (max-width: 768px) {
+      :root { --header-h: 128px; }
+      .nav-container { flex-direction: column; justify-content: center; min-height: 128px; gap: 9px; padding: 10px 16px; }
+      .header-left { display: none; }
+      .header-center,.header-right { flex: none; width: 100%; justify-content: center; }
+      .header-right { gap: 28px; }
+      .header-right a,.dropdown-btn { font-size: 17px; }
+      .dropdown-content { right: 50%; transform: translateX(50%); top: calc(100% + 5px); }
+      .logo img { max-height: 45px; }
+      main { padding: 16px 16px 8px; }
+      .left-column { grid-template-columns: 1fr; grid-template-rows: 106px minmax(0,420px); gap: 14px; }
+      .name-card { padding: 12px 18px; }
+      .profile-logo-top { max-height: 84px; }
+      .name-fallback h1 { font-size: 41px; }
+      .name-fallback p { font-size: 10px; }
+      .portrait-card { padding: 14px; }
+      .portrait-card img { width: auto; height: 100%; max-height: 100%; }
+      .profile-card { padding: 14px 22px; min-height: 0; }
+      .char-table td { padding: 15px 0; font-size: 14.5px; }
+      .char-table td:first-child { width: 103px; }
+      footer { height: auto; min-height: 56px; padding: 14px 8px 20px; }
+      /* iPhone 背景保底：山谷綠維持通透，不發生白底合成異常。 */
+      .glass-panel { background: linear-gradient(130deg,rgba(244,253,247,.79),rgba(186,229,204,.64)); }
+    }
     @media (max-width: 900px) {
-      body { padding-top: 138px; }
 
       /* 手機版直接沿用同一張多層漸層景色，不再切出低多邊形岩壁。 */
-      .scenery {
+      .valley-scenery {
         background:
           radial-gradient(ellipse 38% 70% at 52% 110%, rgba(27,109,132,.57) 0%, rgba(70,158,163,.41) 38%, transparent 95%),
           radial-gradient(ellipse 30% 47% at 4% 77%, rgba(39,113,75,.52) 0%, rgba(80,148,95,.28) 54%, transparent 100%),
@@ -322,238 +348,34 @@
           radial-gradient(ellipse 50% 50% at 53% 0%, rgba(255,255,248,.77) 0%, transparent 98%),
           linear-gradient(180deg, #cadfe1 0%, #dcece8 44%, #abcec2 100%);
       }
-
-      .nav-container {
-        flex-direction: column;
-        justify-content: center;
-        gap: 12px;
-        padding: 12px 18px 14px;
-      }
-      .header-left { display: none; }
-      .header-center, .header-right {
-        width: 100%;
-        justify-content: center;
-        flex: none;
-      }
-      .logo img { height: 58px; }
-      .header-right { gap: 36px; }
-      .header-right a, .dropdown-btn { font-size: 18px; }
-      .dropdown-content { right: 50%; transform: translateX(50%); }
-
-      main { padding: 18px 16px 28px; }
-      .profile-section {
-        min-height: auto;
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }
-      .left-column {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-      }
-      .name-card { min-height: 136px; }
-      .name-card h1 { font-size: clamp(34px, 8vw, 52px); }
-      .name-card p { font-size: 11px; letter-spacing: 2.8px; }
-      .portrait-card {
-        min-height: 300px;
-        padding: 26px 18px;
-      }
-      .portrait-card img { max-height: 72vh; }
-      .profile-card { padding: 20px 22px; }
-      .char-table td {
-        font-size: 17px;
-        padding: 16px 0;
-      }
-      .char-table td:first-child {
-        width: 108px;
-        padding-right: 10px;
-      }
-      .glass-panel {
-        background: linear-gradient(135deg, rgba(243, 251, 246, 0.52), rgba(158, 201, 180, 0.34));
-      }
     }
-
-    /* ===== 岳嵐定稿：桌面單畫面、中央完整立繪、太魯閣半透明導覽 ===== */
-    :root { --header-height: 65px; }
-    body { padding-top: var(--header-height); }
-    header { min-height: var(--header-height); }
-    .nav-container { min-height: var(--header-height); padding: 8px 18px; }
-    .logo img { max-height: 45px; height: auto; max-width: 210px; }
-    .name-card h1 { color: #E5FBA1; text-shadow: 0 0 24px rgba(229,251,161,.28); }
-    .color-dot { background: #E5FBA1; border: 1px solid rgba(87, 136, 60, .22); }
-
-    /* 桌面沿用 StreetEchoes 單畫面原則，隨視窗高度縮放而非拉長頁面。 */
-    @media (min-width: 901px) and (min-height: 620px) {
-      body { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
-      main {
-        flex: 1 0 auto;
-        min-height: 0;
-        width: 100%;
-        padding: 16px 20px 8px;
-        display: flex;
-      }
-      .profile-section {
-        width: 100%;
-        height: calc(100vh - var(--header-height) - 16px - 8px - 38px);
-        height: calc(100dvh - var(--header-height) - 16px - 8px - 38px);
-        min-height: 0;
-        grid-template-columns: minmax(0, 365px) minmax(0, 1fr);
-        gap: 26px;
-      }
-      .left-column {
-        min-height: 0;
-        height: 100%;
-        grid-template-rows: minmax(90px, 21%) minmax(0, 1fr);
-        gap: 18px;
-      }
-      .name-card { min-height: 0; padding: 14px 18px; }
-      .name-card h1 { font-size: clamp(34px, 4vw, 54px); }
-      .name-card p { font-size: 11px; letter-spacing: 3px; }
-      .portrait-card {
-        min-height: 0;
-        height: 100%;
-        padding: 14px 16px;
-        align-items: center;
-        justify-content: center;
-      }
-      .portrait-card img {
-        display: block;
-        width: auto;
-        height: 100%;
-        max-width: 100%;
-        max-height: 100%;
-        min-height: 0;
-        object-fit: contain;
-        object-position: center center;
-        margin: auto;
-      }
-      .profile-card {
-        min-height: 0;
-        height: 100%;
-        padding: 12px 32px;
-        display: flex;
-        align-items: stretch;
-      }
-      .char-table { height: 100%; flex: 1; }
-      .char-table tr { height: 8.333333%; }
-      .char-table td {
-        padding: 2px 0;
-        font-size: clamp(13px, 1vw, 16px);
-        line-height: 1.25;
-      }
-      .char-table td:first-child { width: 118px; padding-right: 10px; }
-      footer { flex: 0 0 38px; height: 38px; padding: 0 16px; display: flex; justify-content: center; align-items: center; }
+    @media (max-width: 420px) {
+      .left-column { grid-template-rows: 100px minmax(0,378px); }
+      .profile-card { padding: 12px 18px; }
+      .char-table td { font-size: 13.5px; padding: 14px 0; }
+      .char-table td:first-child { width: 94px; }
     }
-
-    /* 不將高度鎖定到手機：手機仍可正常捲動以閱讀資料。 */
-    @media (max-width: 900px) {
-      :root { --header-height: 128px; }
-      body { padding-top: var(--header-height); }
-      header { min-height: var(--header-height); }
-      .nav-container { min-height: var(--header-height); padding: 9px 18px; gap: 8px; }
-      .logo img { height: auto; max-height: 45px; max-width: min(210px, 70vw); }
-      .header-right { gap: 24px; }
-      .header-right a, .dropdown-btn { font-size: 17px; }
-      .portrait-card { display: flex; align-items: center; justify-content: center; }
-      .portrait-card img {
-        display: block;
-        width: auto;
-        max-width: 100%;
-        max-height: min(66vh, 580px);
-        height: auto;
-        object-fit: contain;
-        object-position: center center;
-        margin: auto;
-      }
-      .color-indicator { flex-wrap: wrap; gap: 7px; }
-    }
-    @media (prefers-reduced-transparency: reduce) {
-      header { background: rgba(25,59,45,.84); }
-    }
-
-    /* 岳嵐：馬卡龍綠的五角星粒子，不攔截任何按鈕或連結 */
-    #cursor-canvas {
-      position: fixed;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-      z-index: 900;
-      pointer-events: none !important;
-      touch-action: auto;
-    }
-
-    .desktop-chevron { display: none; }
-
-    /* 桌面導覽：精確對齊穗蓉／森嶼之聲其他成員的 65px 共用規格。
-       只覆蓋 901px 以上寬度；手機版沿用原本的雙排導覽。 */
-    @media (min-width: 901px) {
-      .nav-container {
-        width: 100%;
-        max-width: 1120px;
-        min-height: 65px;
-        padding: 8px 20px;
-        gap: 20px;
-      }
-      .header-left,
-      .header-center,
-      .header-right { flex: 1 1 0; }
-      .header-left { justify-content: flex-start; gap: 25px; }
-      .header-center { justify-content: center; }
-      .header-right { justify-content: flex-end; gap: 25px; }
-      .logo img {
-        display: block;
-        width: auto;
-        height: auto;
-        max-height: 45px;
-        max-width: 220px;
-      }
-      header a,
-      .dropdown-btn {
-        font-size: 15px;
-        font-weight: 700;
-        line-height: 1.4;
-      }
-      .dropdown-btn {
-        display: inline-block;
-        padding: 10px 0;
-        white-space: nowrap;
-      }
-      .mobile-chevron { display: none; }
-      .desktop-chevron { display: inline; }
-      .dropdown-content {
-        top: calc(100% + 8px);
-        right: -16px;
-        min-width: 168px;
-      }
-      .dropdown-content a {
-        font-size: 14px;
-        padding: 11px 16px;
-      }
-    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
   </style>
 </head>
 <body>
-  <!-- 岳嵐：馬卡龍綠星星粒子（滑鼠與觸控） -->
-  <canvas id="cursor-canvas" aria-hidden="true"></canvas>
-  <div class="scenery" aria-hidden="true"></div>
+  <div class="valley-scenery" aria-hidden="true"></div>
+
+  <canvas id="cursor-canvas" aria-hidden="true" style="position:fixed;inset:0;width:100%;height:100%;z-index:900;pointer-events:none;"></canvas>
 
   <header>
     <div class="nav-container">
       <div class="header-left">
-        <a href="https://acestudio.ai/" target="_blank">ACE官網</a>
-        <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank">ACE社群</a>
+        <a href="https://acestudio.ai/" target="_blank" rel="noopener noreferrer">ACE官網</a>
+        <a href="https://acestudio.ai/app/zh/creative-library/voices" target="_blank" rel="noopener noreferrer">ACE社群</a>
       </div>
       <div class="header-center">
-        <a href="index.html" class="logo">
-          <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo">
-        </a>
+        <a href="index.html" class="logo"><img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span class="site-logo-fallback" hidden>✦ 星樂之夢<small>STAR MUSIC DREAM</small></span></a>
       </div>
       <div class="header-right">
-        <div class="dropdown" onclick="toggleDropdown(event, this)">
-          <span class="dropdown-btn">其他歌手 <span class="desktop-chevron" aria-hidden="true">▾</span><span class="mobile-chevron" aria-hidden="true">▼</span></span>
-          <div class="dropdown-content">
+        <div class="dropdown">
+          <button class="dropdown-btn" type="button" aria-expanded="false" aria-controls="otherSingers">其他歌手 ▾</button>
+          <div class="dropdown-content" id="otherSingers">
             <a href="Suirong.html">穗蓉</a>
             <a href="Zhanqiao.html">湛嶠</a>
             <a href="Zhiyu.html">雉瑜</a>
@@ -566,197 +388,130 @@
   </header>
 
   <main>
-    <section class="profile-section">
+    <section class="profile-section" aria-label="岳嵐角色資料">
       <div class="left-column">
-        <section class="glass-panel name-card">
-          <div class="name-lockup">
-            <h1>岳嵐</h1>
-            <p>YUELAN · 森嶼之聲</p>
-          </div>
-        </section>
-
-        <section class="glass-panel portrait-card">
-          <img src="img/岳嵐立繪.png" alt="岳嵐立繪"
-               onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 420 720\'><rect fill=\'transparent\' width=\'420\' height=\'720\'/><text x=\'210\' y=\'360\' text-anchor=\'middle\' fill=\'%23537265\' font-size=\'28\' font-family=\'sans-serif\'>岳嵐立繪預留</text></svg>'">
-        </section>
+        <div class="glass-panel name-card">
+          <img class="profile-logo-top" src="img/岳嵐Logo.png" alt="岳嵐 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <div class="name-fallback" hidden><h1>岳嵐</h1><p>YUELAN · 森嶼之聲</p></div>
+        </div>
+        <div class="glass-panel portrait-card">
+          <img src="img/岳嵐立繪.png" alt="岳嵐全身立繪" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
+          <div class="portrait-fallback" hidden><span class="wheat-icon" aria-hidden="true">🌿</span><p>岳嵐立繪預留</p></div>
+        </div>
       </div>
-      <section class="glass-panel profile-card">
+      <div class="glass-panel profile-card">
         <table class="char-table">
-          <tr><td>性別</td><td>男性</td></tr>
-          <tr><td>年齡</td><td>14歲</td></tr>
-          <tr><td>身高</td><td>172cm</td></tr>
-          <tr><td>體重</td><td>62kg</td></tr>
-          <tr><td>生日</td><td>11月28日</td></tr>
-          <tr><td>星座</td><td>射手座 ♐️</td></tr>
-          <tr><td>血型</td><td>O型</td></tr>
-          <tr><td>代表色</td><td><span class="color-indicator"><span class="color-dot"></span>馬卡龍綠</span></td></tr>
-          <tr><td>所屬團體</td><td>森嶼之森</td></tr>
-          <tr><td>命名來源</td><td>花蓮太魯閣的山嵐</td></tr>
-          <tr><td>立繪插畫</td><td>斯貝</td></tr>
+          <tbody>
+            <tr><td>性別</td><td>男性</td></tr>
+            <tr><td>年齡</td><td>14歲</td></tr>
+            <tr><td>身高</td><td>172cm</td></tr>
+            <tr><td>體重</td><td>62kg</td></tr>
+            <tr><td>生日</td><td>11月28日</td></tr>
+            <tr><td>星座</td><td>射手座 ♐️</td></tr>
+            <tr><td>血型</td><td>O型</td></tr>
+            <tr><td>代表色</td><td><span class="color-indicator"><span class="color-dot"></span>馬卡龍綠</span></td></tr>
+            <tr><td>所屬團體</td><td>森嶼之聲</td></tr>
+            <tr><td>命名來源</td><td>花蓮太魯閣的山嵐</td></tr>
+            <tr><td>立繪插畫</td><td>斯貝</td></tr>
+          </tbody>
         </table>
-      </section>
+      </div>
     </section>
   </main>
-
   <footer>© 星樂之夢 (Star Music Dream)</footer>
 
   <script>
-    function toggleDropdown(event, element) {
-      event.stopPropagation();
-      const menu = element.querySelector('.dropdown-content');
-      document.querySelectorAll('.dropdown-content').forEach(el => {
-        if (el !== menu) el.classList.remove('show');
-      });
-      menu.classList.toggle('show');
-    }
-
-    window.addEventListener('click', function (event) {
-      if (!event.target.closest('.dropdown')) {
-        document.querySelectorAll('.dropdown-content').forEach(el => el.classList.remove('show'));
-      }
-    });
-  </script>
-  <!-- 岳嵐：與星樂之夢系列一致的五角星拖尾，採馬卡龍綠／嫩葉綠配色 -->
-  <script>
+    // 導覽列：開關、點擊外側及 Escape，桌面與手機共用。
     (() => {
-      const canvas = document.getElementById('cursor-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d', { alpha: true });
-      if (!ctx) return;
-
-      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-      const palette = [
-        '#F7FFE8', // 柔白綠光
-        '#E5FBA1', // 岳嵐代表色：馬卡龍綠
-        '#D8F58F', // 嫩葉黃綠
-        '#BDE888', // 山谷新綠
-        '#9DDEA6', // 清透草綠
-        '#7BC59D'  // 山林薄荷綠
-      ];
-      const particles = [];
-      const maxParticles = 220;
-      let width = 0;
-      let height = 0;
-      let frameId = 0;
-      let lastSpawn = 0;
-
-      function resizeCanvas() {
-        width = window.innerWidth;
-        height = window.innerHeight;
-        const scale = Math.min(window.devicePixelRatio || 1, 2);
-        canvas.width = Math.round(width * scale);
-        canvas.height = Math.round(height * scale);
-        ctx.setTransform(scale, 0, 0, scale, 0, 0);
+      const dropdown = document.querySelector('.dropdown');
+      const button = dropdown.querySelector('.dropdown-btn');
+      const menu = dropdown.querySelector('.dropdown-content');
+      function setOpen(open) {
+        menu.classList.toggle('show',open);
+        button.setAttribute('aria-expanded',String(open));
       }
-      window.addEventListener('resize', resizeCanvas, { passive: true });
-      resizeCanvas();
-
-      // 維持系列官網的五角星形狀與隨機旋轉、下墜和淡出動態。
-      function drawStar(x, y, radius, rotation) {
-        const spikes = 5;
-        const step = Math.PI / spikes;
-        ctx.save();
-        ctx.translate(x, y);
-        ctx.rotate(rotation);
-        ctx.beginPath();
-        for (let i = 0; i < spikes * 2; i++) {
-          const angle = -Math.PI / 2 + i * step;
-          const r = i % 2 === 0 ? radius : radius * 0.48;
-          const px = Math.cos(angle) * r;
-          const py = Math.sin(angle) * r;
-          if (i === 0) ctx.moveTo(px, py);
-          else ctx.lineTo(px, py);
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        setOpen(!menu.classList.contains('show'));
+      });
+      document.addEventListener('click',event=>{
+        if(!dropdown.contains(event.target)) setOpen(false);
+      });
+      document.addEventListener('keydown',event=>{
+        if(event.key==='Escape') { setOpen(false); button.focus(); }
+      });
+    })();
+  </script>
+  <script>
+    // 森嶼之聲・岳嵐：馬卡龍綠／嫩葉綠／柔白的五角星粒子拖尾。
+    (() => {
+      const canvas=document.getElementById('cursor-canvas');
+      if(!canvas) return;
+      const ctx=canvas.getContext('2d',{alpha:true});
+      if(!ctx) return;
+      const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+      const colors=['#F7FFE8','#E5FBA1','#D8F58F','#BDE888','#9DDEA6','#7BC59D'];
+      const particles=[];
+      let width=0,height=0,frame=0,lastSpawn=0;
+      const maxParticles=200;
+      function resize(){
+        width=window.innerWidth;
+        height=window.innerHeight;
+        const dpr=Math.min(window.devicePixelRatio||1,2);
+        canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+      window.addEventListener('resize',resize,{passive:true});resize();
+      function drawStar(x,y,r,rotation){
+        ctx.save();ctx.translate(x,y);ctx.rotate(rotation);ctx.beginPath();
+        for(let i=0;i<10;i++){
+          const angle=-Math.PI/2+i*Math.PI/5;
+          const radius=i%2===0?r:r*.49;
+          const px=Math.cos(angle)*radius,py=Math.sin(angle)*radius;
+          if(i===0)ctx.moveTo(px,py);else ctx.lineTo(px,py);
         }
-        ctx.closePath();
-        ctx.fill();
-        ctx.restore();
+        ctx.closePath();ctx.fill();ctx.restore();
       }
-
-      function addStar(x, y) {
-        const direction = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 1.35 + .15;
+      function addStar(x,y){
+        const angle=Math.random()*Math.PI*2,speed=Math.random()*1.25+.18;
         particles.push({
-          x: x + (Math.random() - .5) * 14,
-          y: y + (Math.random() - .5) * 14,
-          vx: Math.cos(direction) * speed,
-          vy: Math.sin(direction) * speed - .45,
-          size: Math.random() * 6.5 + 4.5,
-          color: palette[Math.floor(Math.random() * palette.length)],
-          life: 0,
-          maxLife: Math.random() * 30 + 38,
-          rotation: Math.random() * Math.PI * 2,
-          rotSpeed: (Math.random() - .5) * .095
+          x:x+(Math.random()-.5)*13,y:y+(Math.random()-.5)*13,
+          vx:Math.cos(angle)*speed,vy:Math.sin(angle)*speed-.38,
+          size:Math.random()*5.8+4.6,color:colors[Math.floor(Math.random()*colors.length)],
+          life:0,maxLife:Math.random()*30+36,rotation:Math.random()*Math.PI*2,
+          rs:(Math.random()-.5)*.09
         });
-        if (particles.length > maxParticles) particles.splice(0, particles.length - maxParticles);
-        if (!frameId) frameId = requestAnimationFrame(animate);
+        if(particles.length>maxParticles)particles.splice(0,particles.length-maxParticles);
+        if(!frame)frame=requestAnimationFrame(animate);
       }
-
-      function leaveTrail(x, y) {
-        if (reducedMotion.matches || document.hidden) return;
-        // 降低高更新率滑鼠的粒子量，仍保留移動時連續的星星拖尾。
-        const now = performance.now();
-        if (now - lastSpawn < 10) return;
-        lastSpawn = now;
-        addStar(x, y);
-        addStar(x, y);
+      function leaveTrail(x,y){
+        if(document.hidden||reduceMotion.matches)return;
+        const now=performance.now();if(now-lastSpawn<12)return;lastSpawn=now;
+        addStar(x,y);addStar(x,y);
       }
-
-      window.addEventListener('mousemove', (event) => {
-        leaveTrail(event.clientX, event.clientY);
-      }, { passive: true });
-
-      window.addEventListener('touchmove', (event) => {
-        if (event.touches.length) {
-          leaveTrail(event.touches[0].clientX, event.touches[0].clientY);
+      window.addEventListener('mousemove',e=>leaveTrail(e.clientX,e.clientY),{passive:true});
+      window.addEventListener('touchmove',e=>{if(e.touches.length)leaveTrail(e.touches[0].clientX,e.touches[0].clientY)},{passive:true});
+      function animate(){
+        frame=0;ctx.clearRect(0,0,width,height);
+        if(document.hidden||reduceMotion.matches){particles.length=0;return;}
+        for(let i=particles.length-1;i>=0;i--){
+          const p=particles[i];p.life++;
+          if(p.life>=p.maxLife){particles.splice(i,1);continue;}
+          p.x+=p.vx;p.y+=p.vy;p.vy+=.042;p.rotation+=p.rs;
+          const alpha=1-p.life/p.maxLife;
+          ctx.globalAlpha=Math.min(.94,alpha);
+          ctx.fillStyle=p.color;ctx.shadowColor=p.color;ctx.shadowBlur=9;
+          drawStar(p.x,p.y,p.size,p.rotation);
         }
-      }, { passive: true });
-
-      function animate() {
-        frameId = 0;
-        ctx.clearRect(0, 0, width, height);
-        if (document.hidden || reducedMotion.matches) {
-          particles.length = 0;
-          return;
-        }
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const star = particles[i];
-          star.life++;
-          if (star.life >= star.maxLife) {
-            particles.splice(i, 1);
-            continue;
-          }
-          star.x += star.vx;
-          star.y += star.vy;
-          star.vy += .045;
-          star.rotation += star.rotSpeed;
-          const t = 1 - star.life / star.maxLife;
-          ctx.globalAlpha = Math.min(1, t * 1.03);
-          ctx.fillStyle = star.color;
-          ctx.shadowColor = star.color;
-          ctx.shadowBlur = 10;
-          drawStar(star.x, star.y, star.size, star.rotation);
-        }
-        ctx.globalAlpha = 1;
-        ctx.shadowBlur = 0;
-        if (particles.length) frameId = requestAnimationFrame(animate);
+        ctx.globalAlpha=1;ctx.shadowBlur=0;
+        if(particles.length)frame=requestAnimationFrame(animate);
       }
-
-      // 切換分頁時不讓粒子在背景持續運算。
-      document.addEventListener('visibilitychange', () => {
-        if (document.hidden) {
-          if (frameId) cancelAnimationFrame(frameId);
-          frameId = 0;
-          particles.length = 0;
-          ctx.clearRect(0, 0, width, height);
-        }
-      });
-      reducedMotion.addEventListener?.('change', () => {
-        if (!reducedMotion.matches) return;
-        if (frameId) cancelAnimationFrame(frameId);
-        frameId = 0;
-        particles.length = 0;
-        ctx.clearRect(0, 0, width, height);
-      });
+      function reset(){
+        if(frame)cancelAnimationFrame(frame);frame=0;
+        particles.length=0;ctx.clearRect(0,0,width,height);
+      }
+      document.addEventListener('visibilitychange',()=>{if(document.hidden)reset();});
+      reduceMotion.addEventListener?.('change',()=>{if(reduceMotion.matches)reset();});
     })();
   </script>
 </body>
