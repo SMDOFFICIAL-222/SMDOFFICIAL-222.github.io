@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>岳嵐 YueLan | 星樂之夢</title>
   <meta name="description" content="岳嵐 YueLan｜森嶼之聲所屬虛擬歌手官方頁面。">
+  <link rel="icon" href="img/森嶼之聲Logo.png" type="image/png">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
 
@@ -192,14 +193,35 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
+      flex-direction: column;
+      gap: 8px;
+      text-align: center;
+    }
+    .name-lockup {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
     .name-card h1 {
       margin: 0;
       font-size: clamp(38px, 5vw, 62px);
       line-height: 1;
-      color: rgba(244, 255, 248, 0.92);
-      text-shadow: 0 0 22px rgba(219, 247, 228, 0.26);
-      letter-spacing: 1px;
+      color: #2f7ea1;
+      text-shadow: 0 1px 18px rgba(47, 126, 161, 0.18);
+      letter-spacing: 2px;
+      font-weight: 900;
+    }
+    .name-card p {
+      margin: 0;
+      color: rgba(47, 98, 129, 0.72);
+      font-size: 11px;
+      line-height: 1;
+      letter-spacing: 3px;
+      font-weight: 800;
+      text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .portrait-card {
@@ -332,6 +354,7 @@
       }
       .name-card { min-height: 136px; }
       .name-card h1 { font-size: clamp(34px, 8vw, 52px); }
+      .name-card p { font-size: 11px; letter-spacing: 2.8px; }
       .portrait-card {
         min-height: 300px;
         padding: 26px 18px;
@@ -386,6 +409,7 @@
       }
       .name-card { min-height: 0; padding: 14px 18px; }
       .name-card h1 { font-size: clamp(34px, 4vw, 54px); }
+      .name-card p { font-size: 11px; letter-spacing: 3px; }
       .portrait-card {
         min-height: 0;
         height: 100%;
@@ -542,16 +566,19 @@
   </header>
 
   <main>
-    <section class="profile-section" aria-label="岳嵐角色資料">
+    <section class="profile-section">
       <div class="left-column">
-        <div class="glass-panel name-card">
-          <img class="profile-logo-top" src="img/岳嵐Logo.png" alt="岳嵐 Logo" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
-          <div class="name-fallback" hidden><h1>岳嵐</h1><p>YueLan · 森嶼之聲</p></div>
-        </div>
-        <div class="glass-panel portrait-card">
-          <img src="img/岳嵐立繪.png" alt="岳嵐全身立繪" onerror="this.hidden=true;this.nextElementSibling.hidden=false">
-          <div class="portrait-fallback" hidden><span class="wheat-icon" aria-hidden="true">🌊</span><p>岳嵐立繪預留</p></div>
-        </div>
+        <section class="glass-panel name-card">
+          <div class="name-lockup">
+            <h1>岳嵐</h1>
+            <p>YUELAN · 森嶼之聲</p>
+          </div>
+        </section>
+
+        <section class="glass-panel portrait-card">
+          <img src="img/岳嵐立繪.png" alt="岳嵐立繪"
+               onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 420 720\'><rect fill=\'transparent\' width=\'420\' height=\'720\'/><text x=\'210\' y=\'360\' text-anchor=\'middle\' fill=\'%23537265\' font-size=\'28\' font-family=\'sans-serif\'>岳嵐立繪預留</text></svg>'">
+        </section>
       </div>
       <section class="glass-panel profile-card">
         <table class="char-table">
