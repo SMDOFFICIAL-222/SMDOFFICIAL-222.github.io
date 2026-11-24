@@ -700,6 +700,11 @@
         height: 45px;
       }
     }
+
+    .rules-btn-container { flex-direction: column; align-items: center; gap: 16px; }
+    .codename-btn { display: inline-flex; justify-content: center; text-align: center; text-decoration: none; max-width: 100%; -webkit-backdrop-filter: var(--glass-blur); }
+    .codename-btn:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 4px; }
+
   </style>
 </head>
 <body>
@@ -922,6 +927,7 @@
     <!-- ================= 規約按鈕 ================= -->
     <div class="rules-btn-container">
       <button class="rules-btn" id="openRulesBtn">📖 星樂之夢角色及創作使用規範</button>
+      <a class="rules-btn codename-btn" href="codename.html">🔑 開發代號的小房間</a>
     </div>
 
   </main>
