@@ -25,7 +25,7 @@ function render() {
   }
 }
 document.querySelectorAll('[data-filter]').forEach(b => b.addEventListener('click', () => { filter = b.dataset.filter; document.querySelectorAll('[data-filter]').forEach(x=>x.setAttribute('aria-pressed',String(x===b))); render(); }));
-const API_URL = 'PASTE_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzuqUpyMZJDHezZHdefCrLYl3P_NeI8PvrZaEGFHTlKcxEMEOXNchDpHmxuF0o-z34XIw/exec';
 function accept(data) {
   if (!Array.isArray(data)) throw Error('Invalid data');
   items = data.filter(i=>i.source === "official").sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||new Date(b.date)-new Date(a.date));
