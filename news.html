@@ -401,6 +401,16 @@
         height: 45px;
       }
     }
+  
+    .news-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); }
+    .news-toolbar { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; width:100%; }
+    .news-toolbar button,.news-toolbar a { font:inherit; font-weight:700; color:var(--text-main); background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:999px; padding:10px 18px; cursor:pointer; text-decoration:none; }
+    .news-toolbar button[aria-pressed="true"] { background:var(--accent-dark); color:white; }
+    .news-desc { display:block; white-space:pre-wrap; overflow-wrap:anywhere; }
+    .news-title { display:block; overflow-wrap:anywhere; }
+    .news-card { color:inherit; }
+    #news-status { color:var(--text-muted); margin:24px 0; }
+    .news-source { color:var(--accent-dark); font-size:13px; margin-top:16px; }
   </style>
 </head>
 <body>
@@ -462,34 +472,15 @@
       <p>關注星樂之夢最新動態。<br>這裡發布包含聲庫更新、原創音樂企劃及最新活動情報。</p>
     </div>
 
-    <!-- ================= 情報與消息 預留區塊 ================= -->
-    <div class="empty-state-panel">
-      <!-- 一個小廣播的圖示 -->
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-        <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-      </svg>
-      <h2>目前尚無情報</h2>
-      <p>星樂之夢的最新企劃與情報正在準備中，敬請期待後續發布！</p>
+    <div class="news-toolbar" aria-label="消息分類">
+      <button data-filter="all" aria-pressed="true">全部消息</button>
+      <button data-filter="official" aria-pressed="false">官方公告</button>
+      <button data-filter="x" aria-pressed="false">𝕏 社群動態</button>
+      <a href="https://x.com/SMDOFFICIAL_222" target="_blank" rel="noopener noreferrer">前往官方 𝕏 ↗</a>
     </div>
-
-    <!-- ================= 情報與消息列表 (未來有資料時將此區塊 display 改為 grid) ================= -->
-    <div class="news-grid">
-      <!-- 範例結構保留在註解中，方便未來啟用 -->
-      <!--
-      <a href="#" class="news-card">
-        <div class="news-img-box">
-          <img src="img/news_1.jpg" alt="新聞圖片">
-        </div>
-        <div class="news-info">
-          <div class="news-date">YYYY.MM.DD</div>
-          <h3 class="news-title">這裡是新聞標題</h3>
-          <p class="news-desc">這裡是新聞的簡短描述內容，大約一到兩行字即可。</p>
-        </div>
-      </a>
-      -->
-    </div>
-
+    <p id="news-status" role="status">正在載入情報…</p>
+    <div class="news-grid" id="news-grid"></div>
+    <script src="js/news.js" defer></script>
   </main>
 
   <footer>
