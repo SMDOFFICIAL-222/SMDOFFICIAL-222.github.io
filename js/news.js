@@ -5,6 +5,9 @@ const make = (tag, cls, text) => { const e = document.createElement(tag); e.clas
 function safeURL(value) { try { const u = new URL(value, location.href); return ['https:', 'http:'].includes(u.protocol) ? u.href : null; } catch { return null; } }
 function render() {
   grid.replaceChildren();
+  document.querySelector("#x-timeline").hidden = filter === "official";
+  grid.hidden = filter === "x";
+  status.hidden = filter === "x";
   const visible = items.filter(i => filter === 'all' || i.source === filter);
   status.textContent = (visible.length ? `共 ${visible.length} 則消息` : '目前尚無情報') + (failures ? '（部分資料載入失敗）' : '');
   for (const i of visible) {
@@ -25,7 +28,7 @@ document.querySelectorAll('[data-filter]').forEach(b => b.addEventListener('clic
 const API_URL = 'PASTE_GOOGLE_APPS_SCRIPT_EXEC_URL_HERE';
 function accept(data) {
   if (!Array.isArray(data)) throw Error('Invalid data');
-  items = data.sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||new Date(b.date)-new Date(a.date));
+  items = data.filter(i=>i.source === "official").sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned)||new Date(b.date)-new Date(a.date));
   failures=0; render();
 }
 function load() {
