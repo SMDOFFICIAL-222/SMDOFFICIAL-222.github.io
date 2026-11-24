@@ -525,6 +525,42 @@
       .blob-2 { width: 350px; height: 350px; }
       .blob-3 { width: 250px; height: 250px; }
     }
+
+    /* ================= 261124E 首頁同步情報 ================= */
+    .home-news-heading {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; margin-bottom: 18px;
+    }
+    .home-news-heading .section-title { width: auto; margin: 0; }
+    .home-news-link { color: var(--accent-dark); font-weight: 700; text-decoration: none; white-space: nowrap; }
+    .home-news-link:hover { text-decoration: underline; }
+    #news-status { color: var(--text-muted); font-size: 14px; margin: 0 0 18px; }
+    .home-news-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+    .home-news-grid:empty { display: none; }
+    /* 共用新聞渲染器已先依置頂、日期排序；首頁僅顯示前三則。 */
+    .home-news-grid > :nth-child(n+4) { display: none; }
+    #news #x-timeline { display: none !important; }
+    #news .news-card {
+      min-width: 0; display: flex; flex-direction: column; overflow: hidden;
+      border-radius: 18px; border: 1px solid var(--glass-border);
+      background: rgba(255,255,255,.46); box-shadow: var(--glass-inner);
+      text-decoration: none; color: var(--text-main); transition: transform .25s, background .25s;
+    }
+    #news a.news-card:hover { transform: translateY(-4px); background: rgba(255,255,255,.72); }
+    #news .news-img-box { aspect-ratio: 16 / 9; overflow: hidden; background: rgba(255,255,255,.3); }
+    #news .news-img-box img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    #news .news-info { padding: 18px; display: flex; flex-direction: column; flex: 1; }
+    #news .news-date { font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 10px; }
+    #news .news-title { font-size: 17px; line-height: 1.5; margin: 0 0 8px; overflow-wrap: anywhere; }
+    #news .news-desc { font-size: 14px; line-height: 1.65; color: var(--text-muted); margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; overflow: hidden; }
+    #news .news-source { color: var(--accent-dark); font-size: 13px; font-weight: 700; margin-top: auto; padding-top: 12px; }
+    .home-news-footer { text-align: center; margin-top: 24px; }
+    @media (max-width: 768px) {
+      #news.glass-panel { padding: 22px 18px; }
+      .home-news-grid { grid-template-columns: 1fr; gap: 14px; }
+      .home-news-heading .section-title { font-size: 22px; }
+      .home-news-link { font-size: 13px; }
+    }
   </style>
 </head>
 <body>
@@ -585,13 +621,19 @@
       <p style="color: var(--text-muted); font-size: 18px; font-weight: bold; letter-spacing: 2px; text-shadow: 0 1px 2px rgba(255,255,255,0.8);">我們是一個以「虛擬歌手 × 音樂創作」為核心的大學生創作團隊</p>
     </section>
 
-    <!-- 最新資訊區塊 -->
+    <!-- 最新資訊區塊：與 News 共用 Google Apps Script API -->
     <section id="news" class="glass-panel">
-      <h2 class="section-title" style="border-left-color: var(--accent-dark); margin-top: 0;">最新資訊</h2>
-      <div style="text-align: center; padding: 20px; color: var(--text-muted);">
-        <p>目前尚無最新資訊發布，敬請期待後續更新！</p>
+      <div class="home-news-heading">
+        <h2 class="section-title">最新資訊</h2>
+        <a class="home-news-link" href="news.html">查看全部 →</a>
       </div>
+      <p id="news-status" role="status">正在載入最新資訊…</p>
+      <div id="news-grid" class="home-news-grid"></div>
+      <!-- 相容既有 js/news.js 的時間軸選擇器；首頁不載入 X 小工具。 -->
+      <div id="x-timeline" hidden aria-hidden="true"></div>
+      <noscript><p>請啟用 JavaScript，或前往<a href="news.html">情報與消息</a>查看最新公告。</p></noscript>
     </section>
+    <script src="js/news.js" defer></script>
 
     <!-- 三大主選單 (入口卡片) -->
     <div class="portal-grid">
