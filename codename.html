@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>旗下歌手開發代號 | 星樂之夢 Star Music Dream</title>
+  <meta name="description" content="探索星樂之夢旗下歌手的開發代號與歷史版本。">
+
+  <link rel="icon" href="img/星樂之夢Logo.png" type="image/png">
+
+  <style>
+    /* ================= 全域設定與重置 ================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* 變數 (Liquid Glass 風格配色) */
+    :root {
+      --bg-color: #f0f8ff; /* 極淺藍底色，讓 Blob 更顯色 */
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --accent-dark: #3b82f6; /* 主題藍 */
+      --accent-street: #00b8d4; /* StreetEchoes 專屬色 (加深一點以便在亮底閱讀) */
+      --accent-forest: #7cb342; /* 森嶼之聲 專屬色 (加深綠) */
+      --accent-starleo: #fbbf24; /* StarLeo 專屬色 (加深黃) */
+
+      /* Liquid Glass 核心變數 */
+      --glass-bg: rgba(255, 255, 255, 0.4);
+      --glass-border: rgba(255, 255, 255, 0.7);
+      --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+      --glass-inner: inset 0 2px 4px 0 rgba(255, 255, 255, 0.9), inset 0 -2px 4px 0 rgba(255, 255, 255, 0.2);
+      --glass-blur: blur(12px) saturate(160%);
+    }
+
+    body {
+      margin: 0;
+      padding-top: 80px;
+      font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+      color: var(--text-main);
+      min-height: 100vh;
+      background-color: var(--bg-color);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ================= Liquid Blobs (流動背景色塊) ================= */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(60px);
+      z-index: -1;
+      opacity: 0.6;
+      animation: float 15s infinite ease-in-out alternate;
+    }
+    .blob-1 {
+      width: 450px; height: 450px;
+      background: #bae6fd; /* 淺藍 */
+      top: -100px; left: -100px;
+    }
+    .blob-2 {
+      width: 550px; height: 550px;
+      background: #fbcfe8; /* 淺粉 */
+      bottom: -150px; right: -150px;
+      animation-delay: -5s;
+    }
+    .blob-3 {
+      width: 350px; height: 350px;
+      background: #fef08a; /* 淺黃 */
+      top: 30%; left: 40%;
+      animation-delay: -10s;
+      animation-duration: 20s;
+    }
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(40px, -60px) scale(1.1); }
+      66% { transform: translate(-30px, 30px) scale(0.9); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* 滑鼠星星粒子畫布樣式 */
+    #cursor-canvas {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      pointer-events: none !important; z-index: 90;
+    }
+
+    /* ================= 頂部導覽列 ================= */
+    header {
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      border-bottom: 1px solid var(--glass-border);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      padding: 0 20px;
+    }
+
+    .header-left, .header-center, .header-right {
+      display: flex; align-items: center; flex: 1;
+    }
+    .header-left { justify-content: flex-start; gap: 20px; }
+    .header-center { justify-content: center; }
+    .header-right { justify-content: flex-end; gap: 20px; }
+
+    .logo { text-decoration: none; display: flex; align-items: center; z-index: 1001; position: relative;}
+    .logo-image { max-height: 45px; width: auto; display: block; border-radius: 4px; }
+
+    .nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    .nav-links a:hover { color: var(--accent-dark); }
+    .nav-links a.active { color: var(--accent-dark); border-bottom: 2px solid var(--accent-dark); padding-bottom: 2px;}
+
+    /* 漢堡選單按鈕 (電腦版隱藏) */
+    .menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 5px;
+      z-index: 1001;
+      position: relative;
+    }
+    .menu-btn svg {
+      width: 32px;
+      height: 32px;
+      stroke: var(--text-main);
+      transition: stroke 0.3s;
+    }
+    .menu-btn:hover svg { stroke: var(--accent-dark); }
+
+    /* ================= 手機版全螢幕選單 (Mobile Overlay) ================= */
+    .mobile-menu-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+    .mobile-menu-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .mobile-nav-links {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      text-align: center;
+    }
+
+    .mobile-nav-links a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      transition: color 0.3s;
+    }
+    .mobile-nav-links a:hover, .mobile-nav-links a.active {
+      color: var(--accent-dark);
+    }
+
+    /* ================= 通用區塊設定 ================= */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1; /* 確保內容在 Blob 之上 */
+    }
+
+    /* 頁面大標題 (Liquid Glass 風格) */
+    .page-hero {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 60px;
+      width: 100%;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 40px 20px;
+      box-shadow: var(--glass-shadow), var(--glass-inner);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 玻璃卡片反光 */
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%);
+      transform: skewX(-20deg);
+      animation: shine 8s infinite;
+      pointer-events: none;
+    }
+    @keyframes shine {
+      0% { left: -100%; }
+      20% { left: 200%; }
+      100% { left: 200%; }
+    }
+
+    .page-hero h1 {
+      margin: 0 0 15px 0;
+      color: var(--accent-dark);
+      font-size: 36px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 5px rgba(255,255,255,1);
+    }
+    .page-hero p {
+      margin: 0;
+      color: var(--text-main);
+      font-size: 16px;
+      line-height: 1.8;
+      font-weight: 600;
+    }
+
+    /* ================= 系列展示區塊 ================= */
+    .series-section {
+      width: 100%;
+      margin-bottom: 80px;
+    }
+
+    .series-title-container {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      border-bottom: 2px solid rgba(255,255,255,0.6); /* 改為淺色底線 */
+      padding-bottom: 15px;
+    }
+
+    .series-title {
+      font-size: 28px;
+      margin: 0;
+      color: var(--text-main);
+      font-weight: 900;
+      text-shadow: 0 2px 4px rgba(255,255,255,0.8);
+    }
+
+    /* 系列 Logo 圖片樣式 */
+    .series-logo {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 2px 4px rgba(255,255,255,0.8));
+    }
+
+
+    /* ================= 團體設定按鈕：標題右側 ================= */
+    .group-info-btn {
+      --group-accent: var(--accent-dark);
+      margin-left: auto;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      min-height: 43px;
+      padding: 9px 21px;
+      border: 1px solid var(--group-accent);
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.55);
+      color: var(--group-accent);
+      box-shadow: var(--glass-shadow), var(--glass-inner);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      font: inherit;
+      font-size: 15px;
+      font-weight: 800;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+    .group-info-street { --group-accent: #008eac; }
+    .group-info-forest { --group-accent: #5b892b; }
+    .group-info-starleo { --group-accent: #ab7400; }
+    .group-info-btn:hover {
+      background: rgba(255, 255, 255, 0.85);
+      box-shadow: 0 12px 26px rgba(31, 38, 135, .15), var(--glass-inner);
+      transform: translateY(-2px);
+    }
+    .group-info-btn:focus-visible, .group-info-modal-close:focus-visible {
+      outline: 3px solid var(--accent-dark);
+      outline-offset: 3px;
+    }
+
+    /* ================= 三組共用的 Liquid Glass 團體設定視窗 ================= */
+    .group-modal { --modal-accent: var(--accent-dark); }
+    .group-modal[data-theme="street"] { --modal-accent: #008eac; }
+    .group-modal[data-theme="forest"] { --modal-accent: #5b892b; }
+    .group-modal[data-theme="starleo"] { --modal-accent: #ab7400; }
+    .group-modal .modal-content {
+      max-width: 760px;
+      border-top: 4px solid var(--modal-accent);
+      overflow: hidden;
+    }
+    .group-modal .modal-header h2,
+    .group-modal .modal-body h3 { color: var(--modal-accent); }
+    .group-modal .modal-body {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+    .group-modal .modal-body h3 {
+      border-bottom: 2px dashed color-mix(in srgb, var(--modal-accent), transparent 75%);
+    }
+    .group-modal .modal-body ul { padding-left: 24px; }
+    .group-modal .modal-body li { padding-left: 2px; }
+    .group-modal .modal-body strong { font-weight: 800; }
+    @media (max-width: 768px) {
+      .group-info-btn { margin-left: 0; align-self: flex-start; }
+      .group-modal .modal-header { padding: 18px; }
+      .group-modal .modal-header h2 { font-size: 18px; }
+      .group-modal .modal-content { max-height: 88vh; }
+      .group-modal .modal-body { padding: 18px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .group-info-btn { transition: none; }
+    }
+
+    /* ================= 歌手卡片網格 (Liquid Glass) ================= */
+    .singers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 25px;
+      width: 100%;
+    }
+
+    .singer-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      overflow: hidden;
+      text-decoration: none;
+      box-shadow: var(--glass-shadow), var(--glass-inner);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .singer-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 15px 40px rgba(31, 38, 135, 0.15), var(--glass-inner);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .singer-img-box {
+      width: 100%;
+      height: 260px;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      padding-top: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .singer-img-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: bottom;
+      transition: transform 0.5s ease;
+    }
+
+    .singer-card:hover .singer-img-box img {
+      transform: scale(1.08);
+    }
+
+    .singer-info {
+      padding: 18px 15px;
+      text-align: center;
+      background: rgba(255,255,255,0.4);
+      border-top: 1px solid rgba(255,255,255,0.6);
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .singer-info h3 {
+      margin: 0 0 5px 0;
+      color: var(--text-main);
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 1px;
+    }
+
+    .singer-info p {
+      margin: 0;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .txt-street { color: var(--accent-street); }
+    .txt-forest { color: var(--accent-forest); }
+    .txt-starleo { color: var(--accent-starleo); }
+
+    /* ================= 規約按鈕 ================= */
+    .rules-btn-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 60px;
+    }
+    .rules-btn {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid var(--accent-dark);
+      color: var(--accent-dark);
+      padding: 12px 30px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: var(--glass-shadow);
+      backdrop-filter: var(--glass-blur);
+      transition: all 0.3s ease;
+    }
+    .rules-btn:hover {
+      background: var(--accent-dark);
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+    }
+
+    /* ================= 規約彈出視窗 (Liquid Modal) ================= */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      padding: 20px;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      width: 100%;
+      max-width: 700px;
+      max-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 25px 60px rgba(31, 38, 135, 0.2), var(--glass-inner);
+      transform: translateY(20px);
+      transition: transform 0.3s ease;
+    }
+    .modal-overlay.active .modal-content {
+      transform: translateY(0);
+    }
+    .modal-header {
+      padding: 25px 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.6);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-size: 22px;
+      color: var(--accent-dark);
+      font-weight: 900;
+    }
+    .modal-close {
+      background: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.8);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      font-size: 20px;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex; justify-content: center; align-items: center;
+      transition: all 0.3s;
+    }
+    .modal-close:hover {
+      background: #fff;
+      color: var(--text-main);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .modal-body {
+      padding: 30px;
+      overflow-y: auto;
+      font-size: 15px;
+      line-height: 1.8;
+      color: var(--text-main);
+    }
+    .modal-body h3 {
+      font-size: 18px;
+      color: var(--accent-dark);
+      margin-top: 25px;
+      margin-bottom: 10px;
+      border-bottom: 2px dashed rgba(99, 164, 255, 0.3);
+      padding-bottom: 8px;
+    }
+    .modal-body h3:first-child { margin-top: 0; }
+    .modal-body h4 { font-size: 16px; color: var(--text-main); margin-top: 15px; margin-bottom: 5px; }
+    .modal-body ul { margin: 5px 0 15px 0; padding-left: 20px; }
+    .modal-body li { margin-bottom: 5px; }
+    .modal-body p { margin-bottom: 15px; }
+
+    /* ================= 回到頂部按鈕 ================= */
+    #scrollToTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1), var(--glass-inner);
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      color: var(--accent-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      z-index: 999;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    #scrollToTopBtn.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    #scrollToTopBtn:hover {
+      background: rgba(255, 255, 255, 0.95);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(31, 38, 135, 0.15), var(--glass-inner);
+    }
+
+    #scrollToTopBtn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    /* ================= 8. 頁尾 ================= */
+    footer {
+      text-align: center; padding: 40px; color: var(--text-muted); font-size: 14px;
+      background: rgba(255, 255, 255, 0.3); border-top: 1px solid rgba(255,255,255,0.6);
+      width: 100%;
+      backdrop-filter: var(--glass-blur);
+      position: relative;
+      z-index: 1;
+    }
+
+
+    /* ================= 新版角色及創作使用規範 ================= */
+    .rules-modal .modal-content {
+      max-width: 820px;
+      max-height: min(88vh, 920px);
+      max-height: min(88dvh, 920px);
+      overflow: hidden;
+      border-top: 4px solid var(--accent-dark);
+    }
+    .rules-modal .modal-header { gap: 14px; flex-shrink: 0; }
+    .rules-modal .modal-header h2 { line-height: 1.5; font-size: 20px; }
+    .rules-modal .modal-close { flex-shrink: 0; }
+    .rules-document {
+      overscroll-behavior: contain;
+      scrollbar-gutter: stable;
+      padding: 28px 34px 38px;
+      line-height: 1.85;
+      min-height: 0;
+    }
+    .rules-document h1 {
+      font-size: 24px;
+      color: #1d4ed8;
+      line-height: 1.45;
+      margin: 4px 0 9px;
+      letter-spacing: .02em;
+    }
+    .rules-document > p:first-child {
+      color: #475569;
+      font-size: 12px;
+      letter-spacing: .025em;
+      margin: 0 0 22px;
+    }
+    .rules-document h2 {
+      font-size: 20px;
+      color: #2563eb;
+      font-weight: 900;
+      margin: 30px 0 16px;
+      padding: 0 0 11px;
+      border-bottom: 2px solid rgba(59,130,246,.18);
+    }
+    .rules-document h3 {
+      font-size: 16px;
+      color: #1e293b;
+      font-weight: 850;
+      margin: 22px 0 9px;
+      padding: 0;
+      border: 0;
+    }
+    .rules-document p { font-size: 14px; margin: 0 0 13px; }
+    .rules-document ul { padding-left: 1.55em; margin: 5px 0 16px; }
+    .rules-document li { font-size: 14px; padding-left: 2px; margin-bottom: 5px; }
+    .rules-document strong { font-weight: 850; color: #1555ad; }
+    .rules-document hr {
+      border: none;
+      border-top: 1px solid rgba(93, 140, 211, .19);
+      margin: 27px 0;
+    }
+    .rules-document > p:last-child { text-align: center; margin-top: 22px; }
+    @media (max-width: 768px) {
+      .rules-modal { padding: 12px; }
+      .rules-modal .modal-content { max-height: 89vh; max-height: 89dvh; border-radius: 19px; }
+      .rules-modal .modal-header { padding: 18px 18px; }
+      .rules-modal .modal-header h2 { font-size: 17px; }
+      .rules-document { padding: 20px 19px 28px; scrollbar-gutter: auto; }
+      .rules-document h1 { font-size: 21px; }
+      .rules-document h2 { font-size: 18px; }
+      .rules-document h3 { font-size: 15px; }
+      .rules-document p, .rules-document li { font-size: 14px; }
+    }
+
+    /* RWD 響應式 */
+    @media (max-width: 768px) {
+      header { padding: 10px 0; background: rgba(255, 255, 255, 0.6); }
+      .nav-container { flex-direction: row; justify-content: space-between; padding: 10px 25px; }
+      .header-left, .header-right { display: none; }
+      .header-center { flex: unset; justify-content: flex-start; }
+      .menu-btn { display: block; }
+
+      body { padding-top: 100px; }
+
+      .series-title-container { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .page-hero { padding: 30px 15px; }
+      .page-hero h1 { font-size: 28px; }
+      .modal-body { padding: 20px 15px; }
+
+      .blob-1 { width: 300px; height: 300px; }
+      .blob-2 { width: 350px; height: 350px; }
+      .blob-3 { width: 250px; height: 250px; }
+
+      /* 手機版回到頂部按鈕調整 */
+      #scrollToTopBtn {
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    .rules-btn-container { flex-direction: column; align-items: center; gap: 16px; }
+    .codename-btn { display: inline-flex; justify-content: center; text-align: center; text-decoration: none; max-width: 100%; -webkit-backdrop-filter: var(--glass-blur); }
+    .codename-btn:focus-visible { outline: 3px solid var(--accent-dark); outline-offset: 4px; }
+
+.room-grid {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;width:100%;}
+.room-card,.archive {background:var(--glass-bg);border:1px solid var(--glass-border);border-radius:20px;box-shadow:var(--glass-shadow),var(--glass-inner);backdrop-filter:var(--glass-blur);-webkit-backdrop-filter:var(--glass-blur);padding:22px;}
+.room-card p {margin:0 0 8px;color:var(--text-muted);font-weight:700;}
+.room-card h3 {margin:0;font-size:23px;overflow-wrap:anywhere;color:var(--room-accent);}
+.room-card small {display:block;margin-top:9px;color:var(--text-muted);}
+.archive {width:100%;margin-bottom:24px;line-height:1.7;}
+.archive h3 {margin-top:0;color:var(--accent-dark);}
+.timeline {list-style:none;padding:0 0 0 18px;border-left:2px solid #93c5fd;margin:20px 0;}
+.timeline li {position:relative;padding:0 0 22px 10px;}
+.timeline li:last-child {padding-bottom:0;}
+.timeline li::before {content:'';position:absolute;left:-25px;top:8px;width:12px;height:12px;border-radius:50%;background:#3b82f6;border:2px solid white;}
+.timeline strong {display:block;font-size:20px;}
+.timeline span {color:var(--text-muted);font-size:14px;}
+.room-back {margin:20px 0 60px;}
+@media(max-width:768px){.room-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.room-card{padding:16px}.room-card h3{font-size:20px}.archive{padding:20px}.series-section{margin-bottom:45px}}
+@media(prefers-reduced-motion:reduce){.blob,.page-hero::before{animation:none}}
+</style>
+</head>
+<body>
+  <!-- Liquid Background Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <!-- 滑鼠星星粒子畫布 -->
+
+
+  <header>
+    <div class="nav-container">
+      <div class="header-left nav-links">
+        <a href="vsinger.html" class="active">歌手資訊</a>
+        <a href="news.html">情報與消息</a>
+      </div>
+
+      <div class="header-center">
+        <a href="index.html" class="logo">
+          <img src="img/星樂之夢Logo(橫).png" alt="星樂之夢 Logo" class="logo-image">
+        </a>
+      </div>
+
+      <div class="header-right nav-links">
+        <a href="about.html">關於我們</a>
+        <a href="history.html">歷史概要</a>
+      </div>
+
+      <button class="menu-btn" id="mobileMenuBtn" aria-label="打開選單">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12" class="line-mid"></line>
+          <line x1="3" y1="6" x2="21" y2="6" class="line-top"></line>
+          <line x1="3" y1="18" x2="21" y2="18" class="line-bot"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <div class="mobile-nav-links">
+      <a href="vsinger.html" class="active">歌手資訊</a>
+      <a href="news.html">情報與消息</a>
+      <a href="about.html">關於我們</a>
+      <a href="history.html">歷史概要</a>
+    </div>
+  </div>
+
+  <main><div class="page-hero"><h1>🔑 開發代號的小房間</h1><p>Development Codename Room<br>歡迎探索星樂之夢旗下歌手的另一個名字。</p></div><section class="series-section" style="--room-accent:#008eac"><div class="series-title-container"><img class="series-logo" src="img/STREETECHOES_Logo.png" alt="" onerror="this.hidden=true"><h2 class="series-title">StreetEchoes 系列</h2></div><div class="room-grid"><article class="room-card"><p>柊赫</p><h3>Xinyi</h3></article><article class="room-card"><p>懿姍</p><h3>Pier2</h3></article><article class="room-card"><p>程都</p><h3>Ximending</h3></article><article class="room-card"><p>悠珊</p><h3>Shilin</h3></article></div></section><section class="series-section" style="--room-accent:#5b892b"><div class="series-title-container"><img class="series-logo" src="img/森嶼之聲Logo.png" alt="" onerror="this.hidden=true"><h2 class="series-title">森嶼之聲 系列</h2></div><div class="room-grid"><article class="room-card"><p>岳嵐</p><h3>Taroko</h3></article><article class="room-card"><p>穗蓉</p><h3>Hualien</h3></article><article class="room-card"><p>湛嶠</p><h3>Kenting</h3></article><article class="room-card"><p>雉瑜</p><h3>Alishan</h3></article></div></section><section class="series-section" style="--room-accent:#ab7400"><div class="series-title-container"><img class="series-logo" src="img/StarLeo_Logo.png" alt="" onerror="this.hidden=true"><h2 class="series-title">星幻之城 × StarLeo 系列</h2></div><div class="room-grid"><article class="room-card"><p>星希羽</p><h3>Asuka</h3></article><article class="room-card"><p>星彗羽</p><h3>Sakura</h3></article><article class="room-card"><p>星丞軒</p><h3>Xuanyuan</h3></article><article class="room-card"><p>星卉芯</p><h3>Sunflower</h3></article></div></section><section class="series-section"><div class="series-title-container"><h2 class="series-title">歷史開發檔案</h2></div><article class="archive"><h3>💫 星希羽</h3><ol class="timeline"><li><strong>Leo</strong><span>Solo 23｜Beta～V1.3</span></li><li><strong>Lion</strong><span>Solo 24｜V1.4.0～V1.5.1</span></li><li><strong>Ian</strong><span>Solo 24｜V1.5.2（V2.1.0 過渡前導版本）</span></li><li><strong>Asuka</strong><span>Solo 2.x｜V2.1.0 起</span></li></ol></article><article class="archive"><h3>🌸 星彗羽</h3><ol class="timeline"><li><strong>Comet</strong><span>歷史開發代號</span></li><li><strong>Sakura</strong><span>現行開發代號</span></li></ol></article></section><a class="rules-btn codename-btn room-back" href="vsinger.html">← 返回歌手資訊</a></main><footer>
+    <p>© 2024-2026 星樂之夢 (Star Music Dream)</p>
+  </footer><script>const btn=document.getElementById('mobileMenuBtn'), menu=document.getElementById('mobileMenuOverlay');function toggle(open){menu.classList.toggle('active',open);btn.setAttribute('aria-expanded',String(open));btn.setAttribute('aria-label',open?'關閉選單':'打開選單');btn.querySelector('.line-mid').style.opacity=open?'0':'1';btn.querySelector('.line-top').setAttribute('y2',open?'18':'6');btn.querySelector('.line-bot').setAttribute('y2',open?'6':'18');document.body.style.overflow=open?'hidden':'';}btn.setAttribute('aria-expanded','false');btn.addEventListener('click',()=>toggle(!menu.classList.contains('active')));document.addEventListener('keydown',e=>{if(e.key==='Escape')toggle(false)});window.matchMedia('(max-width: 768px)').addEventListener('change',e=>{if(!e.matches)toggle(false)});</script></body></html>
