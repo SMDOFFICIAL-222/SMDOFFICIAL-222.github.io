@@ -16,7 +16,11 @@
 
     /* 變數 (Liquid Glass 風格配色) */
     :root {
-      --bg-color: #f0f8ff; /* 極淺藍底色，讓 Blob 更顯色 */
+      --bg-color: #fff9e8; /* 極淺奶油底色 */
+      --macaron-yellow: #F9E49A;
+      --cream-yellow: #FFF3D1;
+      --macaron-blue: #C5E4F8;
+      --mint-green: #BAEBD8;
       --text-main: #0f172a;
       --text-muted: #475569;
       --accent-dark: #3b82f6; /* 主題藍 */
@@ -39,6 +43,10 @@
       color: var(--text-main);
       min-height: 100vh;
       background-color: var(--bg-color);
+      background-image: linear-gradient(rgba(255,255,255,0.40), rgba(255,255,255,0.40)),
+        linear-gradient(125deg, var(--macaron-yellow) 0%, var(--cream-yellow) 32%, var(--macaron-blue) 66%, var(--mint-green) 100%);
+      background-attachment: fixed;
+      isolation: isolate; /* 讓負 z-index 色塊留在背景與內容之間 */
       overflow-x: hidden;
       position: relative;
     }
@@ -53,27 +61,34 @@
       animation: float 15s infinite ease-in-out alternate;
     }
     .blob-1 {
-      width: 450px; height: 450px;
-      background: #bae6fd; /* 淺藍 */
+      width: 400px; height: 400px;
+      background: var(--macaron-yellow); /* 馬卡龍黃 */
       top: -100px; left: -100px;
     }
     .blob-2 {
-      width: 550px; height: 550px;
-      background: #fbcfe8; /* 淺粉 */
-      bottom: -150px; right: -150px;
+      width: 500px; height: 500px;
+      background: var(--mint-green); /* 薄荷綠 */
+      bottom: -150px; right: -100px;
       animation-delay: -5s;
     }
     .blob-3 {
       width: 350px; height: 350px;
-      background: #fef08a; /* 淺黃 */
-      top: 30%; left: 40%;
+      background: var(--cream-yellow); /* 奶油黃 */
+      top: 40%; left: 30%;
       animation-delay: -10s;
       animation-duration: 20s;
     }
+    .blob-4 {
+      width: 450px; height: 450px;
+      background: var(--macaron-blue); /* 馬卡龍淺藍 */
+      top: 5%; right: -60px;
+      animation-delay: -7s;
+      animation-duration: 18s;
+    }
     @keyframes float {
       0% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(40px, -60px) scale(1.1); }
-      66% { transform: translate(-30px, 30px) scale(0.9); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
       100% { transform: translate(0, 0) scale(1); }
     }
 
@@ -691,6 +706,7 @@
       .blob-1 { width: 300px; height: 300px; }
       .blob-2 { width: 350px; height: 350px; }
       .blob-3 { width: 250px; height: 250px; }
+      .blob-4 { width: 320px; height: 320px; }
 
       /* 手機版回到頂部按鈕調整 */
       #scrollToTopBtn {
@@ -712,6 +728,7 @@
   <div class="blob blob-1"></div>
   <div class="blob blob-2"></div>
   <div class="blob blob-3"></div>
+  <div class="blob blob-4"></div>
 
   <!-- 滑鼠星星粒子畫布 -->
   <canvas id="cursor-canvas"></canvas>
